@@ -18,24 +18,23 @@ public class Booking {
 
     private LocalDate startDate;
     private LocalDate endDate;
-    private String nrCustomer;
-    private int extraBeds;
+    private String guestQuantity;
+    private int extraBedsQuantity;
 
     @ManyToOne
     @JoinColumn
-    private Customer customer_Id;
+    private Customer customer;
     @OneToOne
     @JoinColumn
-    private Room room_Id;
+    private Room room;
 
-    Booking (LocalDate startDate, LocalDate endDate, String nrCustomer, int extraBeds, Customer customer_Id, Room room_Id) {
+    Booking (LocalDate startDate, LocalDate endDate, String guestQuantity, int extraBedsQuantity, Customer customer, Room room) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.nrCustomer = nrCustomer;
-        this.extraBeds = extraBeds;
-        this.customer_Id = customer_Id;
-        this.room_Id = room_Id;
+        this.guestQuantity = guestQuantity;
+        this.extraBedsQuantity = extraBedsQuantity;
+        this.customer = customer;
+        this.room = room;
     }
-    //Customer customer
 }
 

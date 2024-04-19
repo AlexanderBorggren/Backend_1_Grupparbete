@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @RestController
 public class BookingController {
 
@@ -25,11 +22,11 @@ public class BookingController {
 
     @PostMapping("addBooking")
     public void addBooking(@RequestBody Booking booking){
-        Customer customer = customerRepo.findById(booking.getCustomer_Id().getId()).get();
+        /*Customer customer = customerRepo.findById(1L).get();
         if (customer == null){
             System.out.println("Customer not found");
             return;
-        }
+        }*/
         bookingRepo.save(booking);
     }
 
