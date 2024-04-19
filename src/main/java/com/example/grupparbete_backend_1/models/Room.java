@@ -1,9 +1,6 @@
 package com.example.grupparbete_backend_1.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +15,11 @@ public class Room {
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Long id;
+    @OneToOne
+    @JoinColumn
+    private RoomType roomType;
+
+    Room(RoomType roomType, Long timestamp) {
+        this.roomType = roomType;
+    }
 }
