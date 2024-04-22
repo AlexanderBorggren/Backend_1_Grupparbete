@@ -14,6 +14,3 @@ public class GrupparbeteBackend1Application {
 
 }
 
-//Commit asd
-//Zown testcommit
-//nora commit

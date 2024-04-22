@@ -15,7 +15,7 @@ public class Room {
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Long id;
-    @OneToOne
+    @ManyToOne
     @JoinColumn
     private RoomType roomType;
 
