@@ -23,24 +23,20 @@ public class GrupparbeteBackend1Application {
     public static void main(String[] args) {
         SpringApplication.run(GrupparbeteBackend1Application.class, args);
     }
+
+
 /*
-    @Bean
-    public CommandLineRunner addDefaultCustomers(CustomerRepo customerRepo) {
-        return (args) -> {
-
-            Customer customer1 = new Customer("Adde", "198604031234", "adde@hotmail.com", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Customer customer2 = new Customer("Berit", "195902031234", "gddhdr@hotmail.com", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Customer customer3 = new Customer("Cissi", "19720403114", "cissi@hotmail.com", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-
-            customerRepo.save(customer1);
-            customerRepo.save(customer2);
-            customerRepo.save(customer3);
-
-        };}
-
  @Bean
- public CommandLineRunner addDefaultRooms(RoomTypeRepo roomTypeRepo,RoomRepo roomRepo){
+ public CommandLineRunner addDefaultData(CustomerRepo customerRepo, RoomTypeRepo roomTypeRepo,RoomRepo roomRepo, BookingRepo bookingRepo){
             return (args) -> {
+
+                Customer customer1 = new Customer("Adde", "198604031234", "adde@hotmail.com", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+                Customer customer2 = new Customer("Berit", "195902031234", "gddhdr@hotmail.com", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+                Customer customer3 = new Customer("Cissi", "19720403114", "cissi@hotmail.com", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+
+                customerRepo.save(customer1);
+                customerRepo.save(customer2);
+                customerRepo.save(customer3);
 
                 RoomType singleRoom = new RoomType("Single", 0,  Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
                 RoomType doubleRoom1 = new RoomType("Double room 1", 1, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
@@ -74,20 +70,16 @@ public class GrupparbeteBackend1Application {
                 roomRepo.save(room9);
                 roomRepo.save(room10);
 
+                Booking booking = new Booking(LocalDate.parse(
+                        "2020-01-08"), LocalDate.parse("2020-01-12"), 2,
+                        0, customer1,room4,
+                        Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+
+                bookingRepo.save(booking);
+
             };
-        }
+        }*/
 
-    @Bean
-    public CommandLineRunner addExistingBookings(RoomRepo roomRepo, CustomerRepo customerRepo, BookingRepo bookingRepo) {
-        return (args) -> {
 
-            Booking booking = new Booking(LocalDate.parse(
-                    "2020-01-08"), LocalDate.parse("2020-01-12"), 2,
-                    0, customerRepo.findById(1L).get(),roomRepo.findById(4L).get(),
-                    Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-
-            bookingRepo.save(booking);
-
-        };}*/
 }
 

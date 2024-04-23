@@ -24,7 +24,8 @@ import java.time.LocalDate;
     private int guestQuantity;
     private int extraBedsQuantity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
+    /*@ManyToOne(cascade = CascadeType.ALL)*/
     @JoinColumn
     private Customer customer;
     @OneToOne
