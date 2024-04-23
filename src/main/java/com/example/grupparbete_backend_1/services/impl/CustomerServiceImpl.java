@@ -5,10 +5,12 @@ import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.repositories.CustomerRepo;
 import com.example.grupparbete_backend_1.services.CustomerService;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Repository // Error without this (Could not autowire. No beans of 'RoomService' type found.)
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
