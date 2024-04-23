@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -18,8 +22,15 @@ public class Room {
     @ManyToOne
     @JoinColumn
     private RoomType roomType;
+    @CreationTimestamp
+    private Timestamp regdate;
+    @UpdateTimestamp
+    private Timestamp updatedate;
 
-    Room(RoomType roomType, Long timestamp) {
+
+    public Room(RoomType roomType, Timestamp regdate, Timestamp updatedate) {
         this.roomType = roomType;
+        this.regdate = regdate;
+        this.updatedate = updatedate;
     }
 }

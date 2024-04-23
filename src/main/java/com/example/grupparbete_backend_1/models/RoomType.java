@@ -7,6 +7,10 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -20,9 +24,13 @@ public class RoomType {
     private Long id;
 
     private String roomSize;
-    private Long maxExtraBeds;
+    private int maxExtraBeds;
+    @CreationTimestamp
+    private Timestamp regdate;
+    @UpdateTimestamp
+    private Timestamp updatedate;
 
-    RoomType(String roomSize, Long maxExtraBeds) {
+    public RoomType(String roomSize, int maxExtraBeds, Timestamp regdate, Timestamp updatedate) {
         this.roomSize = roomSize;
         this.maxExtraBeds = maxExtraBeds;
     }
