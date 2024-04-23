@@ -25,7 +25,7 @@ public class GrupparbeteBackend1Application {
     }
 
 
-/*
+
  @Bean
  public CommandLineRunner addDefaultData(CustomerRepo customerRepo, RoomTypeRepo roomTypeRepo,RoomRepo roomRepo, BookingRepo bookingRepo){
             return (args) -> {
@@ -78,7 +78,7 @@ public class GrupparbeteBackend1Application {
                 bookingRepo.save(booking);
 
             };
-        }*/
+        }
 
 
 }
