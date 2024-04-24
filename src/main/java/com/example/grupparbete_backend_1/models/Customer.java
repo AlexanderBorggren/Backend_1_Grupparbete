@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Entity
@@ -24,8 +25,13 @@ public class Customer {
     private String name;
     private String ssn;
     private String email;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Booking> bookingList;
+
     @CreationTimestamp
     private Timestamp regdate;
+
     @UpdateTimestamp
     private Timestamp updatedate;
 

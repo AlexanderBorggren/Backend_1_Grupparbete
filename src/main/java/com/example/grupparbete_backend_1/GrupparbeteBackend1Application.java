@@ -1,6 +1,20 @@
 package com.example.grupparbete_backend_1;
+import com.example.grupparbete_backend_1.models.Booking;
+import com.example.grupparbete_backend_1.models.Customer;
+import com.example.grupparbete_backend_1.models.Room;
+import com.example.grupparbete_backend_1.models.RoomType;
+import com.example.grupparbete_backend_1.repositories.BookingRepo;
+import com.example.grupparbete_backend_1.repositories.CustomerRepo;
+import com.example.grupparbete_backend_1.repositories.RoomRepo;
+import com.example.grupparbete_backend_1.repositories.RoomTypeRepo;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
 
 
 @SpringBootApplication
@@ -11,9 +25,9 @@ public class GrupparbeteBackend1Application {
     }
 
 
-/*
+
  @Bean
- public CommandLineRunner addDefaultData(CustomerRepo customerRepo, RoomTypeRepo roomTypeRepo,RoomRepo roomRepo, BookingRepo bookingRepo){
+ public CommandLineRunner addDefaultData(CustomerRepo customerRepo, RoomTypeRepo roomTypeRepo, RoomRepo roomRepo, BookingRepo bookingRepo){
             return (args) -> {
 
                 Customer customer1 = new Customer("Adde", "198604031234", "adde@hotmail.com", Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
@@ -61,12 +75,24 @@ public class GrupparbeteBackend1Application {
                         0, customer1,room4,
                         Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
 
+                Booking booking2 = new Booking(LocalDate.parse(
+                        "2020-01-13"), LocalDate.parse("2020-01-14"), 2,
+                        0, customer1,room5,
+                        Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+
+                Booking booking3 = new Booking(LocalDate.parse(
+                        "2020-01-15"), LocalDate.parse("2020-01-16"), 2,
+                        0, customer2,room6,
+                        Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+
                 bookingRepo.save(booking);
+                bookingRepo.save(booking2);
+                bookingRepo.save(booking3);
 
             };
         }
 
- */
+
 
 
 }

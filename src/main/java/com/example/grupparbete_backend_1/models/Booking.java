@@ -13,12 +13,13 @@ import java.time.LocalDate;
 
 @Builder
 @Data
-    @Entity
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public class Booking {
-        @Id
-        @GeneratedValue
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+public class Booking {
+
+    @Id
+    @GeneratedValue
     private Long id;
 
     private LocalDate startDate;
@@ -26,15 +27,18 @@ import java.time.LocalDate;
     private int guestQuantity;
     private int extraBedsQuantity;
 
-    @ManyToOne()
     /*@ManyToOne(cascade = CascadeType.ALL)*/
-    @JoinColumn
+    //@JoinColumn
+    @ManyToOne
     private Customer customer;
+
     @OneToOne
     @JoinColumn
     private Room room;
+
     @CreationTimestamp
     private Timestamp regdate;
+
     @UpdateTimestamp
     private Timestamp updatedate;
 
