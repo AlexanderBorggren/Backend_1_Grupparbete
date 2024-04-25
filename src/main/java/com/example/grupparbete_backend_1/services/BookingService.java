@@ -18,4 +18,5 @@ public interface BookingService {
 
     public List<DetailedBookingDto> getAllBookings();
     public String addBooking(DetailedBookingDto booking);
+    public boolean isBookingActive(Long bookingId);
 }

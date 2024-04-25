@@ -26,7 +26,7 @@ public class Customer {
     private String ssn;
     private String email;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
     private List<Booking> bookingList;
 
     @CreationTimestamp

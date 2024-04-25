@@ -11,6 +11,8 @@ import com.example.grupparbete_backend_1.services.BookingService;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 import java.util.List;
 
 @Repository // Error without this (Could not autowire. No beans of 'RoomService' type found.)
@@ -66,5 +68,14 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<DetailedBookingDto> getAllBookings() {
         return bookingRepo.findAll().stream().map(k -> bookingToDetailedBookingDto(k)).toList();
+    }
+    @Override
+    public boolean isBookingActive(Long bookingId) {
+        ChronoLocalDate now = ChronoLocalDate.from(LocalDateTime.now());
+
+        return bookingRepo.findById(bookingId).get()
+                .getStartDate().isBefore(now) &&
+                bookingRepo.findById(bookingId).get()
+                        .getEndDate().isAfter(now);
     }
 }

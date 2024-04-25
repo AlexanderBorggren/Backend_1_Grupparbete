@@ -20,7 +20,7 @@ public class BookingController {
     private final CustomerService customerService;
 
 
-    @PostMapping("addBooking")
+    @PostMapping("AddBooking")
     public void addBooking(@RequestBody DetailedBookingDto booking){
         /*Customer customer = customerRepo.findById(1L).get();
         if (customer == null){
@@ -34,5 +34,8 @@ public class BookingController {
     public List<DetailedBookingDto> getAllBookings(){
         return bookingService.getAllBookings();
     }
+
+    //@RequestMapping("ActiveBookings")
+    //public
 
 }

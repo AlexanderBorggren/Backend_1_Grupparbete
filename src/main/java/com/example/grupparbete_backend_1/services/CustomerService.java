@@ -17,7 +17,9 @@ public interface CustomerService {
     public Customer detailedCustomerDtoToCustomer(DetailedCustomerDto customer);
     public List<DetailedCustomerDto> getAllCustomer();
 
-    public String addCustomer(DetailedCustomerDto customer);
+    public void addCustomer(DetailedCustomerDto customer);
+
+    public void deleteCustomer(Long id);
 
     //Andre - Removed this way of working(How sigrun did it in her video) and instead added a bookingService in customerService
     //Seems to be how it normally is done, but cannot have circular dependancy by doing this.

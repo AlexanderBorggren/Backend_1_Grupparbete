@@ -4,10 +4,7 @@ import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.services.CustomerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -19,9 +16,16 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping("addCustomer")
-    public void addCustomer(@RequestBody DetailedCustomerDto customer){
+    public String addCustomer(@RequestBody DetailedCustomerDto customer){
         customerService.addCustomer(customer);
+        return "Kund har sparats";
     }
+    @RequestMapping("deleteCustomer/{id}/delete")
+    public String deleteCustomer(@PathVariable Long id) {
+        customerService.deleteCustomer(id);
+        return "Kund har borttagits";
+    }
+
     @RequestMapping("Customers")
         public List<DetailedCustomerDto> getAllCustomers(){
             return customerService.getAllCustomer();

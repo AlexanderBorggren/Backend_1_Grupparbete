@@ -9,9 +9,13 @@ import com.example.grupparbete_backend_1.repositories.BookingRepo;
 import com.example.grupparbete_backend_1.repositories.CustomerRepo;
 import com.example.grupparbete_backend_1.services.BookingService;
 import com.example.grupparbete_backend_1.services.CustomerService;
+import jakarta.transaction.Transactional;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,10 +56,26 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public String addCustomer(DetailedCustomerDto customer) {
+    public void addCustomer(DetailedCustomerDto customer) {
         customerRepo.save(detailedCustomerDtoToCustomer(customer));
-        return "Kunden har sparats";
     }
+    @Transactional
+    public void deleteCustomer(Long customerId) {
+        Customer customer = customerRepo.findById(customerId).get();
+
+        // Check if there are any current bookings
+        if (!(customer.getBookingList().stream().anyMatch(booking -> booking.getEndDate().isBefore(ChronoLocalDate.from(LocalDateTime.now()))))) {
+            throw new IllegalStateException("Cannot delete customer with current bookings");
+        }
+
+        customerRepo.delete(customer);
+    }
+ /*   @Override
+    public void deleteCustomer(Long id) {
+        bookingService.getAllBookings().forEach(booking -> bookingService.);
+        customerRepo.deleteById(id);
+        //customerRepo.saveAll(customerRepo.findAll());
+    }*/
 //    @Override
 //    public BookingDto bookingToBookingDto(Booking booking) {
 //        return BookingDto.builder().id(booking.getId())
