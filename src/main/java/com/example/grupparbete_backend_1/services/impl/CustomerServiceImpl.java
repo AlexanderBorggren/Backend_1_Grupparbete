@@ -1,16 +1,10 @@
 package com.example.grupparbete_backend_1.services.impl;
 
 import com.example.grupparbete_backend_1.dto.*;
-import com.example.grupparbete_backend_1.models.Booking;
 import com.example.grupparbete_backend_1.models.Customer;
-import com.example.grupparbete_backend_1.models.Room;
-import com.example.grupparbete_backend_1.models.RoomType;
-import com.example.grupparbete_backend_1.repositories.BookingRepo;
 import com.example.grupparbete_backend_1.repositories.CustomerRepo;
-import com.example.grupparbete_backend_1.services.BookingService;
 import com.example.grupparbete_backend_1.services.CustomerService;
 import jakarta.transaction.Transactional;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -73,6 +67,22 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepo.delete(customer);
         System.out.println("Customer has been removed, customer had no active bookings.");
         return customer.getName() + " has been removed, customer had no active bookings.";
+    }
+
+    @Override
+    public DetailedCustomerDto editCustomer(Long id, String name, String ssn, String email) {
+        Customer c = customerRepo.findById(id).stream().findFirst().orElse(null);
+        if(c == null){
+            return null;
+        }
+        c.setName(name);
+        c.setSsn(ssn);
+        c.setEmail(email);
+
+        customerRepo.save(c);
+
+        return customerToDetailedCustomerDto(c);
+
     }
  /*   @Override
     public void deleteCustomer(Long id) {

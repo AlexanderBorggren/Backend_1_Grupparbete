@@ -1,10 +1,7 @@
 package com.example.grupparbete_backend_1.services;
 
 import com.example.grupparbete_backend_1.dto.*;
-import com.example.grupparbete_backend_1.models.Booking;
 import com.example.grupparbete_backend_1.models.Customer;
-import com.example.grupparbete_backend_1.models.Room;
-import com.example.grupparbete_backend_1.models.RoomType;
 
 import java.util.List;
 
@@ -20,6 +17,8 @@ public interface CustomerService {
     public void addCustomer(DetailedCustomerDto customer);
 
     public String deleteCustomer(Long id);
+
+    public DetailedCustomerDto editCustomer(Long id, String name, String ssn, String email);
 
     //Andre - Removed this way of working(How sigrun did it in her video) and instead added a bookingService in customerService
     //Seems to be how it normally is done, but cannot have circular dependancy by doing this.

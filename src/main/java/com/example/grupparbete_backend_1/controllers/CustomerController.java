@@ -4,6 +4,7 @@ import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.services.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -26,10 +27,15 @@ public class CustomerController {
     }
 
     @RequestMapping("Customers")
-        public List<DetailedCustomerDto> getAllCustomers(){
-            return customerService.getAllCustomer();
+        public List<DetailedCustomerDto> getAllCustomers(){return customerService.getAllCustomer();}
 
-        }
+    @PutMapping(path="editCustomer")
+     public DetailedCustomerDto editCustomer(@RequestBody DetailedCustomerDto customer){
+
+        return customerService.editCustomer(customer.getId(), customer.getName(), customer.getSsn(), customer.getEmail());
+    }
+
+
 
 }
 
