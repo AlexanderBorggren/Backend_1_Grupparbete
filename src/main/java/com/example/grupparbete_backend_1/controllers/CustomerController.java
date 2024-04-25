@@ -22,8 +22,7 @@ public class CustomerController {
     }
     @RequestMapping("deleteCustomer/{id}/delete")
     public String deleteCustomer(@PathVariable Long id) {
-        customerService.deleteCustomer(id);
-        return "Kund har borttagits";
+        return customerService.deleteCustomer(id);
     }
 
     @RequestMapping("Customers")

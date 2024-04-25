@@ -60,15 +60,19 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepo.save(detailedCustomerDtoToCustomer(customer));
     }
     @Transactional
-    public void deleteCustomer(Long customerId) {
+    public String deleteCustomer(Long customerId) {
         Customer customer = customerRepo.findById(customerId).get();
 
+
         // Check if there are any current bookings
-        if (!(customer.getBookingList().stream().anyMatch(booking -> booking.getEndDate().isBefore(ChronoLocalDate.from(LocalDateTime.now()))))) {
-            throw new IllegalStateException("Cannot delete customer with current bookings");
+        if ((customer.getBookingList().stream().anyMatch(booking -> booking.getEndDate().isAfter(ChronoLocalDate.from(LocalDateTime.now()))))) {
+            System.out.println("Customer has ongoing booking and cannot be deleted.");
+            return customer.getName() + " has ongoing booking and cannot be deleted.";
         }
 
         customerRepo.delete(customer);
+        System.out.println("Customer has been removed, customer had no active bookings.");
+        return customer.getName() + " has been removed, customer had no active bookings.";
     }
  /*   @Override
     public void deleteCustomer(Long id) {

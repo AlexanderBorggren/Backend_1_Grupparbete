@@ -26,7 +26,7 @@ public class GrupparbeteBackend1Application {
 
 
 
- /*@Bean
+ @Bean
  public CommandLineRunner addDefaultData(CustomerRepo customerRepo, RoomTypeRepo roomTypeRepo, RoomRepo roomRepo, BookingRepo bookingRepo){
             return (args) -> {
 
@@ -85,14 +85,21 @@ public class GrupparbeteBackend1Application {
                         0, customer2,room6,
                         Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
 
+                Booking booking4 = new Booking(LocalDate.parse(
+                        "2025-01-15"), LocalDate.parse("2025-01-16"), 2,
+                        0, customer2,room6,
+                        Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+
                 bookingRepo.save(booking);
                 bookingRepo.save(booking2);
                 bookingRepo.save(booking3);
+                bookingRepo.save(booking4);
 
             };
-               */
-
         }
+
+
+}
 
         
 
