@@ -17,7 +17,7 @@
             <td th:text="${cust.name}"></td>
             <td th:text="${cust.ssn}"></td>
             <td th:text="${cust.email}"></td>
-            <td><a th:href="@{deleteCustomer/{id}/delete(id=${cust.id})}">Delete</a></td>
+            <td><a th:href="@{deleteById/{id}/(id=${cust.id})}">Delete</a></td>
         </tr>
         </tbody>
     </table>

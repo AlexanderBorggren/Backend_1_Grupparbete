@@ -52,7 +52,7 @@ public class CustomerControllerTH{
         return "customers";
     }
 
-    @RequestMapping(path = "/deleteById/{id}/delete")
+    @RequestMapping(path = "/deleteById/{id}/")
     public String deleteCap(@PathVariable Long id, Model model) {
         customerService.deleteCustomer(id);
         return getAll(model);

@@ -21,10 +21,10 @@ public class CustomerController {
         customerService.addCustomer(customer);
         return "Kund har sparats";
     }
-    @RequestMapping("deleteCustomer/{id}/delete")
+   /* @RequestMapping("deleteCustomer/{id}/delete")
    public String deleteCustomer(@PathVariable Long id) {
         return customerService.deleteCustomer(id);
-    }
+    }*/
 
     @RequestMapping("Customers")
         public List<DetailedCustomerDto> getAllCustomers(){return customerService.getAllCustomer();}
