@@ -81,20 +81,17 @@ public class CustomerControllerTH{
 
         return "redirect:/customer/all";
     }
-
     @RequestMapping("/addCustomerView")
     public String createCustomerByForm(Model model) {
         return "addCustomerForm";
     }
-
-
 
     @PostMapping("/addCustomer")
     public String addCustomer(@RequestParam String name, @RequestParam String ssn, @RequestParam String email, Model model) {
         model.addAttribute("name", "name");
         model.addAttribute("ssn", "ssn");
         model.addAttribute("email", "email");
-        customerService.addCustomer(new DetailedCustomerDto(name, ssn, email));
+        customerService.addCustomer(new DetailedCustomerDto(email, name, ssn));
         return "redirect:/customer/all";
     }
 
