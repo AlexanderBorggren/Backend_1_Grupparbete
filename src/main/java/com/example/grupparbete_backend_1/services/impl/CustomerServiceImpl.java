@@ -82,6 +82,13 @@ public class CustomerServiceImpl implements CustomerService {
         return customerToDetailedCustomerDto(c);
 
     }
+    public DetailedCustomerDto findById(Long id) {
+        Customer c = customerRepo.findById(id).stream().findFirst().orElse(null);
+        if(c == null){
+            return null;
+        }
+        return customerToDetailedCustomerDto(c);
+    };
  /*   @Override
     public void deleteCustomer(Long id) {
         bookingService.getAllBookings().forEach(booking -> bookingService.);

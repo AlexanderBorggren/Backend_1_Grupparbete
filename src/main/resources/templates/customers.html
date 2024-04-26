@@ -20,10 +20,16 @@
             <td th:text="${cust.ssn}"></td>
             <td th:text="${cust.email}"></td>
             <td><a th:href="@{deleteById/{id}/(id=${cust.id})}">Delete</a></td>
+            <td><a th:href="@{editByView/{id}/(id=${cust.id})}">Update</a></td>
         </tr>
+
         </tbody>
     </table>
 </div>
+
+<p>
+    <a th:href="@{addCustomerView}">Add customer</a>
+</p>
 
 
 </body>

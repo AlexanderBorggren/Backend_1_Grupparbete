@@ -1,30 +1,25 @@
 package com.example.grupparbete_backend_1.controllers;
 
-import com.example.grupparbete_backend_1.dto.CustomerDto;
 import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.models.Customer;
-import com.example.grupparbete_backend_1.repositories.CustomerRepo;
 import com.example.grupparbete_backend_1.services.CustomerService;
-import com.example.grupparbete_backend_1.services.impl.CustomerServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
+@RequestMapping("/customer")
 public class CustomerControllerTH{
 
     CustomerService customerService;
-    private CustomerRepo customerRepo;
 
-    public CustomerControllerTH(CustomerService customerService, CustomerRepo customerRepo){
+    public CustomerControllerTH(CustomerService customerService){
         this.customerService=customerService;
-        this.customerRepo=customerRepo;
     }
 
    /* @PostMapping("submitUpdate")
@@ -55,12 +50,54 @@ public class CustomerControllerTH{
     }
 
     @RequestMapping(path = "/deleteById/{id}/")
-    public String deleteCap(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+    public String deleteCustomer(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         String message = customerService.deleteCustomer(id);
         redirectAttributes.addFlashAttribute("message", message);
 
-        return "redirect:/all";
+        return "redirect:/customer/all";
     }
+
+    @RequestMapping("/editByView/{id}/")
+    public String createByForm(@PathVariable Long id, Model model) {
+        //System.out.println("hej");
+        DetailedCustomerDto customer = customerService.findById(id);
+
+        //TODO - HANDLE NULL CUSTOMER
+
+
+        model.addAttribute("customer", customer);
+        return "updateCustomerForm";
+    }
+
+    @PostMapping("/update")
+    public String updateCustomer(Model model, DetailedCustomerDto c) {
+        customerService.addCustomer(c);
+        //List<DetailedCustomerDto> k = customerService.getAllCustomer();
+        //model.addAttribute("allCustomers", k);
+        model.addAttribute("name", "name");
+        model.addAttribute("ssn", "ssn");
+        model.addAttribute("email", "email");
+
+
+        return "redirect:/customer/all";
+    }
+
+    @RequestMapping("/addCustomerView")
+    public String createCustomerByForm(Model model) {
+        return "addCustomerForm";
+    }
+
+
+
+    @PostMapping("/addCustomer")
+    public String addCustomer(@RequestParam String name, @RequestParam String ssn, @RequestParam String email, Model model) {
+        model.addAttribute("name", "name");
+        model.addAttribute("ssn", "ssn");
+        model.addAttribute("email", "email");
+        customerService.addCustomer(new DetailedCustomerDto(name, ssn, email));
+        return "redirect:/customer/all";
+    }
+
 
 
 
