@@ -6,15 +6,13 @@
 </head>
 <body>
 
-<form action="submitUpdate"  th:object="${Customer}"  method="post" >
+<form action="formGreetingReceival" method="post">
     <label for="name">Name:</label><br>
-    <input type="text" id="name" th:field="*{name}"><br>
-    <label for="ssn">SSN:</label><br>
-    <input type="text" id="ssn" th:field="*{ssn}"><br>
+    <input type="text" id="name" name="name" value=""><br>
     <label for="email">Email:</label><br>
-    <input type="text" id="email" th:field="*{email}"><br>
-
-    <input type=hidden id="id" th:field="*{id}"><br>
+    <input type="text" id="email" name="email" value=""><br><br>
+    <label for="ssn">SSN:</label><br>
+    <input type="text" id="ssn" name="ssn" value=""><br><br>
     <input type="submit" value="Submit">
 </form>
 

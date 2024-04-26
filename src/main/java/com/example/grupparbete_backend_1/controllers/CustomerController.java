@@ -22,7 +22,7 @@ public class CustomerController {
         return "Kund har sparats";
     }
     @RequestMapping("deleteCustomer/{id}/delete")
-    public String deleteCustomer(@PathVariable Long id) {
+   public String deleteCustomer(@PathVariable Long id) {
         return customerService.deleteCustomer(id);
     }
 
