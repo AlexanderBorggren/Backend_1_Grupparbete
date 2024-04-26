@@ -18,5 +18,9 @@ public interface BookingService {
 
     public List<DetailedBookingDto> getAllBookings();
     public String addBooking(DetailedBookingDto booking);
+
+    String deleteBooking(Long bookingId);
+
     public boolean isBookingActive(Long bookingId);
+    public DetailedBookingDto findById(Long id);
 }

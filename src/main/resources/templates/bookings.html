@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+</head>
+<body>
+<h2 th:text="${customerTitle}"></h2>
+<div class="allCustomers" th:unless="${#lists.isEmpty(allCustomers)}">
+
+    <h2 th:text="${message}"></h2>
+
+    <table>
+        <th th:text="${name}"></th>
+        <th th:text="${ssn}"></th>
+        <th th:text="${email}"></th>
+        <tbody>
+        <tr th:each="cust : ${allCustomers}">
+            <td th:text="${cust.name}"></td>
+            <td th:text="${cust.ssn}"></td>
+            <td th:text="${cust.email}"></td>
+            <td><a th:href="@{deleteById/{id}/(id=${cust.id})}">Delete</a></td>
+            <td><a th:href="@{editByView/{id}/(id=${cust.id})}">Update</a></td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<p>
+    <a th:href="@{addCustomerView}">Add customer</a>
+</p>
+
+
+</body>
+</html>

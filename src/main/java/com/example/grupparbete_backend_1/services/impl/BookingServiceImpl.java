@@ -74,6 +74,14 @@ public class BookingServiceImpl implements BookingService {
     public List<DetailedBookingDto> getAllBookings() {
         return bookingRepo.findAll().stream().map(k -> bookingToDetailedBookingDto(k)).toList();
     }
+
+    @Override
+    public String deleteBooking(Long bookingId) {
+        Booking booking = bookingRepo.findById(bookingId).get();
+
+        bookingRepo.delete(booking);
+        return booking.getId() + " has been removed.";
+    }
     @Override
     public boolean isBookingActive(Long bookingId) {
         ChronoLocalDate now = ChronoLocalDate.from(LocalDateTime.now());
@@ -83,4 +91,12 @@ public class BookingServiceImpl implements BookingService {
                 bookingRepo.findById(bookingId).get()
                         .getEndDate().isAfter(now);
     }
+    @Override
+    public DetailedBookingDto findById(Long id) {
+        Booking c = bookingRepo.findById(id).stream().findFirst().orElse(null);
+        if(c == null){
+            return null;
+        }
+        return bookingToDetailedBookingDto(c);
+    };
 }
