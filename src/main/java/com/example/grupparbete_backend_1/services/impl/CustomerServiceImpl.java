@@ -60,12 +60,10 @@ public class CustomerServiceImpl implements CustomerService {
 
         // Check if there are any current bookings
         if ((customer.getBookingList().stream().anyMatch(booking -> booking.getEndDate().isAfter(ChronoLocalDate.from(LocalDateTime.now()))))) {
-            System.out.println("Customer has ongoing booking and cannot be deleted.");
             return customer.getName() + " has ongoing booking and cannot be deleted.";
         }
 
         customerRepo.delete(customer);
-        System.out.println("Customer has been removed, customer had no active bookings.");
         return customer.getName() + " has been removed, customer had no active bookings.";
     }
 
