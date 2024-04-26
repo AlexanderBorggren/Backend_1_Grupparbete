@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class CustomerControllerTH{
     @RequestMapping("/all")
     public String getAll(Model model) {
         List<DetailedCustomerDto> k = customerService.getAllCustomer();
+        System.out.println(model.getAttribute("message"));
         model.addAttribute("allCustomers", k);
         model.addAttribute("customerTitle", "All customers");
         model.addAttribute("name", "Name");
@@ -53,9 +55,11 @@ public class CustomerControllerTH{
     }
 
     @RequestMapping(path = "/deleteById/{id}/")
-    public String deleteCap(@PathVariable Long id, Model model) {
-        customerService.deleteCustomer(id);
-        return getAll(model);
+    public String deleteCap(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        String message = customerService.deleteCustomer(id);
+        redirectAttributes.addFlashAttribute("message", message);
+
+        return "redirect:/all";
     }
 
 
