@@ -12,6 +12,7 @@ public interface CustomerService {
     public DetailedCustomerDto customerToDetailedCustomerDto(Customer kund);
 
     public Customer detailedCustomerDtoToCustomer(DetailedCustomerDto customer);
+    public CustomerDto detailedCustomerDtoToCustomerDto(DetailedCustomerDto customer);
     public List<DetailedCustomerDto> getAllCustomer();
 
     public void addCustomer(DetailedCustomerDto customer);

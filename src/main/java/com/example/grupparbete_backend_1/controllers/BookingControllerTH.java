@@ -101,8 +101,9 @@ public class BookingControllerTH {
         model.addAttribute("roomId", "Room number: ");
         model.addAttribute("extraBedsQuantity", "Extra beds: ");
 
-        DetailedCustomerDto customerDto = customerService.findById(customerId);
-        bookingService.addBooking(new DetailedBookingDto(startDate, endDate, guestQuantity, extraBedsQuantity, customerDto,roomService.findById(roomId)));
+        CustomerDto customerDto = customerService.detailedCustomerDtoToCustomerDto(customerService.findById(customerId));
+        DetailedBookingDto booking = new DetailedBookingDto(startDate, endDate, guestQuantity, extraBedsQuantity, customerDto,roomService.findById(roomId));
+        bookingService.addBooking(booking);
         return "redirect:/booking/all";
     }
 

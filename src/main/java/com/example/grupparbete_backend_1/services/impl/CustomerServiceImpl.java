@@ -43,6 +43,10 @@ public class CustomerServiceImpl implements CustomerService {
         return Customer.builder().id(customer.getId()).ssn(customer.getSsn()).name(customer.getName()).email(customer.getEmail())
                 .bookingList(Collections.emptyList()).build();
     }
+    @Override
+    public CustomerDto detailedCustomerDtoToCustomerDto(DetailedCustomerDto customer) {
+        return CustomerDto.builder().id(customer.getId()).name(customer.getName()).email(customer.getEmail()).build();
+    }
 
     @Override
     public List<DetailedCustomerDto> getAllCustomer() {
