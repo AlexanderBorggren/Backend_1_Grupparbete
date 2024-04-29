@@ -1,12 +1,15 @@
 package com.example.grupparbete_backend_1.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -21,9 +24,16 @@ public class Customer {
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Long id;
-
+    @NotNull
+    @NotEmpty(message = "Namnet får inte vara tomt")
+    @Size(max = 50, message = "Namnet får inte vara längre än 50 tecken")
     private String name;
+    @NotNull
+    @NotBlank
+    @Pattern(regexp = "^\\d{10}$", message = "Personnumret måste ha exakt 10 siffror")
     private String ssn;
+    @NotNull
+    @Email
     private String email;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)

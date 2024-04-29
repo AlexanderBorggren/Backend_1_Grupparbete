@@ -12,4 +12,5 @@ public interface RoomService {
     public Room roomDtoToRoom(RoomDto room, RoomType roomType);
     public List<RoomDto> getAllRoom();
     public String addRoom(RoomDto room);
+    RoomDto findById(Long id);
 }

@@ -41,4 +41,14 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomDto> getAllRoom() {
         return roomRepo.findAll().stream().map(k -> roomToRoomDto(k)).toList();
     }
+
+    @Override
+    public RoomDto findById(Long id) {
+        Room r = roomRepo.findById(id).stream().findFirst().orElse(null);
+        if(r == null){
+            return null;
+        }
+        return roomToRoomDto(r);
+    };
 }
+

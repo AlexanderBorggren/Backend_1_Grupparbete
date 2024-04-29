@@ -3,6 +3,7 @@ package com.example.grupparbete_backend_1.controllers;
 import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.services.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -87,11 +88,12 @@ public class CustomerControllerTH{
     }
 
     @PostMapping("/addCustomer")
-    public String addCustomer(@RequestParam String name, @RequestParam String ssn, @RequestParam String email, Model model) {
+    public String addCustomer(@Valid @RequestParam String name, @RequestParam String ssn, @RequestParam String email, Model model) {
         model.addAttribute("name", "name");
         model.addAttribute("ssn", "ssn");
         model.addAttribute("email", "email");
         customerService.addCustomer(new DetailedCustomerDto(email, name, ssn));
+
         return "redirect:/customer/all";
     }
 

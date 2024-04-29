@@ -1,9 +1,12 @@
 package com.example.grupparbete_backend_1.controllers;
 
+import com.example.grupparbete_backend_1.dto.CustomerDto;
 import com.example.grupparbete_backend_1.dto.DetailedBookingDto;
 import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
+import com.example.grupparbete_backend_1.dto.RoomDto;
 import com.example.grupparbete_backend_1.services.BookingService;
 import com.example.grupparbete_backend_1.services.CustomerService;
+import com.example.grupparbete_backend_1.services.RoomService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -19,9 +23,13 @@ import java.util.List;
 public class BookingControllerTH {
 
     BookingService bookingService;
+    RoomService roomService;
+    CustomerService customerService;
 
-    public BookingControllerTH(BookingService bookingService){
+    public BookingControllerTH(BookingService bookingService, RoomService roomService, CustomerService customerService) {
         this.bookingService=bookingService;
+        this.roomService=roomService;
+        this.customerService=customerService;
     }
 
     @RequestMapping("/all")
@@ -77,15 +85,26 @@ public class BookingControllerTH {
     }
 
     @PostMapping("/addCustomer")
-    public String addCustomer(@RequestParam String name, @RequestParam String ssn, @RequestParam String email, Model model) {
-        model.addAttribute("name", "name");
-        model.addAttribute("ssn", "ssn");
-        model.addAttribute("email", "email");
-        customerService.addCustomer(new DetailedCustomerDto(email, name, ssn));
+    public String addBooking(@RequestParam Long roomId, @RequestParam Long customerId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam int guestQuantity, @RequestParam int extraBedsQuantity, Model model) {
+        model.addAttribute("roomId", "Room Number: ");
+        model.addAttribute("startDate", "Start Date: ");
+        model.addAttribute("endDate", "End Date: ");
+        model.addAttribute("guestQuantity", "Total guests: ");
+
+
+        bookingService.addBooking(new com.example.grupparbete_backend_1.dto.DetailedBookingDto(startDate, endDate, guestQuantity, extraBedsQuantity, customerService.findById(customerId),roomService.findById(roomId)));
         return "redirect:/customer/all";
     }
+    public class DetailedBookingDto {
+        private Long id;
+        private LocalDate startDate;
+        private LocalDate endDate;
+        private int guestQuantity;
+        private int extraBedsQuantity;
+        private CustomerDto customer;
+        private RoomDto room;
 
 
-
+    }
 
 }
