@@ -38,17 +38,21 @@ public class BookingControllerTH {
 
         model.addAttribute("allBookings", b);
         model.addAttribute("bookingTitle", "All bookings: ");
-        model.addAttribute("customer", "Customer: ");
+        model.addAttribute("customerId", "Customer id: ");
+        model.addAttribute("customerName", "Customer name: ");
+        model.addAttribute("customerEmail", "Customer email: ");
+
         model.addAttribute("startDate", "Start Date: ");
         model.addAttribute("endDate", "End Date: ");
         model.addAttribute("guestQuantity", "Total guests: ");
-        model.addAttribute("room", "Room number: "); //?
+        model.addAttribute("roomId", "Room number: ");
+        model.addAttribute("roomSize", "Room Size: ");
         model.addAttribute("extraBedsQuantity", "Extra beds: ");
         return "bookings";
     }
 
     @RequestMapping(path = "/deleteById/{id}/")
-    public String deleteCustomer(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+    public String deleteBooking(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         String message = bookingService.deleteBooking(id);
         redirectAttributes.addFlashAttribute("message", message);
 
@@ -68,43 +72,39 @@ public class BookingControllerTH {
     }
 
     @PostMapping("/update")
-    public String updateCustomer(Model model, DetailedBookingDto b) {
-        bookingService.addBooking(b);
+    public String updateBooking(Model model, DetailedBookingDto b, CustomerDto customerDto) {
 
+        model.addAttribute("customer", "Customer: ");
         model.addAttribute("startDate", "Start Date: ");
         model.addAttribute("endDate", "End Date: ");
         model.addAttribute("guestQuantity", "Total guests: ");
-        model.addAttribute("room", "Room number: "); //?
+        model.addAttribute("roomId", "Room number: ");
+        model.addAttribute("roomSize", "Room size: ");
         model.addAttribute("extraBedsQuantity", "Extra beds: ");
+
+        b.setCustomer(customerDto);
+        bookingService.addBooking(b);
 
         return "redirect:/booking/all";
     }
-    @RequestMapping("/addCustomerView")
-    public String createCustomerByForm(Model model) {
-        return "addCustomerForm";
+    @RequestMapping("/addBookingView")
+    public String createBookingByForm(Model model) {
+        return "addBookingForm";
     }
 
-    @PostMapping("/addCustomer")
+    @PostMapping("/addBooking")
     public String addBooking(@RequestParam Long roomId, @RequestParam Long customerId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam int guestQuantity, @RequestParam int extraBedsQuantity, Model model) {
-        model.addAttribute("roomId", "Room Number: ");
+        model.addAttribute("customerId", "Customer Id: ");
         model.addAttribute("startDate", "Start Date: ");
         model.addAttribute("endDate", "End Date: ");
         model.addAttribute("guestQuantity", "Total guests: ");
+        model.addAttribute("roomId", "Room number: ");
+        model.addAttribute("extraBedsQuantity", "Extra beds: ");
 
-
-        bookingService.addBooking(new com.example.grupparbete_backend_1.dto.DetailedBookingDto(startDate, endDate, guestQuantity, extraBedsQuantity, customerService.findById(customerId),roomService.findById(roomId)));
-        return "redirect:/customer/all";
+        DetailedCustomerDto customerDto = customerService.findById(customerId);
+        bookingService.addBooking(new DetailedBookingDto(startDate, endDate, guestQuantity, extraBedsQuantity, customerDto,roomService.findById(roomId)));
+        return "redirect:/booking/all";
     }
-    public class DetailedBookingDto {
-        private Long id;
-        private LocalDate startDate;
-        private LocalDate endDate;
-        private int guestQuantity;
-        private int extraBedsQuantity;
-        private CustomerDto customer;
-        private RoomDto room;
 
-
-    }
 
 }

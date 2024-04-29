@@ -19,6 +19,10 @@ public class DetailedBookingDto {
     private int extraBedsQuantity;
     private CustomerDto customer;
     private RoomDto room;
+    private DetailedCustomerDto detailedCustomerDto;
+
+    private String name;
+    private Long customerId;
 
     public DetailedBookingDto(LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, CustomerDto customer, RoomDto room) {
         this.startDate = startDate;
@@ -28,5 +32,24 @@ public class DetailedBookingDto {
         this.customer = customer;
         this.room = room;
     }
+
+    public DetailedBookingDto( LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity,DetailedCustomerDto detailedCustomerDto, RoomDto room) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.guestQuantity = guestQuantity;
+        this.extraBedsQuantity = extraBedsQuantity;
+        this.detailedCustomerDto = detailedCustomerDto;
+        this.room = room;
+    }
+
+     /*public DetailedBookingDto( LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity,DetailedCustomerDto detailedCustomerDto, RoomDto room, Long customerId) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.guestQuantity = guestQuantity;
+        this.extraBedsQuantity = extraBedsQuantity;
+        this.detailedCustomerDto = detailedCustomerDto;
+        this.room = room;
+        this.customerId = customer.getId();
+    }*/
 
 }

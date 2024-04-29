@@ -2,25 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Customers</title>
+    <title>Bookings</title>
 </head>
 <body>
-<h2 th:text="${customerTitle}"></h2>
-<div class="allCustomers" th:unless="${#lists.isEmpty(allCustomers)}">
+<h2 th:text="${bookingTitle}"></h2>
+<h2 th:text="${message}"></h2>
+<div class="allBookings" >
 
-    <h2 th:text="${message}"></h2>
+
 
     <table>
-        <th th:text="${name}"></th>
-        <th th:text="${ssn}"></th>
-        <th th:text="${email}"></th>
+        <th th:text="${customerId}"></th>
+        <th th:text="${customerName}"></th>
+        <th th:text="${customerEmail}"></th>
+
+        <th th:text="${startDate}"></th>
+        <th th:text="${endDate}"></th>
+        <th th:text="${guestQuantity}"></th>
+        <th th:text="${roomId}"></th>
+        <th th:text="${roomSize}"></th>
+        <th th:text="${extraBedsQuantity}"></th>
         <tbody>
-        <tr th:each="cust : ${allCustomers}">
-            <td th:text="${cust.name}"></td>
-            <td th:text="${cust.ssn}"></td>
-            <td th:text="${cust.email}"></td>
-            <td><a th:href="@{deleteById/{id}/(id=${cust.id})}">Delete</a></td>
-            <td><a th:href="@{editByView/{id}/(id=${cust.id})}">Update</a></td>
+        <tr th:each="book : ${allBookings}">
+            <td th:text="${book.customer.id}"></td>
+            <td th:text="${book.customer.name}"></td>
+            <td th:text="${book.customer.email}"></td>
+            <td th:text="${book.startDate}"></td>
+            <td th:text="${book.endDate}"></td>
+            <td th:text="${book.guestQuantity}"></td>
+            <td th:text="${book.room.id}"></td>
+            <td th:text="${book.room.roomType.roomSize}"></td>
+            <td th:text="${book.extraBedsQuantity}"></td>
+
+            <td><a th:href="@{deleteById/{id}/(id=${book.id})}">Delete</a></td>
+            <td><a th:href="@{editByView/{id}/(id=${book.id})}">Update</a></td>
         </tr>
 
         </tbody>
@@ -28,7 +43,7 @@
 </div>
 
 <p>
-    <a th:href="@{addCustomerView}">Add customer</a>
+    <a th:href="@{addBookingView}">Add booking</a>
 </p>
 
 
