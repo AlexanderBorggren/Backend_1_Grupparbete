@@ -90,9 +90,30 @@ public class BookingControllerTH {
     public String createBookingByForm(Model model) {
         return "addBookingForm";
     }
+    @PostMapping("/addBooking")
+    public String addBooking(@RequestParam Long roomId, @RequestParam Long customerId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam int guestQuantity, @RequestParam int extraBedsQuantity, Model model) {
+        model.addAttribute("customerId", "Customer Id: ");
+        model.addAttribute("startDate", "Start Date: ");
+        model.addAttribute("endDate", "End Date: ");
+        model.addAttribute("guestQuantity", "Total guests: ");
+        model.addAttribute("roomId", "Room number: ");
+        model.addAttribute("extraBedsQuantity", "Extra beds: ");
+
+        DetailedCustomerDto detailedCustomerDto = customerService.findById(customerId);
+        bookingService.addBooking(new DetailedBookingDto(startDate, endDate, guestQuantity, extraBedsQuantity, detailedCustomerDto,roomService.findById(roomId)));
+        CustomerDto customerDto = customerService.detailedCustomerDtoToCustomerDto(customerService.findById(customerId));
+        DetailedBookingDto booking = new DetailedBookingDto(startDate, endDate, guestQuantity, extraBedsQuantity, customerDto,roomService.findById(roomId));
+        bookingService.addBooking(booking);
+        return "redirect:/booking/all";
+    }
 
     @PostMapping("/addBooking/{roomId}/{customerId}/{startDate}/{endDate}/{guestQuantity}/{extraBedsQuantity}")
-    public String addBooking(@PathVariable@RequestParam Long roomId, @RequestParam Long customerId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam int guestQuantity, @RequestParam int extraBedsQuantity, Model model) {
+    public String addBookingThroughGuide(@PathVariable@RequestParam Long roomId,
+                                         @RequestParam Long customerId,
+                                         @RequestParam LocalDate startDate,
+                                         @RequestParam LocalDate endDate,
+                                         @RequestParam int guestQuantity,
+                                         @RequestParam int extraBedsQuantity, Model model) {
         CustomerDto customerDto = customerService.detailedCustomerDtoToCustomerDto(customerService.findById(customerId));
         DetailedBookingDto booking = new DetailedBookingDto(startDate, endDate, guestQuantity, extraBedsQuantity, customerDto,roomService.findById(roomId));
         bookingService.addBooking(booking);

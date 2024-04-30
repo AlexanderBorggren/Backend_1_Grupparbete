@@ -1,6 +1,7 @@
 package com.example.grupparbete_backend_1.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
+import org.springframework.validation.annotation.Validated;
 
 
 import java.sql.Timestamp;
@@ -19,20 +20,23 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Validated
 public class Customer {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Long id;
-   /* @NotNull
+    @NotNull
     @NotEmpty(message = "Namnet får inte vara tomt")
-    @Size(max = 50, message = "Namnet får inte vara längre än 50 tecken")*/
+    @Size(max = 50, message = "Namnet får inte vara längre än 50 tecken")
     private String name;
-   //@NotNull
-    //@NotBlank
-    //@Pattern(regexp = "^\\d{10}$", message = "Personnumret måste ha exakt 10 siffror")
+    @NotNull
+    @NotEmpty(message = "Personnumret får inte vara tomt")
+    @Pattern(regexp = "^\\d{10}$", message = "Personnumret måste ha exakt 10 siffror")
     private String ssn;
-    @Email
+    @Email (message = "E-posten är ej giltig")
+    @NotNull
+    @NotEmpty(message = "E-post får inte vara tomt")
     private String email;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
