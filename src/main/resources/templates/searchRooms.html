@@ -7,26 +7,25 @@
 <body>
 <h2>Search available rooms</h2>
 
+<form action="#" th:action="@{/booking/bookingByViewSearchAvailableRooms}"  method="post" >
 
-<form action="#" th:action="@{/booking/searchAvailableRooms}"  method="post" >
-
-    <label for="roomType">Room type: </label><br>
-    <select id="roomType" name="roomType">
+    <label for="roomTypeId">Room type: </label><br>
+    <select id="roomTypeId" name="roomTypeId">
         <option value="">--Please choose an option--</option>
-        <option th:each="roomType : ${roomTypes}" th:value="${roomType.roomSize}" th:text="${roomType.roomSize}"></option>
+        <option th:each="roomType : ${roomTypes}" th:value="${roomType.id}" th:text="${roomType.roomSize}"></option>
     </select><br>
 
 <label for="startDate">Start date: </label><br>
-<input type="date" id="startDate" name="startDate"><br>
+<input type="date" id="startDate" name="startDate" th:value="${startDate}"><br>
 
 <label for="endDate">End Date: </label><br>
-<input type="date" id="endDate" name="endDate"><br>
+<input type="date" id="endDate" name="endDate" th:value="${endDate}"><br>
 
 <label for="guestQuantity">Guest quantity: </label><br>
-<input type="text" id="guestQuantity" name="guestQuantity"><br>
+<input type="text" id="guestQuantity" name="guestQuantity" th:value="${guestQuantity}"><br>
 
 <label for="extraBedsQuantity">Extra beds: </label><br>
-<input type="text" id="extraBedsQuantity" name="extraBedsQuantity"><br>
+<input type="text" id="extraBedsQuantity" name="extraBedsQuantity" th:value="${extraBedsQuantity}"><br>
 
 <input type=hidden id="id"><br>
 <input type="submit" value="Search">

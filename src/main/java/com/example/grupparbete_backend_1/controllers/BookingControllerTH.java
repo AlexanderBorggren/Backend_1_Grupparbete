@@ -1,6 +1,7 @@
 package com.example.grupparbete_backend_1.controllers;
 
 import com.example.grupparbete_backend_1.dto.*;
+import com.example.grupparbete_backend_1.models.Room;
 import com.example.grupparbete_backend_1.services.BookingService;
 import com.example.grupparbete_backend_1.services.CustomerService;
 import com.example.grupparbete_backend_1.services.RoomService;
@@ -98,7 +99,7 @@ public class BookingControllerTH {
         return "redirect:/booking/all";
     }
     @RequestMapping("/bookingByView/{customerId}/")
-    public String sendCustomerToSearch(@PathVariable Long customerId, Model model) {
+    public String sendCustomerToSearch(@PathVariable Long customerId, Model model, RedirectAttributes redirectAttributes) {
         //TODO - HANDLE NULL CUSTOMER
 
 
@@ -107,6 +108,35 @@ public class BookingControllerTH {
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
         model.addAttribute("roomTypes", roomTypeList);
         model.addAttribute("allRooms", roomList);
+        model.addAttribute("roomId", "Room number: ");
+        model.addAttribute("roomSize", "Room Size: ");
+        model.addAttribute("maxExtraBeds", "Max extra beds: ");
+
+        //redirectAttributes.addFlashAttribute();
+        return "searchRooms";
+    }
+
+    @RequestMapping(value = "/bookingByViewSearchAvailableRooms")
+    public String sendCustomerToSearch(
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate,
+            @RequestParam("guestQuantity") int guestQuantity,
+            @RequestParam("extraBedsQuantity") int extraBedsQuantity,
+            @RequestParam("roomTypeId") int roomTypeId,
+            Model model) {
+        //TODO - HANDLE NULL CUSTOMER
+
+
+
+        System.out.println("ROOM TYPE ID FROM FORM: " + roomTypeId);
+        List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
+        model.addAttribute("roomTypes", roomTypeList);
+
+        //List<Room> availableRoomList = bookingService.findAvailableRooms(LocalDate.parse(startDate), LocalDate.parse(endDate), roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById((long) roomTypeId)));
+        List<RoomDto> availableRoomList = roomService.getAllRoom();
+        System.out.println("ROOM LIST AVAILABLE SIZE: " + availableRoomList.size());
+        model.addAttribute("allRooms", availableRoomList);
+
         model.addAttribute("roomId", "Room number: ");
         model.addAttribute("roomSize", "Room Size: ");
         model.addAttribute("maxExtraBeds", "Max extra beds: ");

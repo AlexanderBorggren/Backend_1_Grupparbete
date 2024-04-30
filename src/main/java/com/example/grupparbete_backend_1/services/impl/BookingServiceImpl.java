@@ -8,6 +8,7 @@ import com.example.grupparbete_backend_1.models.RoomType;
 import com.example.grupparbete_backend_1.repositories.BookingRepo;
 import com.example.grupparbete_backend_1.repositories.CustomerRepo;
 import com.example.grupparbete_backend_1.repositories.RoomRepo;
+import com.example.grupparbete_backend_1.repositories.RoomTypeRepo;
 import com.example.grupparbete_backend_1.services.BookingService;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,12 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepo bookingRepo;
     private final CustomerRepo customerRepo;
     private final RoomRepo roomRepo;
-    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo){
+    private final RoomTypeRepo roomTypeRepo;
+    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, RoomTypeRepo roomTypeRepo){
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
+        this.roomTypeRepo = roomTypeRepo;
     }
 
     @Override

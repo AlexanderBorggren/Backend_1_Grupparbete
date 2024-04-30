@@ -12,4 +12,5 @@ public interface RoomTypeService {
     public List<DetailedRoomTypeDto> getAllRoomType();
 
     public String addRoomType(DetailedRoomTypeDto roomType);
+    public DetailedRoomTypeDto findById(Long id);
 }
