@@ -32,7 +32,7 @@ public class Customer {
     @NotBlank
     @Pattern(regexp = "^\\d{10}$", message = "Personnumret måste ha exakt 10 siffror")*/
     private String ssn;
-   /* @NotNull
+    /*@NotNull
     @Email*/
     private String email;
 
