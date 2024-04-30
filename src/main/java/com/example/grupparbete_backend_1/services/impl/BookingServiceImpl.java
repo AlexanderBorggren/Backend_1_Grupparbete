@@ -117,7 +117,7 @@ public class BookingServiceImpl implements BookingService {
            /* if((booking.getStartDate().isAfter(startDate) && booking.getEndDate().isBefore(endDate))||
                     (booking.getStartDate().isBefore(startDate) && (booking.getEndDate().isBefore(endDate)||booking.getEndDate().isAfter(endDate))))*/
 
-            if((booking.getStartDate().isBefore(startDate) && endDate.isAfter(booking.getStartDate())) ||
+            if((booking.getStartDate().isAfter(startDate) && endDate.isAfter(booking.getStartDate())) ||
               //booking.getStartDate(2024-04-25).isBefore(2024-04-30) && 2024-05-03.isAfter(booking.getEndDate(2024-05-02)) == false
                     (booking.getEndDate().isAfter(startDate) && endDate.isAfter(booking.getEndDate())))
             //booking.getEndDate(2024-05-02).isAfter(2024-04-30) && 2024-05-03.isAfter(booking.getEndDate(2024-05-02)) == false
