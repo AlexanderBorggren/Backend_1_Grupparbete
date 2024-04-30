@@ -7,6 +7,9 @@ import com.example.grupparbete_backend_1.dto.RoomDto;
 import com.example.grupparbete_backend_1.services.BookingService;
 import com.example.grupparbete_backend_1.services.CustomerService;
 import com.example.grupparbete_backend_1.services.RoomService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,9 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+;
+
+
 
 import java.time.LocalDate;
 import java.util.List;
+
 
 @Controller
 @RequestMapping("/booking")
@@ -26,6 +33,10 @@ public class BookingControllerTH {
     RoomService roomService;
     CustomerService customerService;
 
+    private static final Logger logger = LoggerFactory.getLogger(BookingControllerTH.class);
+
+
+
     public BookingControllerTH(BookingService bookingService, RoomService roomService, CustomerService customerService) {
         this.bookingService=bookingService;
         this.roomService=roomService;
@@ -33,8 +44,9 @@ public class BookingControllerTH {
     }
 
     @RequestMapping("/all")
-    public String getAll(Model model) {
+    public String getAllBookings(Model model) {
         List<DetailedBookingDto> b = bookingService.getAllBookings();
+        logger.info("Retrieved {} bookings", b.size());
 
         model.addAttribute("allBookings", b);
         model.addAttribute("bookingTitle", "All bookings: ");
@@ -61,15 +73,18 @@ public class BookingControllerTH {
 
     @RequestMapping("/editByView/{id}/")
     public String createByForm(@PathVariable Long id, Model model) {
-        //System.out.println("hej");
         DetailedBookingDto booking = bookingService.findById(id);
 
-        //TODO - HANDLE NULL CUSTOMER
-
+        if (booking == null) {
+            logger.warn("Booking details not found for booking ID: {}", id);
+        } else {
+            logger.info("Successfully retrieved booking details for booking ID: {}", id);
+        }
 
         model.addAttribute("booking", booking);
         return "updateBookingForm";
     }
+
 
     @PostMapping("/update")
     public String updateBooking(Model model, DetailedBookingDto b, CustomerDto customerDto) {
@@ -104,6 +119,7 @@ public class BookingControllerTH {
         CustomerDto customerDto = customerService.detailedCustomerDtoToCustomerDto(customerService.findById(customerId));
         DetailedBookingDto booking = new DetailedBookingDto(startDate, endDate, guestQuantity, extraBedsQuantity, customerDto,roomService.findById(roomId));
         bookingService.addBooking(booking);
+        logger.info("Booking added successfully.");
         return "redirect:/booking/all";
     }
 

@@ -7,13 +7,13 @@
 <body>
 
 <form action="#" th:action="@{/booking/addBooking}" th:object="${booking}"  method="post" >
-    <label for="customerId">Customer Id: </label><br>
-    <input type="text" id="customerId" name="customerId"><br>
+    <label for="customerId">Customer ID: </label><br>
+    <input type="text" id="customerId" name="customerId" th:value="${booking.customer.id}"><br>
 
     <label for="startDate">Start date: </label><br>
     <input type="text" id="startDate" name="startDate"><br>
 
-    <label for="endDate">Name: </label><br>
+    <label for="endDate">End date: </label><br>
     <input type="text" id="endDate" name="endDate"><br>
 
     <label for="guestQuantity">Guest quantity: </label><br>

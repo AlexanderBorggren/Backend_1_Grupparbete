@@ -28,12 +28,12 @@ public class Customer {
     @NotEmpty(message = "Namnet får inte vara tomt")
     @Size(max = 50, message = "Namnet får inte vara längre än 50 tecken")*/
     private String name;
-   /* @NotNull
+    @NotNull
     @NotBlank
-    @Pattern(regexp = "^\\d{10}$", message = "Personnumret måste ha exakt 10 siffror")*/
+   // @Pattern(regexp = "^[0-9-]{10}$", message = "Personnumret måste ha exakt 10 siffror")
     private String ssn;
-   /* @NotNull
-    @Email*/
+    @NotNull
+    @Email
     private String email;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)

@@ -18,11 +18,11 @@ public class DetailedBookingDto {
     private int guestQuantity;
     private int extraBedsQuantity;
     private CustomerDto customer;
-    private RoomDto room;
     private DetailedCustomerDto detailedCustomerDto;
+    private RoomDto room;
 
-    private String name;
-    private Long customerId;
+    //private String name;
+    //private Long customerId;
 
     public DetailedBookingDto(LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, CustomerDto customer, RoomDto room) {
         this.startDate = startDate;
@@ -51,5 +51,6 @@ public class DetailedBookingDto {
         this.room = room;
         this.customerId = customer.getId();
     }*/
+
 
 }
