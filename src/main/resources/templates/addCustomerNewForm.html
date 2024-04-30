@@ -7,7 +7,7 @@
 <body>
 <h2>Add Customer</h2>
 
-<form action="#" th:action="@{/customer/addCustomer}" th:object="${customer}" method="post" >
+<form action="#" th:action="@{/customer/addCustomerNew}" th:object="${customer}" method="post" >
     <label for="name">Name:</label><br>
     <input type="text" id="name" name="name"><br>
 
@@ -18,7 +18,7 @@
     <input type="text" id="email" name="email"><br>
 
     <input type=hidden id="id"><br>
-    <input type="submit" value="Next">
+    <input type="submit" value="Continue to booking">
 </form>
 
 </body>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search available rooms</title>
+</head>
+<body>
+<h2>Search available rooms</h2>
+
+
+<form action="#" th:action="@{/booking/searchAvailableRooms}"  method="post" >
+
+    <label for="roomType">Room type: </label><br>
+    <select id="roomType" name="roomType">
+        <option value="">--Please choose an option--</option>
+        <option th:each="roomType : ${roomTypes}" th:value="${roomType.roomSize}" th:text="${roomType.roomSize}"></option>
+    </select><br>
+
+<label for="startDate">Start date: </label><br>
+<input type="date" id="startDate" name="startDate"><br>
+
+<label for="endDate">End Date: </label><br>
+<input type="date" id="endDate" name="endDate"><br>
+
+<label for="guestQuantity">Guest quantity: </label><br>
+<input type="text" id="guestQuantity" name="guestQuantity"><br>
+
+<label for="extraBedsQuantity">Extra beds: </label><br>
+<input type="text" id="extraBedsQuantity" name="extraBedsQuantity"><br>
+
+<input type=hidden id="id"><br>
+<input type="submit" value="Search">
+</form>
+
+
+<div class="allRooms" th:unless="${#lists.isEmpty(allRooms)}">
+
+    <table>
+        <th th:text="${roomId}"></th>
+        <th th:text="${roomSize}"></th>
+        <th th:text="${maxExtraBeds}"></th>
+
+        <tbody>
+        <tr th:each="room : ${allRooms}">
+            <td th:text="${room.id}"></td>
+            <td th:text="${room.roomType.roomSize}"></td>
+            <td th:text="${room.roomType.maxExtraBeds}"></td>
+
+            <td>
+                <a th:href="@{/addBooking/{roomId}/{customerId}/{startDate}/{endDate}/{guestQuantity}/{extraBedsQuantity}(roomid=${room.id}, startdate=${startDate}, enddate=${endDate},
+                customerid=${customerId}, extraBedQuantity=${extraBedQuantity}, guestQuantity=${guestQuantity})}">
+                    Book room
+                </a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

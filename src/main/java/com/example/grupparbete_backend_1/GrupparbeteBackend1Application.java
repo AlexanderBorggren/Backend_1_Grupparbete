@@ -23,6 +23,7 @@ public class GrupparbeteBackend1Application {
     public static void main(String[] args) {
         SpringApplication.run(GrupparbeteBackend1Application.class, args);
     }
+}
 
 
 /*
@@ -99,7 +100,6 @@ public class GrupparbeteBackend1Application {
     }
 */
 
-}
 
         
 

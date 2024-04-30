@@ -2,31 +2,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Booking Portal</title>
 </head>
 <body>
-
-<form action="formGreetingReceival" method="post">
-    <label for="name">Name:</label><br>
-    <input type="text" id="name" name="name" value=""><br>
-    <label for="email">Email:</label><br>
-    <input type="text" id="email" name="email" value=""><br><br>
-    <label for="ssn">SSN:</label><br>
-    <input type="text" id="ssn" name="ssn" value=""><br><br>
-    <input type="submit" value="Submit">
-</form>
+<h2>Booking Portal</h2>
 
 
-<!-- form action="#" th:action="@{/customer/addCustomer}" th:object="${customer}" method="post">
-    <label for="name">Name:</label><br>
-    <input type="text" id="name" th:field="*{name}"><br>
-    <label for="name">Email:</label><br>
-    <input type="text" id="email" th:field="*{email}"><br>
-    <label for="name">Phone:</label><br>
-    <input type="text" id="phone" th:field="*{phone}"><br>
-    <input type=hidden id="id" th:field="*{id}"><br>
-    <input type="submit" value="Submit">
-</form -->
+
+<p>
+    <a href="http://localhost:8080/customer/all">Customers</a>
+    <a href="http://localhost:8080/booking/all">Bookings</a>
+    <a href="http://localhost:8080/customer/addCustomerNewView">New Customer booking</a>
+    <a href="http://localhost:8080/booking/addBookingView">Existing Customer booking</a>
+</p>
+
 
 </body>
 </html>

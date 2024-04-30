@@ -96,23 +96,8 @@ public class BookingServiceImpl implements BookingService {
             return true;
         }
 
-        // Example
-        // Vi söker på 2022-04-01 till 2022-05-01
-
-        // Vi har en bokning med 2022-03-01 till 2022-04-15
-
-        //Andre tror e rätt
         return booking.getStartDate().isAfter(startDate) ||
                 booking.getEndDate().isBefore(endDate);
-
-
-        //Alexander
-        //return bookingRepo.findById(bookingId).get()
-        //        .getStartDate().isAfter(now) ||
-        //        bookingRepo.findById(bookingId).get()
-        //                .getEndDate().isBefore(now);
-
-        //Thomas
 
     }
     @Override
@@ -124,27 +109,16 @@ public class BookingServiceImpl implements BookingService {
         return bookingToDetailedBookingDto(c);
     }
 
-    //Alexander attempt
+
     @Override
     public List<Room> findAvailableRooms(LocalDate startDate, LocalDate endDate, RoomType roomType) {
         List<Booking> allBookings = bookingRepo.findAll().stream().toList();
         List<Room> roomIsAvailable = roomRepo.findAll().stream().toList();
 
-        //Filter all rooms to only contain the ones with the roomtype we are after
         roomIsAvailable = roomIsAvailable.stream().filter(room -> room.getRoomType() == roomType).toList();
 
         roomIsAvailable = roomIsAvailable.stream().filter(room -> isRoomAvailable(room.getId(), startDate, endDate, room.getRoomType())).toList();
 
-    /*
-        for(Booking booking : allBookings)
-        {
-            roomIsAvailable = isRoomAvailable(booking.getId(), startDate, endDate, roomType);
-
-            if(!roomIsAvailable)
-                roomIsAvailable.remove();
-        }
-
-     */
 
         return roomIsAvailable;
     }

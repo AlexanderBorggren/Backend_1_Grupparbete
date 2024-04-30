@@ -93,6 +93,12 @@ public class CustomerServiceImpl implements CustomerService {
         }
         return customerToDetailedCustomerDto(c);
     };
+
+    public DetailedCustomerDto findBySsn(String ssn) {
+        DetailedCustomerDto c = customerToDetailedCustomerDto(customerRepo.findAll().stream().filter(customer -> customer.getSsn().equals(ssn)).findFirst().orElse(null));
+        return c;
+
+    }
  /*   @Override
     public void deleteCustomer(Long id) {
         bookingService.getAllBookings().forEach(booking -> bookingService.);

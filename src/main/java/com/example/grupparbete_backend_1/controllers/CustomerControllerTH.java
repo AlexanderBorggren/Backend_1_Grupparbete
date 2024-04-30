@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Collections;
 import java.util.List;
+
 
 @Controller
 @RequestMapping("/customer")
@@ -86,15 +85,35 @@ public class CustomerControllerTH{
     public String createCustomerByForm(Model model) {
         return "addCustomerForm";
     }
+    @RequestMapping("/addCustomerNewView")
+    public String createCustomerByFormNew(Model model) {
+        return "addCustomerNewForm";
+    }
+
 
     @PostMapping("/addCustomer")
     public String addCustomer(@Valid @RequestParam String name, @RequestParam String ssn, @RequestParam String email, Model model) {
         model.addAttribute("name", "name");
         model.addAttribute("ssn", "ssn");
         model.addAttribute("email", "email");
-        customerService.addCustomer(new DetailedCustomerDto(email, name, ssn));
+        customerService.addCustomer(new DetailedCustomerDto(name, email, ssn));
 
         return "redirect:/customer/all";
+    }
+    @PostMapping("/addCustomerNew")
+    public String addCustomerNew(@Valid @RequestParam String name, @RequestParam String ssn, @RequestParam String email, Model model, RedirectAttributes redirectAttributes) {
+        model.addAttribute("name", "name");
+        model.addAttribute("ssn", "ssn");
+        model.addAttribute("email", "email");
+        customerService.addCustomer(new DetailedCustomerDto(name, email, ssn));
+        DetailedCustomerDto customer = customerService.findBySsn(ssn);
+        Long customerId = customer.getId();
+        if (customerService.findBySsn(ssn) == null) {
+
+            return "redirect:/customer/all";
+        }
+        redirectAttributes.addAttribute("customerId", customerId);
+        return "redirect:/booking/bookingByView/{customerId}/";
     }
 
 
