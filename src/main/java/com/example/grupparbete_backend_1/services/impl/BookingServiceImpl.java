@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
-import java.util.Collections;
 import java.util.List;
 
 @Repository // Error without this (Could not autowire. No beans of 'RoomService' type found.)
@@ -88,11 +87,14 @@ public class BookingServiceImpl implements BookingService {
         bookingRepo.delete(booking);
         return booking.getId() + " has been removed.";
     }
-    @Override
-    public boolean isRoomAvailable(Long bookingId, LocalDate startDate, LocalDate endDate, RoomType roomType) {
+    /*@Override
+    public boolean isRoomAvailable(Long roomId, LocalDate startDate, LocalDate endDate, RoomType roomType) {
         ChronoLocalDate now = ChronoLocalDate.from(LocalDateTime.now());
 
-        Booking booking = bookingRepo.findById(bookingId).stream().findFirst().orElse(null);
+        List<Booking> bookingsWithThisRoom = bookingRepo.findAll().stream().filter(booking -> booking.getRoom().getId().equals(roomId)).toList();
+        System.out.println(bookingsWithThisRoom);
+        Booking booking = bookingRepo.findById(roomId).stream().findFirst().orElse(null);
+
 
         if(booking == null)
         {
@@ -102,7 +104,37 @@ public class BookingServiceImpl implements BookingService {
         return booking.getStartDate().isAfter(startDate) ||
                 booking.getEndDate().isBefore(endDate);
 
+    }*/
+    @Override
+    public boolean isRoomAvailable(LocalDate startDate, LocalDate endDate, Long roomId) {
+        ChronoLocalDate now = ChronoLocalDate.from(LocalDateTime.now());
+
+        List<Booking> allBookingsWithThisRoom = bookingRepo.findAll().stream().filter(booking -> booking.getRoom().getId().equals(roomId)).toList();
+
+        allBookingsWithThisRoom = allBookingsWithThisRoom.stream().filter(booking -> !booking.getEndDate().isBefore(now)).toList();
+
+        for(Booking booking : allBookingsWithThisRoom) { //2024-04-30 till 2024-05-03
+           /* if((booking.getStartDate().isAfter(startDate) && booking.getEndDate().isBefore(endDate))||
+                    (booking.getStartDate().isBefore(startDate) && (booking.getEndDate().isBefore(endDate)||booking.getEndDate().isAfter(endDate))))*/
+
+            if((booking.getStartDate().isBefore(startDate) && endDate.isAfter(booking.getStartDate())) ||
+              //booking.getStartDate(2024-04-25).isBefore(2024-04-30) && 2024-05-03.isAfter(booking.getEndDate(2024-05-02)) == false
+                    (booking.getEndDate().isAfter(startDate) && endDate.isAfter(booking.getEndDate())))
+            //booking.getEndDate(2024-05-02).isAfter(2024-04-30) && 2024-05-03.isAfter(booking.getEndDate(2024-05-02)) == false
+            {
+                return false;
+            }
+
+            // Bokning 2025-01-01 och 2025-02-01 == False
+            // Bokning 2024-04-25- till 2024-04-30 == True, fixa "now" så den rensar bokningen från gällande bokningar
+            // Bokning 2024-04-25- till 2024-05-02
+            // Bokning 2024-05-01 till 2025-05-05 single room, rumsId 1.
+
+        }
+
+        return true;
     }
+
     @Override
     public DetailedBookingDto findById(Long id) {
         Booking c = bookingRepo.findById(id).stream().findFirst().orElse(null);
@@ -111,11 +143,14 @@ public class BookingServiceImpl implements BookingService {
         }
         return bookingToDetailedBookingDto(c);
     }
+    //Vi vill kolla alla bokningar som har bokat SAMMA rum NÅGON tänker boka NU
+    //För att vi vill se om någon bokat just detta rummet med samma datum som någon redan bokat
 
-
-    @Override
+    /*@Override
     public List<Room> findAvailableRooms(LocalDate startDate, LocalDate endDate, RoomType roomType) {
-        List<Booking> allBookings = bookingRepo.findAll().stream().toList();
+       //List<Booking> allBookings = bookingRepo.findAll().stream().toList();
+
+        //List<Booking> bookingsWithThisRoom = bookingRepo.findAll().stream().filter(booking -> booking.getRoom().getId().equals()).toList();
         List<Room> roomIsAvailable = roomRepo.findAll().stream().toList();
 
         roomIsAvailable = roomIsAvailable.stream().filter(room -> room.getRoomType() == roomType).toList();
@@ -124,5 +159,31 @@ public class BookingServiceImpl implements BookingService {
 
 
         return roomIsAvailable;
+    }*/
+
+    @Override
+    public List<Room> findAvailableRooms(LocalDate startDate, LocalDate endDate, RoomType roomType) {
+        //Vi vill kolla alla bokningar som har bokat SAMMA rum NÅGON tänker boka NU
+        //För att vi vill se om någon bokat just detta rummet med samma datum som någon redan bokat
+        //List<Booking> allBookings = bookingRepo.findAll().stream().toList();
+        List<Room> roomIsAvailable = roomRepo.findAll().stream().toList();
+
+        System.out.println("Rooms available size stage1(all rooms): " + roomIsAvailable.size());
+        for(Room room : roomIsAvailable)
+        {
+            System.out.println("ROOMTYPE OF ROOM IN LIST: " + room.getRoomType());
+            System.out.println("ROOMTYPE OF IN PARAMETER ROOMTYPE: " + roomType);
+        }
+        //Filter room
+        roomIsAvailable = roomIsAvailable.stream().filter(room -> (room.getRoomType().getId().equals(roomType.getId()))).toList();
+        System.out.println("Rooms available size stage2(all rooms with this roomtype): " + roomIsAvailable.size());
+
+        roomIsAvailable = roomIsAvailable.stream().filter(room -> isRoomAvailable(startDate, endDate, room.getId())).toList();
+        System.out.println("Rooms available size final stage: " + roomIsAvailable.size());
+
+
+        return roomIsAvailable;
     }
+
+
 }

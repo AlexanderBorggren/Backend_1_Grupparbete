@@ -57,6 +57,7 @@ public class BookingControllerTH {
         String message = bookingService.deleteBooking(id);
         redirectAttributes.addFlashAttribute("message", message);
 
+
         return "redirect:/booking/all";
     }
 
@@ -143,7 +144,7 @@ public class BookingControllerTH {
             @RequestParam("endDate") String endDate,
             @RequestParam("guestQuantity") int guestQuantity,
             @RequestParam("extraBedsQuantity") int extraBedsQuantity,
-            @RequestParam("roomTypeId") int roomTypeId,
+            @RequestParam("roomTypeId") Long roomTypeId,
             Model model) {
         //TODO - HANDLE NULL CUSTOMER
 
@@ -153,8 +154,8 @@ public class BookingControllerTH {
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
         model.addAttribute("roomTypes", roomTypeList);
 
-        //List<Room> availableRoomList = bookingService.findAvailableRooms(LocalDate.parse(startDate), LocalDate.parse(endDate), roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById((long) roomTypeId)));
-        List<RoomDto> availableRoomList = roomService.getAllRoom();
+        List<Room> availableRoomList = bookingService.findAvailableRooms(LocalDate.parse(startDate), LocalDate.parse(endDate), roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
+        //List<RoomDto> availableRoomList = roomService.getAllRoom();
         System.out.println("ROOM LIST AVAILABLE SIZE: " + availableRoomList.size());
         model.addAttribute("allRooms", availableRoomList);
 

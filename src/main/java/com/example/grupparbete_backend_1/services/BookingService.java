@@ -24,7 +24,28 @@ public interface BookingService {
 
     String deleteBooking(Long bookingId);
 
-    public boolean isRoomAvailable(Long bookingId, LocalDate startDate, LocalDate endDate, RoomType roomType);
+   /* public boolean isRoomAvailable(Long bookingId, LocalDate startDate, LocalDate endDate, RoomType roomType);*/
+
+    /*@Override
+    public boolean isRoomAvailable(Long roomId, LocalDate startDate, LocalDate endDate, RoomType roomType) {
+        ChronoLocalDate now = ChronoLocalDate.from(LocalDateTime.now());
+
+        List<Booking> bookingsWithThisRoom = bookingRepo.findAll().stream().filter(booking -> booking.getRoom().getId().equals(roomId)).toList();
+        System.out.println(bookingsWithThisRoom);
+        Booking booking = bookingRepo.findById(roomId).stream().findFirst().orElse(null);
+
+
+        if(booking == null)
+        {
+            return true;
+        }
+
+        return booking.getStartDate().isAfter(startDate) ||
+                booking.getEndDate().isBefore(endDate);
+
+    }*/
+    boolean isRoomAvailable(LocalDate startDate, LocalDate endDate, Long roomId);
+
     public DetailedBookingDto findById(Long id);
     public List<Room> findAvailableRooms(LocalDate startDate, LocalDate endDate, RoomType roomType);
 }

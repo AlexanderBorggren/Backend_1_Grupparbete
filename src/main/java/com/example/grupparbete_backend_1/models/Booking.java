@@ -42,8 +42,6 @@ public class Booking {
     @Max(value = 2, message = "Antalet extra sängar kan inte vara mer än 2")
     private int extraBedsQuantity;
 
-    /*@ManyToOne(cascade = CascadeType.ALL)*/
-    //@JoinColumn
     @ManyToOne
     private Customer customer;
 
