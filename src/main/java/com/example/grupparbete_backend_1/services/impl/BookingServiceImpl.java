@@ -65,6 +65,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking bookingDtoToBooking(BookingDto booking, Customer customer, Room room) {
+        System.out.println("BookingDto id: " + booking.getId()); //debugging
         return Booking.builder().id(booking.getId()).customer(customer).room(room).build();
     }
 
