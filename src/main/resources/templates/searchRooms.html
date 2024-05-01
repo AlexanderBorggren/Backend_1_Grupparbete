@@ -15,7 +15,7 @@
 <form action="#" th:action="@{/booking/bookingByViewSearchAvailableRooms/{id}/(id=${customerId})}"  method="post" >
 
     <label for="roomTypeId">Room type: </label><br>
-    <select id="roomTypeId" name="roomType">
+    <select id="roomTypeId" name="roomTypeId">
         <option value="roomIdField">--Please choose an option--</option>
         <option th:each="roomType : ${roomTypes}" th:value="${roomType.id}" th:text="${roomType.roomSize}"></option>
     </select><br>
