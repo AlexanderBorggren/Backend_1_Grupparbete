@@ -91,10 +91,14 @@ public class BookingControllerTH {
 
         return "redirect:/booking/all";
     }
+    /*
     @RequestMapping("/addBookingView")
     public String createBookingByForm(Model model) {
         return "addBookingForm";
     }
+
+     */
+    /*
     @PostMapping("/addBooking")
     public String addBooking(@Valid @RequestParam Long roomId, @RequestParam Long customerId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam int guestQuantity, @RequestParam int extraBedsQuantity, Model model) {
         model.addAttribute("customerId", "Customer Id: ");
@@ -111,6 +115,8 @@ public class BookingControllerTH {
         bookingService.addBooking(booking);
         return "redirect:/booking/all";
     }
+
+     */
 
     @PostMapping("/addBooking/{roomId}/{customerId}/{startDate}/{endDate}/{guestQuantity}/{extraBedsQuantity}")
     public String addBookingThroughGuide(@Valid @PathVariable@RequestParam Long roomId,
@@ -162,8 +168,8 @@ public class BookingControllerTH {
     @RequestMapping(value = "/bookingByViewSearchAvailableRooms/{customerId}/")
     public String sendCustomerToSearch(
             @Valid @PathVariable Long customerId,
-            @Valid @RequestParam("startDate") LocalDate startDate,
-            @RequestParam("endDate") LocalDate endDate,
+            @Valid @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate,
             @RequestParam("guestQuantity") int guestQuantity,
             @RequestParam("extraBedsQuantity") int extraBedsQuantity,
             @RequestParam("roomTypeId") Long roomTypeId,
@@ -173,14 +179,15 @@ public class BookingControllerTH {
 
 
         //System.out.println("ROOM TYPE ID FROM FORM: " + roomTypeId);
+        System.out.println("START DATE FROM FORM: " + startDate);
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
         model.addAttribute("roomTypes", roomTypeList);
 
         //Dates parameter are string
-        //List<Room> availableRoomList = bookingService.findAvailableRooms(LocalDate.parse(startDate), LocalDate.parse(endDate), roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
+        List<Room> availableRoomList = bookingService.findAvailableRooms(LocalDate.parse(startDate), LocalDate.parse(endDate), roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
 
         //Dates parameter are localdate
-        List<Room> availableRoomList = bookingService.findAvailableRooms(startDate, endDate, roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
+        //List<Room> availableRoomList = bookingService.findAvailableRooms(startDate, endDate, roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
 
 
         //List<RoomDto> availableRoomList = roomService.getAllRoom();
@@ -201,17 +208,20 @@ public class BookingControllerTH {
         return "searchRooms";
     }
 
-    @RequestMapping(value = "/addBooking")
-    public String addBooking(@Valid @RequestParam("startDate") String startDate,
-                             @RequestParam("endDate") String endDate,
-                             @RequestParam("guestQuantity") int guestQuantity,
-                             @RequestParam("extraBedsQuantity") int extraBedsQuantity,
-                             @RequestParam("roomTypeId") Long roomTypeId,
-                             @RequestParam("customerId") Long customerId,
-                             @RequestParam("roomId") Long roomId,
+    @RequestMapping(value = "/addBooking/{startDate}/{endDate}/{guestQuantity}/{extraBedsQuantity}/{customerId}/{roomId}/")
+    public String addBooking(@Valid @PathVariable("startDate") String startDate,
+                             @PathVariable("endDate") String endDate,
+                             @PathVariable("guestQuantity") int guestQuantity,
+                             @PathVariable("extraBedsQuantity") int extraBedsQuantity,
+                             //@RequestParam("roomTypeId") Long roomTypeId,
+                             @PathVariable("customerId") Long customerId,
+                             @PathVariable("roomId") Long roomId,
                              Model model) {
-        DetailedBookingDto bookingDto = new DetailedBookingDto(LocalDate.parse(startDate),LocalDate.parse(endDate), guestQuantity, extraBedsQuantity, customerService.detailedCustomerDtoToCustomerDto( customerService.findById(customerId) ), roomService.findById(roomId));
-        return "";
+        System.out.println("RECEIVED TO ADDBOOKING STARTDATE: " + startDate);
+
+        DetailedBookingDto bookingDto = new DetailedBookingDto(LocalDate.parse(startDate), LocalDate.parse(endDate), guestQuantity, extraBedsQuantity, customerService.detailedCustomerDtoToCustomerDto( customerService.findById(customerId) ), roomService.findById(roomId));
+        bookingService.addBooking(bookingDto);
+        return "redirect:/booking/all";
     }
    /* @RequestMapping("/booking/searchAvailableRooms/")
     public String searchAvailableRooms(Model model, @RequestParam Long roomId, @RequestParam int maxExtraBeds) {

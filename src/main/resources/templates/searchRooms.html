@@ -61,8 +61,7 @@
             <td th:text="${room.roomType.maxExtraBeds}"></td>
 
             <td>
-                <a th:href="@{/addBooking/{roomId}/{customerId}/{startDate}/{endDate}/{guestQuantity}/{extraBedsQuantity}(roomid=${room.id}, startdate=${startDate}, enddate=${endDate},
-                customerid=${customerId}, extraBedQuantity=${extraBedQuantity}, guestQuantity=${guestQuantity})}">
+                <a th:href="@{/booking/addBooking/{startDate}/{endDate}/{guestQuantity}/{extraBedsQuantity}/{customerId}/{roomId}/(startDate=${startDateField}, endDate=${endDateField}, guestQuantity=${guestQuantityField}, extraBedsQuantity=${maxExtraBedsField}, customerId=${customerId}, roomId=${room.id})}">
                     Book room
                 </a>
             </td>
