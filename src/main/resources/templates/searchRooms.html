@@ -21,8 +21,9 @@
     </select><br>
     <span id="roomType-error" class="error-message"></span> <br>
 
+
     <label for="startDate">Start date: </label><br>
-    <input type="date" id="startDate" name="startDate" th:value="${startDate}"><br>
+    <input type="date" id="startDate" name="startDate" th:date="${session.startDateField}" th:value="${startDate}"><br>
     <span id="startDate-error" class="error-message"></span> <br>
 
 
@@ -82,10 +83,15 @@
 
         // Error message elements
         var roomTypeError = document.getElementById('roomType-error');
+        var startDate = document.getElementById('startDate');
         var startDateError = document.getElementById('startDate-error');
+        var endDate = document.getElementById('endDate');
         var endDateError = document.getElementById('endDate-error');
+        var guestQuantity = document.getElementById('guestQuantity');
         var guestQuantityError = document.getElementById('guestQuantity-error');
+        var extraBedsQuantity = document.getElementById('extraBedsQuantity');
         var extraBedsQuantityError = document.getElementById('extraBedsQuantity-error');
+        var submitButton = document.getElementById('submit-button');
 
         // Regular expressions for validation
         var dateRegex = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD
