@@ -75,13 +75,6 @@
 <script>
     window.onload = function() {
         var roomTypeId = document.getElementById('roomTypeId');
-        var startDate = document.getElementById('startDate');
-        var endDate = document.getElementById('endDate');
-        var guestQuantity = document.getElementById('guestQuantity');
-        var extraBedsQuantity = document.getElementById('extraBedsQuantity');
-        var submitButton = document.getElementById('submit-button');
-
-        // Error message elements
         var roomTypeError = document.getElementById('roomType-error');
         var startDate = document.getElementById('startDate');
         var startDateError = document.getElementById('startDate-error');
@@ -113,21 +106,26 @@
             switch(roomTypeId.value) {
                 case '1':
                     extraBedsQuantity.max = '0';
+                    guestQuantity.max = '2';
                     break;
                 case '2':
                     extraBedsQuantity.max = '1';
+                    guestQuantity.max = '3';
                     break;
                 case '3':
                     extraBedsQuantity.max = '2';
+                    guestQuantity.max = '4';
                     break;
                 default:
                     extraBedsQuantity.max = '0';
+                    guestQuantity.max = '2';
             }
-            validateExtraBedsQuantity();
+            validateQuantities()
         });
 
         // Validate extraBedsQuantity whenever its value changes
-        extraBedsQuantity.addEventListener('input', validateExtraBedsQuantity);
+        extraBedsQuantity.addEventListener('input', validateQuantities);
+        guestQuantity.addEventListener('input', validateQuantities);
 
         function validateField(input, inputError, regex, errorMessage) {
             input.addEventListener('input', function() {
@@ -140,17 +138,41 @@
             });
         }
 
-        function validateExtraBedsQuantity() {
-            if (extraBedsQuantity.value > extraBedsQuantity.max) {
+        function validateQuantities() {
+            let isValid = true;
+
+            if (!extraBedsQuantity.value) {
+                extraBedsQuantityError.textContent = 'Extra sängar fältet kan inte vara tomt';
+                isValid = false;}
+            else if (!guestQuantity.value) {
+                guestQuantityError.textContent = 'Gäster fältet kan inte vara tomt';
+                isValid = false;}
+
+            else if(extraBedsQuantity.value > extraBedsQuantity.max) {
                 extraBedsQuantityError.textContent = 'Antal extra sängar valda är felaktigt baserat på din valda rumstyp';
-                submitButton.disabled = true;
+                isValid = false;
             } else if (extraBedsQuantity.value < 0) {
                 extraBedsQuantityError.textContent = 'Antalet extra sängar kan inte vara mindre än 0';
-                submitButton.disabled = true;
-            } else {
-                extraBedsQuantityError.textContent = '';
-                submitButton.disabled = false;
+                isValid = false;
+            } else if (guestQuantity.value < 1) {
+                guestQuantityError.textContent = 'Antalet gäster kan inte vara mindre än 1';
+                isValid = false;
             }
+            else {
+                extraBedsQuantityError.textContent = '';
+            }
+
+            if (guestQuantity.value > guestQuantity.max) {
+                guestQuantityError.textContent = 'Antal gäster valda är felaktigt baserat på din valda rumstyp';
+                isValid = false;
+            } else if (guestQuantity.value < 0) {
+                guestQuantityError.textContent = 'Antalet gäster kan inte vara mindre än 0';
+                isValid = false;
+            } else {
+                guestQuantityError.textContent = '';
+            }
+
+            submitButton.disabled = !isValid;
         }
 
         function checkAllFields() {
@@ -172,15 +194,12 @@
         // Set default values
         guestQuantity.value = '1';
         guestQuantity.min = '1';
-        guestQuantity.max = '4';
         extraBedsQuantity.value = '0';
         extraBedsQuantity.min = '0';
-
 
         validateField(roomTypeId, roomTypeError, /.+/, 'Välj ett rumstyp');
         validateField(startDate, startDateError, dateRegex, 'Startdatumet är ogiltigt');
         validateField(endDate, endDateError, dateRegex, 'Slutdatumet är ogiltigt');
-        validateField(guestQuantity, guestQuantityError, quantityRegex, 'Antalet gäster måste vara mellan 1 och 4');
     }
 
 
