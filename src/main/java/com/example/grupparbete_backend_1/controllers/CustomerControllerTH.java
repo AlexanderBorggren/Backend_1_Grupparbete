@@ -103,7 +103,7 @@ public class CustomerControllerTH{
 
         if (customerService.doesSsnExist(ssn)) {
             model.addAttribute("errorMessage", "Customer with SSN " + ssn + " already exists.");
-            return "addCustomerForm"; // Return the form view to display error message
+            return "addCustomerForm";
         } else {
             customerService.addCustomer(new DetailedCustomerDto(name, ssn, email));
             return "redirect:/customer/all";
