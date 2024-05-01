@@ -126,10 +126,10 @@ public class BookingControllerTH {
 
 
 
-        List<RoomDto> roomList = roomService.getAllRoom();
+        //List<RoomDto> roomList = roomService.getAllRoom();
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
         model.addAttribute("roomTypes", roomTypeList);
-        model.addAttribute("allRooms", roomList);
+        //model.addAttribute("allRooms", roomList);
         model.addAttribute("roomId", "Room number: ");
         model.addAttribute("roomSize", "Room Size: ");
         model.addAttribute("maxExtraBeds", "Max extra beds: ");

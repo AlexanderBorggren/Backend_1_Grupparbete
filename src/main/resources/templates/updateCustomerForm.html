@@ -3,22 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 
 <form action="#" th:action="@{/customer/update}" th:object="${customer}"  method="post" >
     <label for="name">Name:</label><br>
     <input type="text" id="name" th:field="*{name}"><br>
+    <span id="name-error" class="error-message"></span> <br>
+
 
     <label for="ssn">SSN:</label><br>
     <input type="text" id="ssn" th:field="*{ssn}"><br>
+    <span id="ssn-error" class="error-message"></span> <br>
+
 
     <label for="email">Email:</label><br>
     <input type="text" id="email" th:field="*{email}"><br>
+    <span id="email-error" class="error-message"></span> <br>
+
 
     <input type=hidden id="id" th:field="*{id}"><br>
-    <input type="submit" value="Submit">
+    <input type="submit" value="Update" id="submit-button" disabled>
+
 </form>
+<script>
+    window.onload = function() {
+        var name = document.getElementById('name');
+        var ssn = document.getElementById('ssn');
+        var email = document.getElementById('email');
+        var nameError = document.getElementById('name-error');
+        var ssnError = document.getElementById('ssn-error');
+        var emailError = document.getElementById('email-error');
+        var submitButton = document.getElementById('submit-button');
+
+        // Regular expressions for validation
+        var nameRegex = /^.{1,50}$/;
+        var ssnRegex = /^\d{10}$/;
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        function validateField(input, inputError, regex, errorMessage) {
+            input.addEventListener('input', function() {
+                if (!regex.test(input.value)) {
+                    inputError.textContent = errorMessage;
+                    submitButton.disabled = true;
+                } else {
+                    inputError.textContent = '';
+                    if (nameRegex.test(name.value) && ssnRegex.test(ssn.value) && emailRegex.test(email.value)) {
+                        submitButton.disabled = false;
+                    }
+                }
+            });
+        }
+
+        validateField(name, nameError, nameRegex, 'Namnet får inte vara tomt eller längre än 50 tecken');
+        validateField(ssn, ssnError, ssnRegex, 'Personnumret måste ha exakt 10 siffror');
+        validateField(email, emailError, emailRegex, 'E-postadressen är ogiltig');
+
+        // Check if all fields are valid on page load
+        if (nameRegex.test(name.value) && ssnRegex.test(ssn.value) && emailRegex.test(email.value)) {
+            submitButton.disabled = false;
+        }
+    }
+</script>
 
 </body>
 </html>

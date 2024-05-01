@@ -28,7 +28,7 @@ public class Customer {
     private Long id;
     @NotNull
     @NotEmpty(message = "Namnet får inte vara tomt")
-    @Size(max = 50, message = "Namnet får inte vara längre än 50 tecken")
+    @Size(min = 1, max = 50, message = "Namnet får inte vara längre än 50 tecken")
     private String name;
     @NotNull
     @NotEmpty(message = "Personnumret får inte vara tomt")
