@@ -40,12 +40,12 @@ public class CustomerControllerTH{
     @RequestMapping("/all")
     public String getAll(Model model) {
         List<DetailedCustomerDto> k = customerService.getAllCustomer();
-        System.out.println(model.getAttribute("message"));
         model.addAttribute("allCustomers", k);
         model.addAttribute("customerTitle", "All customers");
-        model.addAttribute("name", "Name");
-        model.addAttribute("ssn", "SSN");
-        model.addAttribute("email", "Email");
+        model.addAttribute("name", "Name: ");
+        model.addAttribute("ssn", "SSN: ");
+        model.addAttribute("email", "Email: ");
+        model.addAttribute("customerId", "CustomerID: ");
         return "customers";
     }
 
@@ -70,7 +70,7 @@ public class CustomerControllerTH{
     }
 
     @PostMapping("/update")
-    public String updateCustomer(@Valid Model model, DetailedCustomerDto c) {
+    public String updateCustomer(@Valid Model model, DetailedCustomerDto c, RedirectAttributes redirectAttributes) {
         customerService.addCustomer(c);
         //List<DetailedCustomerDto> k = customerService.getAllCustomer();
         //model.addAttribute("allCustomers", k);
@@ -78,6 +78,8 @@ public class CustomerControllerTH{
         model.addAttribute("ssn", "ssn");
         model.addAttribute("email", "email");
 
+        String feedbackMessage = "Customer id " + c.getId() + " with name " + c.getName() + " has been updated.";
+        redirectAttributes.addFlashAttribute("updateCustomerFeedbackMessage", feedbackMessage);
 
         return "redirect:/customer/all";
     }

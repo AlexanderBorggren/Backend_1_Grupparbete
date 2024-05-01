@@ -8,14 +8,17 @@
 <h2 th:text="${customerTitle}"></h2>
 <div class="allCustomers" th:unless="${#lists.isEmpty(allCustomers)}">
 
-    <h2 th:text="${message}"></h2>
+    <h4 th:text="${message}"></h4>
+    <h4 th:text="${updateCustomerFeedbackMessage}"></h4>
 
     <table>
+        <th th:text="${customerId}"></th>
         <th th:text="${name}"></th>
         <th th:text="${ssn}"></th>
         <th th:text="${email}"></th>
         <tbody>
         <tr th:each="cust : ${allCustomers}">
+            <td th:text="${cust.id}"></td>
             <td th:text="${cust.name}"></td>
             <td th:text="${cust.ssn}"></td>
             <td th:text="${cust.email}"></td>

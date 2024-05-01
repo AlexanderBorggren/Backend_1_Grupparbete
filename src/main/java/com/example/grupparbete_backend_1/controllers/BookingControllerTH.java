@@ -221,11 +221,17 @@ public class BookingControllerTH {
                              //@RequestParam("roomTypeId") Long roomTypeId,
                              @PathVariable("customerId") Long customerId,
                              @PathVariable("roomId") Long roomId,
-                             Model model) {
+                             Model model,
+                             RedirectAttributes redirectAttributes) {
         System.out.println("RECEIVED TO ADDBOOKING STARTDATE: " + startDate);
 
         DetailedBookingDto bookingDto = new DetailedBookingDto(LocalDate.parse(startDate), LocalDate.parse(endDate), guestQuantity, extraBedsQuantity, customerService.detailedCustomerDtoToCustomerDto( customerService.findById(customerId) ), roomService.findById(roomId));
         bookingService.addBooking(bookingDto);
+
+
+        String feedbackMessage = "You have created a new booking for customer " + bookingDto.getCustomer().getName() + ". Booked a " + roomService.findById(roomId).getRoomType().getRoomSize() + " for " + guestQuantity + " guests and " + extraBedsQuantity + " extra beds. Date booked is " + startDate + " to " + endDate;
+        redirectAttributes.addFlashAttribute("feedbackMessageCreateBooking", feedbackMessage);
+
         return "redirect:/booking/all";
     }
 

@@ -86,7 +86,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepo.findById(bookingId).get();
 
         bookingRepo.delete(booking);
-        return booking.getId() + " has been removed.";
+        return "Booking with id " + booking.getId() + " has been removed.";
     }
     /*@Override
     public boolean isRoomAvailable(Long roomId, LocalDate startDate, LocalDate endDate, RoomType roomType) {
