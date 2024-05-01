@@ -146,11 +146,11 @@ public class BookingControllerTH {
         //model.addAttribute("extraBedsQuantity", "Max extra beds: ");
 
         //Redirect attempt, might work, can try later
-        redirectAttributes.addAttribute("roomType", model.getAttribute("roomType"));
+        /*redirectAttributes.addAttribute("roomType", model.getAttribute("roomType"));
         redirectAttributes.addAttribute("startDate", model.getAttribute("startDate"));
         redirectAttributes.addAttribute("endDate", model.getAttribute("endDate"));
         redirectAttributes.addAttribute("guestQuantityField", 3);
-        redirectAttributes.addAttribute("extraBedsQuantity", model.getAttribute("extraBedsQuantity"));
+        redirectAttributes.addAttribute("extraBedsQuantity", model.getAttribute("extraBedsQuantity"));*/
 
         //session.setAttribute("startDateField", model.getAttribute("startDate"));
         //session.setAttribute("guestQuantityField", 3);
@@ -186,6 +186,11 @@ public class BookingControllerTH {
         //List<RoomDto> availableRoomList = roomService.getAllRoom();
         System.out.println("ROOM LIST AVAILABLE SIZE: " + availableRoomList.size());
         model.addAttribute("allRooms", availableRoomList);
+
+        //TABLE HEADS
+        model.addAttribute("roomId", "Room number: ");
+        model.addAttribute("roomSize", "Room Size: ");
+        model.addAttribute("maxExtraBeds", "Max extra beds: ");
 
         //model.addAttribute("roomId", );
         model.addAttribute("roomIdField", roomTypeId);
