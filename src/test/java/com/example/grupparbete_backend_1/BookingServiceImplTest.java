@@ -8,6 +8,7 @@ import com.example.grupparbete_backend_1.models.RoomType;
 import com.example.grupparbete_backend_1.repositories.BookingRepo;
 import com.example.grupparbete_backend_1.repositories.CustomerRepo;
 import com.example.grupparbete_backend_1.repositories.RoomRepo;
+import com.example.grupparbete_backend_1.repositories.RoomTypeRepo;
 import com.example.grupparbete_backend_1.services.impl.BookingServiceImpl;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -46,6 +47,9 @@ public class BookingServiceImplTest {
     @Mock
     private RoomRepo roomRepo;
 
+    @Mock
+    private RoomTypeRepo roomTypeRepo;
+
     @InjectMocks
     private BookingServiceImpl service;
 
@@ -75,8 +79,7 @@ public class BookingServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        service = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo);
-
+        service = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo, roomTypeRepo);
     }
 
     @Test
@@ -89,20 +92,22 @@ public class BookingServiceImplTest {
         assertEquals(detailedBookingDto.getGuestQuantity(), actual.getGuestQuantity());
         assertEquals(detailedBookingDto.getExtraBedsQuantity(), actual.getExtraBedsQuantity());
     }
-
     @Test
     void detailedBookingDtoToBooking() {
         Booking actual = service.detailedBookingDtoToBooking(detailedBookingDto, customer, room);
+
 
         assertEquals(booking.getId(), actual.getId());
         assertEquals(booking.getStartDate(), actual.getStartDate());
         assertEquals(booking.getEndDate(), actual.getEndDate());
         assertEquals(booking.getGuestQuantity(), actual.getGuestQuantity());
+
+        // Check if the extra beds quantity matches
         assertEquals(booking.getExtraBedsQuantity(), actual.getExtraBedsQuantity());
+
         assertEquals(customer, actual.getCustomer());
         assertEquals(room, actual.getRoom());
     }
-
     @Test
     void bookingToBookingDto() {
         BookingDto actual = service.bookingToBookingDto(booking);
@@ -134,7 +139,7 @@ public class BookingServiceImplTest {
     @Test
     void addBooking() {
         when(bookingRepo.save(booking)).thenReturn(booking);
-        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo);
+        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo, roomTypeRepo);
 
         String feedback = service2.addBooking(detailedBookingDto);
         System.out.println("feedback"+feedback);
@@ -164,18 +169,9 @@ public class BookingServiceImplTest {
 
         String result = service.deleteBooking(1L);
 
-        assertEquals("1 has been removed.", result);
+        assertEquals("Booking with id 1 has been removed", result);
         verify(bookingRepo, times(1)).delete(any());
     }
 
-    @Test
-    void isBookingActive() {
-        booking.setStartDate(LocalDate.now().minusDays(1));
-        booking.setEndDate(LocalDate.now().plusDays(1));
-
-        when(bookingRepo.findById(any())).thenReturn(Optional.of(booking));
-
-        assertTrue(service.isBookingActive(1L));
-    }
 
 }

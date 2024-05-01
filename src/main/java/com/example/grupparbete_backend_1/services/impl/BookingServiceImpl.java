@@ -45,15 +45,21 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking detailedBookingDtoToBooking(DetailedBookingDto booking, Customer customer, Room room) {
-        return Booking.builder().id(booking.getId())
-                .guestQuantity(booking.getGuestQuantity())
-                .extraBedsQuantity(booking.getExtraBedsQuantity())
-                .startDate(booking.getStartDate())
-                .endDate(booking.getEndDate())
-                .customer(customer).room(room).build();
-    }
+    public Booking detailedBookingDtoToBooking(DetailedBookingDto bookingDto, Customer customer, Room room) {
+        int maxExtraBeds = room.getRoomType().getMaxExtraBeds();
+        int requestedExtraBeds = bookingDto.getExtraBedsQuantity();
+        int validExtraBeds = Math.min(requestedExtraBeds, maxExtraBeds);
 
+        return Booking.builder()
+                .id(bookingDto.getId())
+                .guestQuantity(bookingDto.getGuestQuantity())
+                .extraBedsQuantity(validExtraBeds)
+                .startDate(bookingDto.getStartDate())
+                .endDate(bookingDto.getEndDate())
+                .customer(customer)
+                .room(room)
+                .build();
+    }
 
     @Override
     public BookingDto bookingToBookingDto(Booking booking) {

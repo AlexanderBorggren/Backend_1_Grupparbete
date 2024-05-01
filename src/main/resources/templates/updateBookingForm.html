@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 
-<form action="#" th:action="@{/booking/update}" th:object="${booking}"  method="post" >
+<form action="#" th:action="@{/booking/update}" th:object="${booking}" method="post">
     <label for="customer">Customer: </label><br>
     <input type="text" disabled id="customer" th:field="*{customer}"><br>
 
@@ -18,19 +24,71 @@
 
     <label for="guestQuantity">Guests: </label><br>
     <input type="number" id="guestQuantity" th:field="*{guestQuantity}"><br>
+    <span id="guestQuantity-error" class="error-message"></span><br>
 
     <label for="roomId">Room id: </label><br>
     <input type="text" id="roomId" th:field="*{room.id}"><br>
 
     <label for="roomSize">Room size: </label><br>
-    <input type="text" disabled id="roomSize" th:field="*{room.roomType.roomSize}"><br>
+    <select id="roomSize" th:field="*{room.roomType.roomSize}" onchange="updateMaxExtraBeds()">
+        <!-- Options dynamically populated -->
+    </select><br>
 
     <label for="extraBedsQuantity">Extra beds: </label><br>
-    <input type="number" id="extraBedsQuantity" th:field="*{extraBedsQuantity}"><br>
+    <select id="extraBedsQuantity" th:field="*{extraBedsQuantity}">
+        <!-- Options based on selected room size -->
+    </select><br>
+    <span id="extraBedsQuantity-error" class="error-message"></span><br>
 
     <input type=hidden id="id" th:field="*{id}"><br>
     <input type="submit" value="Submit">
 </form>
+<script>
+    window.onload = function () {
+        var roomSizeSelect = document.getElementById('roomSize');
+        var extraBedsSelect = document.getElementById('extraBedsQuantity');
 
+
+        function fetchRoomTypes() {
+            fetch('/RoomTypes')
+                .then(response => response.json())
+                .then(data => {
+                    roomSizeSelect.innerHTML = '<option value="0">Select Room Size</option>';
+                    data.forEach(roomType => {
+                        var option = document.createElement('option');
+                        option.value = roomType.roomSize;
+                        option.textContent = roomType.roomSize;
+                        roomSizeSelect.appendChild(option);
+                        option.dataset.maxExtraBeds = roomType.maxExtraBeds;
+                    });
+                })
+                .catch(error => console.error('Error fetching room types:', error));
+        }
+
+
+        fetchRoomTypes();
+
+        // update the maximum extra beds dropdown based on room size selection
+        function updateMaxExtraBeds() {
+            var selectedRoomSize = roomSizeSelect.value;
+            var selectedOption = roomSizeSelect.options[roomSizeSelect.selectedIndex];
+            var maxExtraBeds = parseInt(selectedOption.dataset.maxExtraBeds);
+
+
+            extraBedsSelect.innerHTML = '';
+
+            // dropdown with extra beds options
+            for (var i = 0; i <= maxExtraBeds; i++) {
+                var option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                extraBedsSelect.appendChild(option);
+            }
+        }
+
+        roomSizeSelect.addEventListener('change', updateMaxExtraBeds);
+        updateMaxExtraBeds();
+    };
+</script>
 </body>
 </html>

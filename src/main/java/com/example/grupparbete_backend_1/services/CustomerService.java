@@ -22,6 +22,7 @@ public interface CustomerService {
     public DetailedCustomerDto editCustomer(Long id, String name, String ssn, String email);
     public DetailedCustomerDto findById(Long id);
     public DetailedCustomerDto findBySsn(String ssn);
+    public boolean doesSsnExist(String ssn);
 
     //Andre - Removed this way of working(How sigrun did it in her video) and instead added a bookingService in customerService
     //Seems to be how it normally is done, but cannot have circular dependancy by doing this.

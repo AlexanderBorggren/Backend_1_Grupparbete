@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <style>
         .error-message {
             color: red;
@@ -19,7 +20,7 @@
 
     <label for="ssn">SSN:</label><br>
     <input type="text" id="ssn" name="ssn" required pattern="^\d{10}$"><br>
-    <span id="ssn-error" class="error-message"></span> <br>
+    <span id="ssn-error" class="error-message" th:text="${errorMessage}"></span> <br>
 
     <label for="email">Email:</label><br>
     <input type="text" id="email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"><br>

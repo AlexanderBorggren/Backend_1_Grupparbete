@@ -3,6 +3,7 @@ package com.example.grupparbete_backend_1.controllers;
 import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.services.CustomerService;
+import com.example.grupparbete_backend_1.services.impl.CustomerServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.List;
 public class CustomerControllerTH{
 
     CustomerService customerService;
+
 
     public CustomerControllerTH(CustomerService customerService){
         this.customerService=customerService;
@@ -95,12 +97,17 @@ public class CustomerControllerTH{
 
     @PostMapping("/addCustomer")
     public String addCustomer(@Valid @RequestParam String name, @RequestParam String ssn, @RequestParam String email, Model model) {
-        model.addAttribute("name", "name");
-        model.addAttribute("ssn", "ssn");
-        model.addAttribute("email", "email");
-        customerService.addCustomer(new DetailedCustomerDto(name, ssn, email));
+        model.addAttribute("name", name);
+        model.addAttribute("ssn", ssn);
+        model.addAttribute("email", email);
 
-        return "redirect:/customer/all";
+        if (customerService.doesSsnExist(ssn)) {
+            model.addAttribute("errorMessage", "Customer with SSN " + ssn + " already exists.");
+            return "addCustomerForm"; // Return the form view to display error message
+        } else {
+            customerService.addCustomer(new DetailedCustomerDto(name, ssn, email));
+            return "redirect:/customer/all";
+        }
     }
     @PostMapping("/addCustomerNew")
     public String addCustomerNew(@Valid @RequestParam String name, @RequestParam String ssn, @RequestParam String email, Model model, RedirectAttributes redirectAttributes) {
