@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Search available rooms</title>
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <h2>Search available rooms</h2>
@@ -14,20 +19,20 @@
         <option value="">--Please choose an option--</option>
         <option th:each="roomType : ${roomTypes}" th:value="${roomType.id}" th:text="${roomType.roomSize}"></option>
     </select><br>
-    <span id="roomTypeId-error" class="error-message"></span> <br>
+    <span id="roomType-error" class="error-message"></span> <br>
 
-<label for="startDate">Start date: </label><br>
-<input type="date" id="startDate" name="startDate" th:value="${startDate}"><br>
+    <label for="startDate">Start date: </label><br>
+    <input type="date" id="startDate" name="startDate" th:value="${startDate}"><br>
     <span id="startDate-error" class="error-message"></span> <br>
 
 
     <label for="endDate">End Date: </label><br>
-<input type="date" id="endDate" name="endDate" th:value="${endDate}"><br>
+    <input type="date" id="endDate" name="endDate" th:value="${endDate}"><br>
     <span id="endDate-error" class="error-message"></span> <br>
 
 
     <label for="guestQuantity">Guest quantity: </label><br>
-<input type="number" id="guestQuantity" name="guestQuantity" th:value="${guestQuantity}"><br>
+    <input type="number" id="guestQuantity" name="guestQuantity" th:value="${guestQuantity}"><br>
     <span id="guestQuantity-error" class="error-message"></span> <br>
 
 
@@ -37,7 +42,7 @@
 
 
     <input type=hidden id="id"><br>
-<input type="submit" value="Search">
+<input type="submit" value="Search" id="submit-button" disabled>
 </form>
 
 
@@ -69,44 +74,111 @@
 <script>
     window.onload = function() {
         var roomTypeId = document.getElementById('roomTypeId');
-        var roomTypeError = document.getElementById('roomType-error');
         var startDate = document.getElementById('startDate');
-        var startDateError = document.getElementById('startDate-error');
         var endDate = document.getElementById('endDate');
-        var endDateError = document.getElementById('endDate-error');
         var guestQuantity = document.getElementById('guestQuantity');
-        var guestQuantityError = document.getElementById('guestQuantity-error');
         var extraBedsQuantity = document.getElementById('extraBedsQuantity');
-        var extraBedsQuantityError = document.getElementById('extraBedsQuantity-error');
         var submitButton = document.getElementById('submit-button');
+
+        // Error message elements
+        var roomTypeError = document.getElementById('roomType-error');
+        var startDateError = document.getElementById('startDate-error');
+        var endDateError = document.getElementById('endDate-error');
+        var guestQuantityError = document.getElementById('guestQuantity-error');
+        var extraBedsQuantityError = document.getElementById('extraBedsQuantity-error');
 
         // Regular expressions for validation
         var dateRegex = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD
-        var quantityRegex = /^[0-4]$/; // 0 to 4
-        var extraBedsRegex = /^[0-2]$/; // 0 to 2
+        var quantityRegex = /^[1-4]$/; // 1 to 4
 
-        function validateField(input, regex, errorMessage) {
+        // Set min and max dates
+        var today = new Date();
+        startDate.min = today.toISOString().split('T')[0];
+
+        // Update the min date for endDate whenever startDate changes
+        startDate.addEventListener('change', function() {
+            var startDateValue = new Date(startDate.value);
+            var nextDay = new Date(startDateValue.getTime() + (24 * 60 * 60 * 1000));
+            endDate.min = nextDay.toISOString().split('T')[0];
+        });
+
+        // Update the max value for extraBedsQuantity whenever roomTypeId changes
+        roomTypeId.addEventListener('change', function() {
+            switch(roomTypeId.value) {
+                case '1':
+                    extraBedsQuantity.max = '0';
+                    break;
+                case '2':
+                    extraBedsQuantity.max = '1';
+                    break;
+                case '3':
+                    extraBedsQuantity.max = '2';
+                    break;
+                default:
+                    extraBedsQuantity.max = '0';
+            }
+            validateExtraBedsQuantity();
+        });
+
+        // Validate extraBedsQuantity whenever its value changes
+        extraBedsQuantity.addEventListener('input', validateExtraBedsQuantity);
+
+        function validateField(input, inputError, regex, errorMessage) {
             input.addEventListener('input', function() {
                 if (!regex.test(input.value)) {
-                    input.setCustomValidity(errorMessage);
-                    submitButton.disabled = true;
+                    inputError.textContent = errorMessage;
                 } else {
-                    input.setCustomValidity('');
-                    if (dateRegex.test(startDate.value) && dateRegex.test(endDate.value) && quantityRegex.test(guestQuantity.value) && extraBedsRegex.test(extraBedsQuantity.value)) {
-                        submitButton.disabled = false;
-                    }
+                    inputError.textContent = '';
                 }
+                checkAllFields();
             });
         }
 
-        validateField(roomTypeId, /.+/, 'Välj ett rumstyp');
-        validateField(startDate, dateRegex, 'Startdatumet är ogiltigt');
-        validateField(endDate, dateRegex, 'Slutdatumet är ogiltigt');
-        validateField(guestQuantity, quantityRegex, 'Antalet gäster måste vara mellan 1 och 4');
-        validateField(extraBedsQuantity, extraBedsRegex, 'Antalet extra sängar måste vara mellan 0 och 2');
+        function validateExtraBedsQuantity() {
+            if (extraBedsQuantity.value > extraBedsQuantity.max) {
+                extraBedsQuantityError.textContent = 'Antal extra sängar valda är felaktigt baserat på din valda rumstyp';
+                submitButton.disabled = true;
+            } else if (extraBedsQuantity.value < 0) {
+                extraBedsQuantityError.textContent = 'Antalet extra sängar kan inte vara mindre än 0';
+                submitButton.disabled = true;
+            } else {
+                extraBedsQuantityError.textContent = '';
+                submitButton.disabled = false;
+            }
+        }
+
+        function checkAllFields() {
+            var startDateValue = new Date(startDate.value);
+            var endDateValue = new Date(endDate.value);
+            if (startDateValue < today.setHours(0,0,0,0)) {
+                startDateError.textContent = 'Startdatumet kan inte vara tidigare än dagens datum';
+                submitButton.disabled = true;
+            } else if (endDateValue <= startDateValue) {
+                endDateError.textContent = 'Slutdatumet kan inte vara tidigare än startdatumet';
+                submitButton.disabled = true;
+            } else if (dateRegex.test(startDate.value) && dateRegex.test(endDate.value) && quantityRegex.test(guestQuantity.value) && roomTypeId.value !== "") {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        }
+
+        // Set default values
+        guestQuantity.value = '1';
+        guestQuantity.min = '1';
+        guestQuantity.max = '4';
+        extraBedsQuantity.value = '0';
+        extraBedsQuantity.min = '0';
+
+
+        validateField(roomTypeId, roomTypeError, /.+/, 'Välj ett rumstyp');
+        validateField(startDate, startDateError, dateRegex, 'Startdatumet är ogiltigt');
+        validateField(endDate, endDateError, dateRegex, 'Slutdatumet är ogiltigt');
+        validateField(guestQuantity, guestQuantityError, quantityRegex, 'Antalet gäster måste vara mellan 1 och 4');
     }
+
 
 </script>
 
-</body>
+    </body>
 </html>
