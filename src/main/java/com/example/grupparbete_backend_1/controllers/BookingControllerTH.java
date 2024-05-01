@@ -148,6 +148,7 @@ public class BookingControllerTH {
         model.addAttribute("maxExtraBeds", "Max extra beds: ");
         model.addAttribute("customerId", customerId);
 
+
         //Send variables to fill fields next time
         //model.addAttribute("startDate", "Room number: ");
         //model.addAttribute("endDate", "Room Size: ");
@@ -186,6 +187,7 @@ public class BookingControllerTH {
         System.out.println("START DATE FROM FORM: " + startDate);
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
         model.addAttribute("roomTypes", roomTypeList);
+        model.addAttribute("roomTypeIdField", roomTypeId);
 
         //Dates parameter are string
         List<Room> availableRoomList = bookingService.findAvailableRooms(LocalDate.parse(startDate), LocalDate.parse(endDate), roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
@@ -262,6 +264,9 @@ public class BookingControllerTH {
         model.addAttribute("endDateField", thisBooking.getEndDate());
         model.addAttribute("guestQuantityField", thisBooking.getGuestQuantity());
         model.addAttribute("maxExtraBedsField", thisBooking.getExtraBedsQuantity());
+        model.addAttribute("roomTypeIdField", thisBooking.getRoom().getRoomType().getRoomSize()); // får inte denna att fungera helt ännu
+
+        System.out.println("RECEIVED ROOMTYPE : " + thisBooking.getRoom().getRoomType().getRoomSize());
 
         //Send variables to fill fields next time
         //model.addAttribute("startDate", "Room number: ");
@@ -301,6 +306,9 @@ public class BookingControllerTH {
         //System.out.println("START DATE FROM FORM: " + startDate);
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
         model.addAttribute("roomTypes", roomTypeList);
+        model.addAttribute("roomTypeIdField", roomTypeId);
+
+
 
         //Dates parameter are string
         List<Room> availableRoomList = bookingService.findAvailableRooms(LocalDate.parse(startDate), LocalDate.parse(endDate), roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
@@ -324,6 +332,9 @@ public class BookingControllerTH {
         model.addAttribute("endDateField", endDate);
         model.addAttribute("guestQuantityField", guestQuantity);
         model.addAttribute("maxExtraBedsField", extraBedsQuantity);
+
+
+
         return "searchRoomsUpdateBooking";
     }
 
