@@ -7,11 +7,13 @@
 <body>
 <h2 th:text="${bookingTitle}"></h2>
 <h2 th:text="${message}"></h2>
+<h2 th:text="${feedbackMessageUpdateBooking}"></h2>
 <div class="allBookings" >
 
 
 
     <table>
+        <th th:text="${bookingId}"></th>
         <th th:text="${customerId}"></th>
         <th th:text="${customerName}"></th>
         <th th:text="${customerEmail}"></th>
@@ -24,6 +26,7 @@
         <th th:text="${extraBedsQuantity}"></th>
         <tbody>
         <tr th:each="book : ${allBookings}">
+            <td th:text="${book.id}"></td>
             <td th:text="${book.customer.id}"></td>
             <td th:text="${book.customer.name}"></td>
             <td th:text="${book.customer.email}"></td>
@@ -35,7 +38,7 @@
             <td th:text="${book.extraBedsQuantity}"></td>
 
             <td><a th:href="@{deleteById/{id}/(id=${book.id})}">Delete</a></td>
-            <td><a th:href="@{editByView/{id}/(id=${book.id})}">Update</a></td>
+            <td><a th:href="@{/booking/updateBookingByView/{bookingId}/(bookingId=${book.id})}">Update</a></td>
         </tr>
 
         </tbody>
