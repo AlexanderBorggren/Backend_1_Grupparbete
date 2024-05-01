@@ -15,30 +15,30 @@
 <form action="#" th:action="@{/booking/bookingByViewSearchAvailableRooms/{id}/(id=${customerId})}"  method="post" >
 
     <label for="roomTypeId">Room type: </label><br>
-    <select id="roomTypeId" name="roomTypeId">
-        <option value="">--Please choose an option--</option>
+    <select id="roomTypeId" name="roomType">
+        <option value="roomIdField">--Please choose an option--</option>
         <option th:each="roomType : ${roomTypes}" th:value="${roomType.id}" th:text="${roomType.roomSize}"></option>
     </select><br>
     <span id="roomType-error" class="error-message"></span> <br>
 
 
     <label for="startDate">Start date: </label><br>
-    <input type="date" id="startDate" name="startDate" th:date="${session.startDateField}" th:value="${startDate}"><br>
+    <input type="date" id="startDate" name="startDate" th:value="${startDateField}"><br>
     <span id="startDate-error" class="error-message"></span> <br>
 
 
     <label for="endDate">End Date: </label><br>
-    <input type="date" id="endDate" name="endDate" th:value="${endDate}"><br>
+    <input type="date" id="endDate" name="endDate" th:value="${endDateField}"><br>
     <span id="endDate-error" class="error-message"></span> <br>
 
 
     <label for="guestQuantity">Guest quantity: </label><br>
-    <input type="number" id="guestQuantity" name="guestQuantity" th:value="${guestQuantity}"><br>
+    <input type="number" id="guestQuantity" name="guestQuantity" th:value="${guestQuantityField}"><br>
     <span id="guestQuantity-error" class="error-message"></span> <br>
 
 
     <label for="extraBedsQuantity">Extra beds: </label><br>
-<input type="number" id="extraBedsQuantity" name="extraBedsQuantity" th:value="${extraBedsQuantity}"><br>
+<input type="number" id="extraBedsQuantity" name="extraBedsQuantity" th:value="${maxExtraBedsField}"><br>
     <span id="extraBedsQuantity-error" class="error-message"></span> <br>
 
 
@@ -192,9 +192,9 @@
         }
 
         // Set default values
-        guestQuantity.value = '1';
+        //guestQuantity.value = '1';
         guestQuantity.min = '1';
-        extraBedsQuantity.value = '0';
+        //extraBedsQuantity.value = '0';
         extraBedsQuantity.min = '0';
 
         validateField(roomTypeId, roomTypeError, /.+/, 'Välj ett rumstyp');

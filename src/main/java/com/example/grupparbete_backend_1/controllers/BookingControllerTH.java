@@ -162,8 +162,8 @@ public class BookingControllerTH {
     @RequestMapping(value = "/bookingByViewSearchAvailableRooms/{customerId}/")
     public String sendCustomerToSearch(
             @Valid @PathVariable Long customerId,
-            @Valid @RequestParam("startDate") String startDate,
-            @RequestParam("endDate") String endDate,
+            @Valid @RequestParam("startDate") LocalDate startDate,
+            @RequestParam("endDate") LocalDate endDate,
             @RequestParam("guestQuantity") int guestQuantity,
             @RequestParam("extraBedsQuantity") int extraBedsQuantity,
             @RequestParam("roomTypeId") Long roomTypeId,
@@ -172,18 +172,27 @@ public class BookingControllerTH {
 
 
 
-        System.out.println("ROOM TYPE ID FROM FORM: " + roomTypeId);
+        //System.out.println("ROOM TYPE ID FROM FORM: " + roomTypeId);
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
         model.addAttribute("roomTypes", roomTypeList);
 
-        List<Room> availableRoomList = bookingService.findAvailableRooms(LocalDate.parse(startDate), LocalDate.parse(endDate), roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
+        //Dates parameter are string
+        //List<Room> availableRoomList = bookingService.findAvailableRooms(LocalDate.parse(startDate), LocalDate.parse(endDate), roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
+
+        //Dates parameter are localdate
+        List<Room> availableRoomList = bookingService.findAvailableRooms(startDate, endDate, roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
+
+
         //List<RoomDto> availableRoomList = roomService.getAllRoom();
         System.out.println("ROOM LIST AVAILABLE SIZE: " + availableRoomList.size());
         model.addAttribute("allRooms", availableRoomList);
 
-        model.addAttribute("roomId", "Room number: ");
-        model.addAttribute("roomSize", "Room Size: ");
-        model.addAttribute("maxExtraBeds", "Max extra beds: ");
+        //model.addAttribute("roomId", );
+        model.addAttribute("roomIdField", roomTypeId);
+        model.addAttribute("startDateField", startDate);
+        model.addAttribute("endDateField", endDate);
+        model.addAttribute("guestQuantityField", guestQuantity);
+        model.addAttribute("maxExtraBedsField", extraBedsQuantity);
         return "searchRooms";
     }
 
@@ -193,8 +202,10 @@ public class BookingControllerTH {
                              @RequestParam("guestQuantity") int guestQuantity,
                              @RequestParam("extraBedsQuantity") int extraBedsQuantity,
                              @RequestParam("roomTypeId") Long roomTypeId,
+                             @RequestParam("customerId") Long customerId,
+                             @RequestParam("roomId") Long roomId,
                              Model model) {
-
+        DetailedBookingDto bookingDto = new DetailedBookingDto(LocalDate.parse(startDate),LocalDate.parse(endDate), guestQuantity, extraBedsQuantity, customerService.detailedCustomerDtoToCustomerDto( customerService.findById(customerId) ), roomService.findById(roomId));
         return "";
     }
    /* @RequestMapping("/booking/searchAvailableRooms/")
