@@ -14,20 +14,29 @@
         <option value="">--Please choose an option--</option>
         <option th:each="roomType : ${roomTypes}" th:value="${roomType.id}" th:text="${roomType.roomSize}"></option>
     </select><br>
+    <span id="roomTypeId-error" class="error-message"></span> <br>
 
 <label for="startDate">Start date: </label><br>
 <input type="date" id="startDate" name="startDate" th:value="${startDate}"><br>
+    <span id="startDate-error" class="error-message"></span> <br>
 
-<label for="endDate">End Date: </label><br>
+
+    <label for="endDate">End Date: </label><br>
 <input type="date" id="endDate" name="endDate" th:value="${endDate}"><br>
+    <span id="endDate-error" class="error-message"></span> <br>
 
-<label for="guestQuantity">Guest quantity: </label><br>
-<input type="text" id="guestQuantity" name="guestQuantity" th:value="${guestQuantity}"><br>
 
-<label for="extraBedsQuantity">Extra beds: </label><br>
-<input type="text" id="extraBedsQuantity" name="extraBedsQuantity" th:value="${extraBedsQuantity}"><br>
+    <label for="guestQuantity">Guest quantity: </label><br>
+<input type="number" id="guestQuantity" name="guestQuantity" th:value="${guestQuantity}"><br>
+    <span id="guestQuantity-error" class="error-message"></span> <br>
 
-<input type=hidden id="id"><br>
+
+    <label for="extraBedsQuantity">Extra beds: </label><br>
+<input type="number" id="extraBedsQuantity" name="extraBedsQuantity" th:value="${extraBedsQuantity}"><br>
+    <span id="extraBedsQuantity-error" class="error-message"></span> <br>
+
+
+    <input type=hidden id="id"><br>
 <input type="submit" value="Search">
 </form>
 
@@ -56,6 +65,48 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    window.onload = function() {
+        var roomTypeId = document.getElementById('roomTypeId');
+        var roomTypeError = document.getElementById('roomType-error');
+        var startDate = document.getElementById('startDate');
+        var startDateError = document.getElementById('startDate-error');
+        var endDate = document.getElementById('endDate');
+        var endDateError = document.getElementById('endDate-error');
+        var guestQuantity = document.getElementById('guestQuantity');
+        var guestQuantityError = document.getElementById('guestQuantity-error');
+        var extraBedsQuantity = document.getElementById('extraBedsQuantity');
+        var extraBedsQuantityError = document.getElementById('extraBedsQuantity-error');
+        var submitButton = document.getElementById('submit-button');
+
+        // Regular expressions for validation
+        var dateRegex = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD
+        var quantityRegex = /^[0-4]$/; // 0 to 4
+        var extraBedsRegex = /^[0-2]$/; // 0 to 2
+
+        function validateField(input, regex, errorMessage) {
+            input.addEventListener('input', function() {
+                if (!regex.test(input.value)) {
+                    input.setCustomValidity(errorMessage);
+                    submitButton.disabled = true;
+                } else {
+                    input.setCustomValidity('');
+                    if (dateRegex.test(startDate.value) && dateRegex.test(endDate.value) && quantityRegex.test(guestQuantity.value) && extraBedsRegex.test(extraBedsQuantity.value)) {
+                        submitButton.disabled = false;
+                    }
+                }
+            });
+        }
+
+        validateField(roomTypeId, /.+/, 'Välj ett rumstyp');
+        validateField(startDate, dateRegex, 'Startdatumet är ogiltigt');
+        validateField(endDate, dateRegex, 'Slutdatumet är ogiltigt');
+        validateField(guestQuantity, quantityRegex, 'Antalet gäster måste vara mellan 1 och 4');
+        validateField(extraBedsQuantity, extraBedsRegex, 'Antalet extra sängar måste vara mellan 0 och 2');
+    }
+
+</script>
 
 </body>
 </html>

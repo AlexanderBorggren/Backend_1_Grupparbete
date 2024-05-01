@@ -70,7 +70,7 @@ public class CustomerControllerTH{
     }
 
     @PostMapping("/update")
-    public String updateCustomer(Model model, DetailedCustomerDto c) {
+    public String updateCustomer(@Valid Model model, DetailedCustomerDto c) {
         customerService.addCustomer(c);
         //List<DetailedCustomerDto> k = customerService.getAllCustomer();
         //model.addAttribute("allCustomers", k);

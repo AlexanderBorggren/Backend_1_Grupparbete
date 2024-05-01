@@ -6,8 +6,10 @@ import com.example.grupparbete_backend_1.services.BookingService;
 import com.example.grupparbete_backend_1.services.CustomerService;
 import com.example.grupparbete_backend_1.services.RoomService;
 import com.example.grupparbete_backend_1.services.RoomTypeService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
+@Validated
 @RequestMapping("/booking")
 public class BookingControllerTH {
 
@@ -72,7 +75,7 @@ public class BookingControllerTH {
     }
 
     @PostMapping("/update")
-    public String updateBooking(Model model, DetailedBookingDto b, CustomerDto customerDto) {
+    public String updateBooking(@Valid Model model, DetailedBookingDto b, CustomerDto customerDto) {
 
         model.addAttribute("customer", "Customer: ");
         model.addAttribute("startDate", "Start Date: ");
@@ -92,7 +95,7 @@ public class BookingControllerTH {
         return "addBookingForm";
     }
     @PostMapping("/addBooking")
-    public String addBooking(@RequestParam Long roomId, @RequestParam Long customerId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam int guestQuantity, @RequestParam int extraBedsQuantity, Model model) {
+    public String addBooking(@Valid @RequestParam Long roomId, @RequestParam Long customerId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam int guestQuantity, @RequestParam int extraBedsQuantity, Model model) {
         model.addAttribute("customerId", "Customer Id: ");
         model.addAttribute("startDate", "Start Date: ");
         model.addAttribute("endDate", "End Date: ");
@@ -109,7 +112,7 @@ public class BookingControllerTH {
     }
 
     @PostMapping("/addBooking/{roomId}/{customerId}/{startDate}/{endDate}/{guestQuantity}/{extraBedsQuantity}")
-    public String addBookingThroughGuide(@PathVariable@RequestParam Long roomId,
+    public String addBookingThroughGuide(@Valid @PathVariable@RequestParam Long roomId,
                                          @RequestParam Long customerId,
                                          @RequestParam LocalDate startDate,
                                          @RequestParam LocalDate endDate,
@@ -121,7 +124,7 @@ public class BookingControllerTH {
         return "redirect:/booking/all";
     }
     @RequestMapping("/bookingByView/{customerId}/")
-    public String sendCustomerToSearch(@PathVariable Long customerId, Model model, RedirectAttributes redirectAttributes) {
+    public String sendCustomerToSearch(@Valid @PathVariable Long customerId, Model model, RedirectAttributes redirectAttributes) {
         //TODO - HANDLE NULL CUSTOMER
 
 
@@ -139,7 +142,7 @@ public class BookingControllerTH {
     }
 
     @RequestMapping(value = "/bookingByViewSearchAvailableRooms")
-    public String sendCustomerToSearch(
+    public String sendCustomerToSearch(@Valid
             @RequestParam("startDate") String startDate,
             @RequestParam("endDate") String endDate,
             @RequestParam("guestQuantity") int guestQuantity,
