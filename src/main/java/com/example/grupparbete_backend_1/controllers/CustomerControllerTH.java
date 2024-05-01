@@ -96,7 +96,7 @@ public class CustomerControllerTH{
         model.addAttribute("name", "name");
         model.addAttribute("ssn", "ssn");
         model.addAttribute("email", "email");
-        customerService.addCustomer(new DetailedCustomerDto(name, email, ssn));
+        customerService.addCustomer(new DetailedCustomerDto(name, ssn, email));
 
         return "redirect:/customer/all";
     }
@@ -105,7 +105,7 @@ public class CustomerControllerTH{
         model.addAttribute("name", "name");
         model.addAttribute("ssn", "ssn");
         model.addAttribute("email", "email");
-        customerService.addCustomer(new DetailedCustomerDto(name, email, ssn));
+        customerService.addCustomer(new DetailedCustomerDto(name, ssn, email));
         DetailedCustomerDto customer = customerService.findBySsn(ssn);
         Long customerId = customer.getId();
         if (customerService.findBySsn(ssn) == null) {
