@@ -23,7 +23,7 @@ public class DetailedCustomerDto {
     private String ssn;
     private List<BookingDto> bookingDtoList;
 
-    public DetailedCustomerDto(String name, String email, String ssn) {
+    public DetailedCustomerDto(String name, String ssn, String email) {
         this.email = email;
         this.name = name;
         this.ssn = ssn;

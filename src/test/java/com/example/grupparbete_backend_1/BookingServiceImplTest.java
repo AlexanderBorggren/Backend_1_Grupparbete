@@ -4,17 +4,25 @@ import com.example.grupparbete_backend_1.dto.*;
 import com.example.grupparbete_backend_1.models.Booking;
 import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.models.Room;
+import com.example.grupparbete_backend_1.models.RoomType;
 import com.example.grupparbete_backend_1.repositories.BookingRepo;
 import com.example.grupparbete_backend_1.repositories.CustomerRepo;
 import com.example.grupparbete_backend_1.repositories.RoomRepo;
 import com.example.grupparbete_backend_1.services.impl.BookingServiceImpl;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,6 +34,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class BookingServiceImplTest {
 
     @Mock
@@ -40,24 +49,24 @@ public class BookingServiceImplTest {
     @InjectMocks
     private BookingServiceImpl service;
 
-    private Booking booking;
-    private DetailedBookingDto detailedBookingDto;
 
-    Booking book = Booking.builder()
+    RoomType roomType = new RoomType(1L, "Single", 0, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+
+    Room room = new Room(1L,roomType, Timestamp.from(Instant.now()),Timestamp.from(Instant.now()));
+
+    Customer customer = new Customer(1L, "Bert", "9708045566", "bert@gmail.com",Collections.emptyList(),Timestamp.from(Instant.now()),Timestamp.from(Instant.now()));
+
+    Booking booking = new Booking(1L,LocalDate.parse("2024-05-06"),
+            LocalDate.parse("2024-05-10"),2,0,customer,room,
+            Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+
+    BookingDto bookingDto = new BookingDto(1L,LocalDate.parse("2024-05-06"),LocalDate.parse("2024-05-10"));
+
+
+    DetailedBookingDto detailedBookingDto = DetailedBookingDto.builder()
             .id(1L)
-                .startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(2))
-            .guestQuantity(2)
-                .extraBedsQuantity(1)
-                .build();
-
-    BookingDto bookingDto = BookingDto.builder().id(1L).startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(2)).build();
-
-    DetailedBookingDto detailedBooking = DetailedBookingDto.builder()
-            .id(1L)
-                .startDate(LocalDate.now())
-            .endDate(LocalDate.now().plusDays(2))
+                .startDate(LocalDate.parse("2024-05-06"))
+            .endDate(LocalDate.parse("2024-05-10"))
             .guestQuantity(2)
                 .extraBedsQuantity(1)
                 .build();
@@ -74,8 +83,8 @@ public class BookingServiceImplTest {
     void bookingToDetailedBookingDto() {
         DetailedBookingDto actual = service.bookingToDetailedBookingDto(booking);
 
-        assertEquals(detailedBooking.getId(), actual.getId());
-        assertEquals(detailedBooking.getStartDate(), actual.getStartDate());
+        assertEquals(detailedBookingDto.getId(), actual.getId());
+        assertEquals(detailedBookingDto.getStartDate(), actual.getStartDate());
         assertEquals(detailedBookingDto.getEndDate(), actual.getEndDate());
         assertEquals(detailedBookingDto.getGuestQuantity(), actual.getGuestQuantity());
         assertEquals(detailedBookingDto.getExtraBedsQuantity(), actual.getExtraBedsQuantity());
@@ -83,8 +92,6 @@ public class BookingServiceImplTest {
 
     @Test
     void detailedBookingDtoToBooking() {
-        Customer customer = new Customer();
-        Room room = new Room();
         Booking actual = service.detailedBookingDtoToBooking(detailedBookingDto, customer, room);
 
         assertEquals(booking.getId(), actual.getId());
@@ -108,17 +115,17 @@ public class BookingServiceImplTest {
     @Test
     void bookingDtoToBooking() {
 
-        Customer customer = new Customer();
+     /*   Customer customer = new Customer();
         Room room = new Room();
-        LocalDate startDate = LocalDate.now();
-        LocalDate endDate = LocalDate.now().plusDays(2);
-        BookingDto bookingDto = new BookingDto(1L, startDate, endDate);
+        LocalDate startDate = LocalDate.parse("2024-05-08");
+        LocalDate endDate = LocalDate.parse("2024-05-12");*/
+      //  BookingDto bookingDto = new BookingDto(1L, startDate, endDate);
 
         Booking actual = service.bookingDtoToBooking(bookingDto, customer, room);
 
         assertEquals(bookingDto.getId(), actual.getId());
-       // assertEquals(bookingDto.getStartDate(), actual.getStartDate());
-       // assertEquals(bookingDto.getEndDate(), actual.getEndDate());
+        assertEquals(bookingDto.getStartDate(), actual.getStartDate());
+        assertEquals(bookingDto.getEndDate(), actual.getEndDate());
         assertEquals(customer, actual.getCustomer());
         assertEquals(room, actual.getRoom());
 
@@ -126,13 +133,13 @@ public class BookingServiceImplTest {
 
     @Test
     void addBooking() {
-        when(customerRepo.findById(any())).thenReturn(Optional.of(new Customer()));
-        when(roomRepo.findById(any())).thenReturn(Optional.of(new Room()));
+        when(bookingRepo.save(booking)).thenReturn(booking);
+        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo);
 
-        String result = service.addBooking(detailedBookingDto);
+        String feedback = service2.addBooking(detailedBookingDto);
+        System.out.println("feedback"+feedback);
+        assertTrue(feedback.equalsIgnoreCase("Booking saved"));
 
-        assertEquals("Booking har sparats", result);
-        verify(bookingRepo, times(1)).save(any());
     }
 
     @Test

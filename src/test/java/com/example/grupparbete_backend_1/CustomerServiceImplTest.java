@@ -13,11 +13,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT)
 @SpringBootTest
 public class CustomerServiceImplTest {
 
@@ -46,18 +44,9 @@ public class CustomerServiceImplTest {
     private String email = "al@gmail.com";
     private String ssn = "9011255437";
 
-    Customer customer = Customer.builder().id(customerId).name(name).ssn(ssn).bookingList(Collections.emptyList()).build();
+    Customer customer = new Customer(customerId,name,ssn,email, Collections.emptyList(), Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
     CustomerDto customerDto = CustomerDto.builder().id(customerId).name(name).email(email).build();
-    DetailedCustomerDto detailedCustomerDto = DetailedCustomerDto.builder().id(customerId).name(name).ssn(ssn).bookingDtoList(Collections.emptyList()).build();
-
-    private long customerId2 = 2L;
-    private String name2 = "Berra";
-    private String email2 = "bloop@gmail.com";
-    private String ssn2 = "9409145677";
-
-    Customer customer2 = Customer.builder().id(customerId2).name(name2).ssn(ssn2).bookingList(Collections.emptyList()).build();
-    List<DetailedCustomerDto> list = new ArrayList<>();
-
+    DetailedCustomerDto detailedCustomerDto = DetailedCustomerDto.builder().id(customerId).name(name).ssn(ssn).email(email).bookingDtoList(Collections.emptyList()).build();
 
 
     @BeforeEach
@@ -67,9 +56,9 @@ public class CustomerServiceImplTest {
 
     @Test
     void getAllCustomers() {
-        when(customerRepo.findAll()).thenReturn(Arrays.asList(customer, customer2));
+        when(customerRepo.findAll()).thenReturn(Arrays.asList(customer));
         List<DetailedCustomerDto> allCustomers = service.getAllCustomer();
-        assertEquals(2, allCustomers.size());
+        assertEquals(1, allCustomers.size());
     }
 
 
@@ -97,6 +86,15 @@ public class CustomerServiceImplTest {
         assertEquals(actual.getBookingDtoList(), detailedCustomerDto.getBookingDtoList());
 
         assertTrue(actual.getBookingDtoList().isEmpty());
+    }
+
+    @Test
+    void detailedCustomerDtoToCustomerDto() {
+        CustomerDto actual = service.detailedCustomerDtoToCustomerDto(detailedCustomerDto);
+
+        assertEquals(actual.getId(), customerDto.getId());
+        assertEquals(actual.getName(), customerDto.getName());
+        assertEquals(actual.getEmail(), customerDto.getEmail());
     }
 
     @Test

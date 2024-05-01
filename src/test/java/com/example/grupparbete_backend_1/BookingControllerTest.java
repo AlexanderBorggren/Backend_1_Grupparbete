@@ -26,8 +26,6 @@ public class BookingControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private CustomerService customerService;
 
     @Test
     public void addBooking() throws Exception {
