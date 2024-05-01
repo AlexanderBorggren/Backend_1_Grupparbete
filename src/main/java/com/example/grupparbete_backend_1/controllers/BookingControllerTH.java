@@ -6,6 +6,7 @@ import com.example.grupparbete_backend_1.services.BookingService;
 import com.example.grupparbete_backend_1.services.CustomerService;
 import com.example.grupparbete_backend_1.services.RoomService;
 import com.example.grupparbete_backend_1.services.RoomTypeService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -124,7 +125,7 @@ public class BookingControllerTH {
         return "redirect:/booking/all";
     }
     @RequestMapping("/bookingByView/{customerId}/")
-    public String sendCustomerToSearch(@Valid @PathVariable Long customerId, Model model, RedirectAttributes redirectAttributes) {
+    public String sendCustomerToSearch(@Valid @PathVariable Long customerId, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
         //TODO - HANDLE NULL CUSTOMER
 
 
@@ -136,14 +137,32 @@ public class BookingControllerTH {
         model.addAttribute("roomId", "Room number: ");
         model.addAttribute("roomSize", "Room Size: ");
         model.addAttribute("maxExtraBeds", "Max extra beds: ");
+        model.addAttribute("customerId", customerId);
+
+        //Send variables to fill fields next time
+        //model.addAttribute("startDate", "Room number: ");
+        //model.addAttribute("endDate", "Room Size: ");
+        //model.addAttribute("guestQuantity", "Max extra beds: ");
+        //model.addAttribute("extraBedsQuantity", "Max extra beds: ");
+
+        //Redirect attempt, might work, can try later
+        redirectAttributes.addAttribute("roomType", model.getAttribute("roomType"));
+        redirectAttributes.addAttribute("startDate", model.getAttribute("startDate"));
+        redirectAttributes.addAttribute("endDate", model.getAttribute("endDate"));
+        redirectAttributes.addAttribute("guestQuantityField", 3);
+        redirectAttributes.addAttribute("extraBedsQuantity", model.getAttribute("extraBedsQuantity"));
+
+        //session.setAttribute("startDateField", model.getAttribute("startDate"));
+        //session.setAttribute("guestQuantityField", 3);
 
         //redirectAttributes.addFlashAttribute();
         return "searchRooms";
     }
 
-    @RequestMapping(value = "/bookingByViewSearchAvailableRooms")
-    public String sendCustomerToSearch(@Valid
-            @RequestParam("startDate") String startDate,
+    @RequestMapping(value = "/bookingByViewSearchAvailableRooms/{customerId}/")
+    public String sendCustomerToSearch(
+            @Valid @PathVariable Long customerId,
+            @Valid @RequestParam("startDate") String startDate,
             @RequestParam("endDate") String endDate,
             @RequestParam("guestQuantity") int guestQuantity,
             @RequestParam("extraBedsQuantity") int extraBedsQuantity,
@@ -166,6 +185,17 @@ public class BookingControllerTH {
         model.addAttribute("roomSize", "Room Size: ");
         model.addAttribute("maxExtraBeds", "Max extra beds: ");
         return "searchRooms";
+    }
+
+    @RequestMapping(value = "/addBooking")
+    public String addBooking(@Valid @RequestParam("startDate") String startDate,
+                             @RequestParam("endDate") String endDate,
+                             @RequestParam("guestQuantity") int guestQuantity,
+                             @RequestParam("extraBedsQuantity") int extraBedsQuantity,
+                             @RequestParam("roomTypeId") Long roomTypeId,
+                             Model model) {
+
+        return "";
     }
    /* @RequestMapping("/booking/searchAvailableRooms/")
     public String searchAvailableRooms(Model model, @RequestParam Long roomId, @RequestParam int maxExtraBeds) {

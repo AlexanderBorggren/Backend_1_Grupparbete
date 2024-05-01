@@ -7,7 +7,7 @@
 <body>
 <h2>Search available rooms</h2>
 
-<form action="#" th:action="@{/booking/bookingByViewSearchAvailableRooms}"  method="post" >
+<form action="#" th:action="@{/booking/bookingByViewSearchAvailableRooms/{id}/(id=${customerId})}"  method="post" >
 
     <label for="roomTypeId">Room type: </label><br>
     <select id="roomTypeId" name="roomTypeId">
@@ -17,7 +17,7 @@
     <span id="roomTypeId-error" class="error-message"></span> <br>
 
 <label for="startDate">Start date: </label><br>
-<input type="date" id="startDate" name="startDate" th:value="${startDate}"><br>
+<input type="date" id="startDate" name="startDate" th:date="${session.startDateField}" th:value="${startDate}"><br>
     <span id="startDate-error" class="error-message"></span> <br>
 
 
@@ -27,7 +27,7 @@
 
 
     <label for="guestQuantity">Guest quantity: </label><br>
-<input type="number" id="guestQuantity" name="guestQuantity" th:value="${guestQuantity}"><br>
+<input type="number" id="guestQuantity" name="guestQuantity" th:text="${guestQuantityField}" th:value="${guestQuantity}"><br>
     <span id="guestQuantity-error" class="error-message"></span> <br>
 
 

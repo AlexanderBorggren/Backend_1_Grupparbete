@@ -21,6 +21,7 @@
             <td th:text="${cust.email}"></td>
             <td><a th:href="@{deleteById/{id}/(id=${cust.id})}">Delete</a></td>
             <td><a th:href="@{editByView/{id}/(id=${cust.id})}">Update</a></td>
+            <td><a th:href="@{/booking/bookingByView/{id}/(id=${cust.id})}">Book room</a></td>
         </tr>
 
         </tbody>
