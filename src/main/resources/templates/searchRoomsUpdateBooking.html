@@ -17,8 +17,7 @@
 
     <label for="roomTypeId">Room type: </label><br>
     <select id="roomTypeId" name="roomTypeId">
-        <option value="roomIdField" >--Please choose an option--</option>
-        <option th:each="roomType : ${roomTypes}" th:value="${roomType.id}" th:text="${roomType.roomSize}" th:selected="${roomType.id == roomTypeIdField}" ></option>
+        <option value="roomIdField" th:each="roomType : ${roomTypes}" th:value="${roomType.id}" th:text="${roomType.roomSize}" th:selected="${roomType.id == roomTypeIdField}"></option>
     </select><br>
     <span id="roomType-error" class="error-message"></span> <br>
 
