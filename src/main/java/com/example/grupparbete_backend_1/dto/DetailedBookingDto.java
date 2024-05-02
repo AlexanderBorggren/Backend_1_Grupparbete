@@ -22,6 +22,7 @@ public class DetailedBookingDto {
 
 
     public DetailedBookingDto(LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, CustomerDto customer, RoomDto room) {
+        this.id=id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.guestQuantity = guestQuantity;
@@ -29,6 +30,8 @@ public class DetailedBookingDto {
         this.customer = customer;
         this.room = room;
     }
+
+
 
     public DetailedBookingDto( LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity,DetailedCustomerDto detailedCustomerDto, RoomDto room) {
         this.startDate = startDate;

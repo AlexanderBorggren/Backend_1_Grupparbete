@@ -22,8 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * These tests use MockMvc framework to isolate
  * and verify the behavior of the CustomerController class.
  * Dependencies on CustomerService are mocked for reliability.
- * Various scenarios such as adding and deleting customers
- * are tested to ensure correct endpoint functionality.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -55,7 +53,7 @@ public class CustomerControllerTest {
     public void addCustomer() throws Exception {
         this.mockMvc.perform(post("/customer/addCustomer")
                     .param("name", "Daim")
-                    .param("ssn", "196907015543")
+                    .param("ssn", "6907015543")
                     .param("email", "daimtårta@hotmail.com"))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/customer/all"));

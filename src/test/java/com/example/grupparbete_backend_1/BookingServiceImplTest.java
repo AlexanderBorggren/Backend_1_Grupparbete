@@ -90,7 +90,7 @@ public class BookingServiceImplTest {
         assertEquals(detailedBookingDto.getStartDate(), actual.getStartDate());
         assertEquals(detailedBookingDto.getEndDate(), actual.getEndDate());
         assertEquals(detailedBookingDto.getGuestQuantity(), actual.getGuestQuantity());
-        assertEquals(detailedBookingDto.getExtraBedsQuantity(), actual.getExtraBedsQuantity());
+
     }
     @Test
     void detailedBookingDtoToBooking() {

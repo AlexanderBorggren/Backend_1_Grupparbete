@@ -1,106 +1,153 @@
 package com.example.grupparbete_backend_1;
 
-import com.example.grupparbete_backend_1.dto.CustomerDto;
-import com.example.grupparbete_backend_1.dto.DetailedBookingDto;
+import ch.qos.logback.core.model.Model;
+import com.example.grupparbete_backend_1.controllers.BookingController;
+import com.example.grupparbete_backend_1.controllers.BookingControllerTH;
+import com.example.grupparbete_backend_1.dto.*;
 import com.example.grupparbete_backend_1.services.BookingService;
 import com.example.grupparbete_backend_1.services.CustomerService;
 import com.example.grupparbete_backend_1.services.RoomService;
+import com.example.grupparbete_backend_1.services.impl.BookingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
 
 
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+
 @AutoConfigureMockMvc
+@SpringBootTest
 public class BookingControllerTHTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean // used to simulate HTTP requests
-    private
-    BookingService bookingService;
+    private BookingServiceImpl bookingService;
 
-    //This test simulates a POST request to the /booking/addBooking endpoint with parameters specifying the details of a booking.
+    DetailedRoomTypeDto rt1 = new DetailedRoomTypeDto(1L,"Single", 0);
+    DetailedRoomTypeDto rt2 = new DetailedRoomTypeDto(2L,"Double room 1", 1);
+    DetailedRoomTypeDto rt3 = new DetailedRoomTypeDto(3L,"Double room 2", 2);
+
+    RoomDto r1 = new RoomDto(1L,rt1);
+    RoomDto r2 = new RoomDto(2L,rt2);
+    RoomDto r3 = new RoomDto(3L,rt3);
+
+    CustomerDto d1 = new CustomerDto(1L, "apa@apsson.se", "Apa");
+    CustomerDto d2 = new CustomerDto(2L, "bob@marley.com", "Bob");
+    CustomerDto d3 = new CustomerDto(3L, "coco@hotmail.com", "Cobey");
+
+    DetailedBookingDto b1 = new DetailedBookingDto(LocalDate.parse("2024-06-07"), LocalDate.parse("2024-06-10"),2,0,d1, r1);
+    DetailedBookingDto b2 = new DetailedBookingDto(LocalDate.parse("2025-07-08"), LocalDate.parse("2025-07-11"),3,1,d2, r2);
+    DetailedBookingDto b3 = new DetailedBookingDto(LocalDate.parse("2026-08-09"), LocalDate.parse("2026-08-12"),4,2,d3, r3);
+
+
     @Test
-    public void addBooking() throws Exception {
-        this.mockMvc.perform(post("/booking/addBooking")
-                        .param("roomId", "1")
-                        .param("customerId", "1")
-                        .param("startDate", "2024-01-15")
-                        .param("endDate", "2024-01-20")
-                        .param("guestQuantity", "2")
-                        .param("extraBedsQuantity", "1"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/booking/all"));
+    void testGetAllBookings() throws Exception {
+
+        DetailedRoomTypeDto rt1 = new DetailedRoomTypeDto(1L,"Single", 0);
+        DetailedRoomTypeDto rt2 = new DetailedRoomTypeDto(2L,"Double room 1", 1);
+        DetailedRoomTypeDto rt3 = new DetailedRoomTypeDto(3L,"Double room 2", 2);
+
+        RoomDto r1 = new RoomDto(1L,rt1);
+        RoomDto r2 = new RoomDto(2L,rt2);
+        RoomDto r3 = new RoomDto(3L,rt3);
+
+        CustomerDto d1 = new CustomerDto(1L, "apa@apsson.se", "Apa");
+        CustomerDto d2 = new CustomerDto(2L, "bob@marley.com", "Bob");
+        CustomerDto d3 = new CustomerDto(3L, "coco@hotmail.com", "Cobey");
+
+        DetailedBookingDto b1 = new DetailedBookingDto(LocalDate.parse("2024-06-07"), LocalDate.parse("2024-06-10"),2,0,d1, r1);
+        DetailedBookingDto b2 = new DetailedBookingDto(LocalDate.parse("2025-07-08"), LocalDate.parse("2025-07-11"),3,1,d2, r2);
+        DetailedBookingDto b3 = new DetailedBookingDto(LocalDate.parse("2026-08-09"), LocalDate.parse("2026-08-12"),4,2,d3, r3);
+
+        // Mock behavior for the findById and getAllCustomer methods of the CustomerService
+        // These mocks return the sample DetailedCustomerDto objects when called with specific IDs
+        when(bookingService.findById(1L)).thenReturn(b1);
+        when(bookingService.findById(2L)).thenReturn(b2);
+        when(bookingService.findById(3L)).thenReturn(b3);
+        when(bookingService.getAllBookings()).thenReturn(Arrays.asList(b1,b2,b3));
+
+        when(bookingService.getAllBookings()).thenReturn(Arrays.asList(b1, b2, b3));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/booking/all"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.model().attributeExists("allBookings"))
+                .andExpect(MockMvcResultMatchers.model().attribute("allBookings", Arrays.asList(b1, b2, b3)))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("bookingTitle"))
+                .andExpect(MockMvcResultMatchers.model().attribute("bookingTitle", "All bookings: "))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("bookingId"))
+                .andExpect(MockMvcResultMatchers.model().attribute("bookingId", "Booking id: "))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("customerId"))
+                .andExpect(MockMvcResultMatchers.model().attribute("customerId", "Customer id: "))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("customerName"))
+                .andExpect(MockMvcResultMatchers.model().attribute("customerName", "Customer name: "))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("customerEmail"))
+                .andExpect(MockMvcResultMatchers.model().attribute("customerEmail", "Customer email: "))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("startDate"))
+                .andExpect(MockMvcResultMatchers.model().attribute("startDate", "Start Date: "))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("endDate"))
+                .andExpect(MockMvcResultMatchers.model().attribute("endDate", "End Date: "))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("guestQuantity"))
+                .andExpect(MockMvcResultMatchers.model().attribute("guestQuantity", "Total guests: "))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("roomId"))
+                .andExpect(MockMvcResultMatchers.model().attribute("roomId", "Room number: "))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("roomSize"))
+                .andExpect(MockMvcResultMatchers.model().attribute("roomSize", "Room Size: "))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("extraBedsQuantity"))
+                .andExpect(MockMvcResultMatchers.model().attribute("extraBedsQuantity", "Extra beds: "))
+                .andExpect(MockMvcResultMatchers.view().name("bookings"));
     }
+
+
+
 
 /**Performs a GET request to the URL /booking/deleteById/1/.
  * It expects that the HTTP response status is a 3xx Redirection (indicating a successful redirect).
  * It expects that the URL to which the request is redirected is /booking/all.
  */
-    @Test
-    public void deleteBooking() throws Exception{
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/booking/deleteById/1/")).
-                andExpect(status().is3xxRedirection()).
-                andExpect(redirectedUrl("/booking/all"));
-    }
+@Test
+void deleteBooking() throws Exception {
+    Long id = 1L;
+    String message = "Booking deleted successfully";
 
-    /**
-     * Performs a POST request to the URL /booking/update with booking information.
-     * It expects that the HTTP response status is a 3xx Redirection (indicating a successful redirect).
-     * It expects that the URL to which the request is redirected is /booking/all.
-     * It verifies that the addBooking method of the BookingService is called with the provided booking information.
-     */
-    @Test
-    public void updateBooking() throws Exception {
-        DetailedBookingDto booking = new DetailedBookingDto();
-        CustomerDto customerDto = new CustomerDto();
+    when(bookingService.deleteBooking(id)).thenReturn(message);
 
-        mockMvc.perform(post("/booking/update")
-                        .param("customer", "Customer")
-                        .param("startDate", "Start Date")
-                        .param("endDate", "End Date")
-                        .param("guestQuantity", "Total guests")
-                        .param("roomId", "Room number")
-                        .param("roomSize", "Room size")
-                        .param("extraBedsQuantity", "Extra beds"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/booking/all"));
+    mockMvc.perform(MockMvcRequestBuilders.get("/booking/deleteById/" + id + "/"))
+            .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+            .andExpect(MockMvcResultMatchers.redirectedUrl("/booking/all"))
+            .andExpect(MockMvcResultMatchers.flash().attribute("message", message));
 
-        verify(bookingService).addBooking(booking);
-    }
+    verify(bookingService).deleteBooking(id);
+}
+
 
     @Test
-    public void createBookingByForm() throws Exception {
-        Long roomId = 1L;
-        Long customerId = 2L;
-        LocalDate startDate = LocalDate.now();
-        LocalDate endDate = LocalDate.now().plusDays(1);
-        int guestQuantity = 2;
-        int extraBedsQuantity = 1;
+    void updateBooking() throws Exception {
 
-        mockMvc.perform(post("/booking/addBooking")
-                        .param("roomId", String.valueOf(roomId))
-                        .param("customerId", String.valueOf(customerId))
-                        .param("startDate", startDate.toString())
-                        .param("endDate", endDate.toString())
-                        .param("guestQuantity", String.valueOf(guestQuantity))
-                        .param("extraBedsQuantity", String.valueOf(extraBedsQuantity)))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/booking/all"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/booking/update")
+                        .flashAttr("model", new Model()) // mock model
+                        .flashAttr("b", b1)
+                        .flashAttr("customerDto", d1))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/booking/all"));
 
-        verify(bookingService).addBooking(any(DetailedBookingDto.class));
     }
+
 }
