@@ -32,6 +32,7 @@ public class Customer {
     @NotNull
     @NotEmpty(message = "Personnumret får inte vara tomt")
     @Pattern(regexp = "^\\d{10}$", message = "Personnumret måste ha exakt 10 siffror")
+    @Column(unique = true)
     private String ssn;
     @Email (message = "E-posten är ej giltig")
     @NotNull
