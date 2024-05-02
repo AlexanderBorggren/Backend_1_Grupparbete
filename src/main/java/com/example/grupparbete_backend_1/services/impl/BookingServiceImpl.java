@@ -69,9 +69,14 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking bookingDtoToBooking(BookingDto booking, Customer customer, Room room) {
-        System.out.println("BookingDto id: " + booking.getId()); //debugging
-        return Booking.builder().id(booking.getId()).customer(customer).room(room).build();
+    public Booking bookingDtoToBooking(BookingDto bookingDto, Customer customer, Room room) {
+        return Booking.builder()
+                .id(bookingDto.getId())
+                .startDate(bookingDto.getStartDate())
+                .endDate(bookingDto.getEndDate())
+                .customer(customer)
+                .room(room)
+                .build();
     }
 
     @Override

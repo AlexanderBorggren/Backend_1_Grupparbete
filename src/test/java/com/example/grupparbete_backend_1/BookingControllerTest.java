@@ -26,7 +26,7 @@ public class BookingControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-
+    //This test simulates a POST request to the /booking/addBooking endpoint with parameters specifying the details of a booking.
     @Test
     public void addBooking() throws Exception {
         this.mockMvc.perform(post("/booking/addBooking")
@@ -39,6 +39,7 @@ public class BookingControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/booking/all"));
     }
+    //This test simulates a GET request to the /booking/deleteById/1/ endpoint, where 1 is the ID of the booking to be deleted.
     @Test
     public void deleteBooking() throws Exception{
         this.mockMvc.perform(get("/booking/deleteById/1/")).

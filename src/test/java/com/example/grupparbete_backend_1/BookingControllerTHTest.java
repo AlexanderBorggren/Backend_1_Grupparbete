@@ -28,11 +28,25 @@ public class BookingControllerTHTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockBean // used to simulate HTTP requests
     private
     BookingService bookingService;
 
-/*Performs a GET request to the URL /booking/deleteById/1/.
+    //This test simulates a POST request to the /booking/addBooking endpoint with parameters specifying the details of a booking.
+    @Test
+    public void addBooking() throws Exception {
+        this.mockMvc.perform(post("/booking/addBooking")
+                        .param("roomId", "1")
+                        .param("customerId", "1")
+                        .param("startDate", "2024-01-15")
+                        .param("endDate", "2024-01-20")
+                        .param("guestQuantity", "2")
+                        .param("extraBedsQuantity", "1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/booking/all"));
+    }
+
+/**Performs a GET request to the URL /booking/deleteById/1/.
  * It expects that the HTTP response status is a 3xx Redirection (indicating a successful redirect).
  * It expects that the URL to which the request is redirected is /booking/all.
  */
@@ -43,7 +57,12 @@ public class BookingControllerTHTest {
                 andExpect(redirectedUrl("/booking/all"));
     }
 
-
+    /**
+     * Performs a POST request to the URL /booking/update with booking information.
+     * It expects that the HTTP response status is a 3xx Redirection (indicating a successful redirect).
+     * It expects that the URL to which the request is redirected is /booking/all.
+     * It verifies that the addBooking method of the BookingService is called with the provided booking information.
+     */
     @Test
     public void updateBooking() throws Exception {
         DetailedBookingDto booking = new DetailedBookingDto();

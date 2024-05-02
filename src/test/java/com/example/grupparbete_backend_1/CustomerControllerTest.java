@@ -17,7 +17,14 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
+/**
+ * Unit tests for the CustomerController class.
+ * These tests use MockMvc framework to isolate
+ * and verify the behavior of the CustomerController class.
+ * Dependencies on CustomerService are mocked for reliability.
+ * Various scenarios such as adding and deleting customers
+ * are tested to ensure correct endpoint functionality.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CustomerControllerTest {
@@ -34,6 +41,8 @@ public class CustomerControllerTest {
         DetailedCustomerDto d2 = new DetailedCustomerDto(2L,"Bob", "bob@marley.com", "7905141338",Collections.emptyList());
         DetailedCustomerDto d3 = new DetailedCustomerDto(3L,"Cobey", "coco@hotmail.com", "6710294854",Collections.emptyList());
 
+        // Mock behavior for the findById and getAllCustomer methods of the CustomerService
+        // These mocks return the sample DetailedCustomerDto objects when called with specific IDs
         when(customerService.findById(1L)).thenReturn(d1);
         when(customerService.findById(2L)).thenReturn(d2);
         when(customerService.findById(3L)).thenReturn(d3);

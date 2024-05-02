@@ -120,12 +120,6 @@ public class BookingServiceImplTest {
     @Test
     void bookingDtoToBooking() {
 
-     /*   Customer customer = new Customer();
-        Room room = new Room();
-        LocalDate startDate = LocalDate.parse("2024-05-08");
-        LocalDate endDate = LocalDate.parse("2024-05-12");*/
-      //  BookingDto bookingDto = new BookingDto(1L, startDate, endDate);
-
         Booking actual = service.bookingDtoToBooking(bookingDto, customer, room);
 
         assertEquals(bookingDto.getId(), actual.getId());
@@ -136,6 +130,9 @@ public class BookingServiceImplTest {
 
     }
 
+    /**
+     * Verifies that the method correctly saves a booking and returns the expected feedback.
+     */
     @Test
     void addBooking() {
         when(bookingRepo.save(booking)).thenReturn(booking);
@@ -146,6 +143,10 @@ public class BookingServiceImplTest {
         assertTrue(feedback.equalsIgnoreCase("Booking saved"));
 
     }
+
+    /**
+     * Verifies that the method correctly retrieves all bookings and converts them to detailed booking DTOs.
+     */
 
     @Test
     void getAllBookings() {
@@ -163,6 +164,9 @@ public class BookingServiceImplTest {
         assertEquals(booking.getExtraBedsQuantity(), actual.getExtraBedsQuantity());
     }
 
+    /**
+     * Verifies that the method correctly deletes a booking and returns the expected feedback.
+     */
     @Test
     void deleteBooking() {
         when(bookingRepo.findById(any())).thenReturn(Optional.of(booking));

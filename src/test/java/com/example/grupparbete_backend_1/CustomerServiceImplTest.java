@@ -23,7 +23,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+/**
+ * Unit tests for the CustomerServiceImpl class.
+ * These tests verify the behavior of the CustomerServiceImpl
+ * by testing its methods in isolation. Dependencies such as
+ * CustomerRepo and BookingServiceImpl are mocked for testing
+ * reliability.
+ */
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class CustomerServiceImplTest {
