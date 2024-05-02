@@ -57,7 +57,7 @@ public class BookingControllerTH {
     }
 
     @RequestMapping(path = "/deleteById/{id}/")
-    public String deleteBooking(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+    public String deleteBooking(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         String message = bookingService.deleteBooking(id);
         redirectAttributes.addFlashAttribute("message", message);
 
@@ -67,7 +67,6 @@ public class BookingControllerTH {
 
     @RequestMapping("/editByView/{id}/")
     public String createByForm(@PathVariable Long id, Model model) {
-        //System.out.println("hej");
         DetailedBookingDto booking = bookingService.findById(id);
 
         //TODO - HANDLE NULL CUSTOMER
@@ -91,32 +90,7 @@ public class BookingControllerTH {
 
         return "redirect:/booking/all";
     }
-    /*
-    @RequestMapping("/addBookingView")
-    public String createBookingByForm(Model model) {
-        return "addBookingForm";
-    }
 
-     */
-    /*
-    @PostMapping("/addBooking")
-    public String addBooking(@Valid @RequestParam Long roomId, @RequestParam Long customerId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam int guestQuantity, @RequestParam int extraBedsQuantity, Model model) {
-        model.addAttribute("customerId", "Customer Id: ");
-        model.addAttribute("startDate", "Start Date: ");
-        model.addAttribute("endDate", "End Date: ");
-        model.addAttribute("guestQuantity", "Total guests: ");
-        model.addAttribute("roomId", "Room number: ");
-        model.addAttribute("extraBedsQuantity", "Extra beds: ");
-
-        DetailedCustomerDto detailedCustomerDto = customerService.findById(customerId);
-        bookingService.addBooking(new DetailedBookingDto(startDate, endDate, guestQuantity, extraBedsQuantity, detailedCustomerDto,roomService.findById(roomId)));
-        CustomerDto customerDto = customerService.detailedCustomerDtoToCustomerDto(customerService.findById(customerId));
-        DetailedBookingDto booking = new DetailedBookingDto(startDate, endDate, guestQuantity, extraBedsQuantity, customerDto,roomService.findById(roomId));
-        bookingService.addBooking(booking);
-        return "redirect:/booking/all";
-    }
-
-     */
 
     @PostMapping("/addBooking/{roomId}/{customerId}/{startDate}/{endDate}/{guestQuantity}/{extraBedsQuantity}")
     public String addBookingThroughGuide(@Valid @PathVariable@RequestParam Long roomId,
@@ -124,7 +98,7 @@ public class BookingControllerTH {
                                          @RequestParam LocalDate startDate,
                                          @RequestParam LocalDate endDate,
                                          @RequestParam int guestQuantity,
-                                         @RequestParam int extraBedsQuantity, Model model) {
+                                         @RequestParam int extraBedsQuantity) {
         CustomerDto customerDto = customerService.detailedCustomerDtoToCustomerDto(customerService.findById(customerId));
         DetailedBookingDto booking = new DetailedBookingDto(startDate, endDate, guestQuantity, extraBedsQuantity, customerDto,roomService.findById(roomId));
         bookingService.addBooking(booking);
@@ -133,38 +107,16 @@ public class BookingControllerTH {
 
     //CREATE NEW BOOKING - STAGE 1 - EMPTY FIELDS
     @RequestMapping("/bookingByView/{customerId}/")
-    public String sendCustomerToSearch(@Valid @PathVariable Long customerId, Model model, RedirectAttributes redirectAttributes) {
+    public String sendCustomerToSearch(@Valid @PathVariable Long customerId, Model model) {
         //TODO - HANDLE NULL CUSTOMER
 
-
-
-        //List<RoomDto> roomList = roomService.getAllRoom();
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
         model.addAttribute("roomTypes", roomTypeList);
-        //model.addAttribute("allRooms", roomList);
         model.addAttribute("roomId", "Room number: ");
         model.addAttribute("roomSize", "Room Size: ");
         model.addAttribute("maxExtraBeds", "Max extra beds: ");
         model.addAttribute("customerId", customerId);
 
-
-        //Send variables to fill fields next time
-        //model.addAttribute("startDate", "Room number: ");
-        //model.addAttribute("endDate", "Room Size: ");
-        //model.addAttribute("guestQuantity", "Max extra beds: ");
-        //model.addAttribute("extraBedsQuantity", "Max extra beds: ");
-
-        //Redirect attempt, might work, can try later
-        /*redirectAttributes.addAttribute("roomType", model.getAttribute("roomType"));
-        redirectAttributes.addAttribute("startDate", model.getAttribute("startDate"));
-        redirectAttributes.addAttribute("endDate", model.getAttribute("endDate"));
-        redirectAttributes.addAttribute("guestQuantityField", 3);
-        redirectAttributes.addAttribute("extraBedsQuantity", model.getAttribute("extraBedsQuantity"));*/
-
-        //session.setAttribute("startDateField", model.getAttribute("startDate"));
-        //session.setAttribute("guestQuantityField", 3);
-
-        //redirectAttributes.addFlashAttribute();
         return "searchRooms";
     }
 
@@ -180,9 +132,6 @@ public class BookingControllerTH {
             Model model) {
         //TODO - HANDLE NULL CUSTOMER
 
-
-
-        //System.out.println("ROOM TYPE ID FROM FORM: " + roomTypeId);
         System.out.println("START DATE FROM FORM: " + startDate);
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
         model.addAttribute("roomTypes", roomTypeList);
@@ -190,26 +139,18 @@ public class BookingControllerTH {
 
         //Dates parameter are string
         List<Room> availableRoomList = bookingService.findAvailableRooms(LocalDate.parse(startDate), LocalDate.parse(endDate), roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
-
-        //Dates parameter are localdate
-        //List<Room> availableRoomList = bookingService.findAvailableRooms(startDate, endDate, roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
-
-
-        //List<RoomDto> availableRoomList = roomService.getAllRoom();
-        System.out.println("ROOM LIST AVAILABLE SIZE: " + availableRoomList.size());
         model.addAttribute("allRooms", availableRoomList);
 
         //TABLE HEADS
         model.addAttribute("roomId", "Room number: ");
         model.addAttribute("roomSize", "Room Size: ");
         model.addAttribute("maxExtraBeds", "Max extra beds: ");
-
-        //model.addAttribute("roomId", );
         model.addAttribute("roomIdField", roomTypeId);
         model.addAttribute("startDateField", startDate);
         model.addAttribute("endDateField", endDate);
         model.addAttribute("guestQuantityField", guestQuantity);
         model.addAttribute("maxExtraBedsField", extraBedsQuantity);
+
         return "searchRooms";
     }
 
@@ -219,12 +160,10 @@ public class BookingControllerTH {
                              @PathVariable("endDate") String endDate,
                              @PathVariable("guestQuantity") int guestQuantity,
                              @PathVariable("extraBedsQuantity") int extraBedsQuantity,
-                             //@RequestParam("roomTypeId") Long roomTypeId,
                              @PathVariable("customerId") Long customerId,
                              @PathVariable("roomId") Long roomId,
                              Model model,
                              RedirectAttributes redirectAttributes) {
-        System.out.println("RECEIVED TO ADDBOOKING STARTDATE: " + startDate);
 
         DetailedBookingDto bookingDto = new DetailedBookingDto(LocalDate.parse(startDate), LocalDate.parse(endDate), guestQuantity, extraBedsQuantity, customerService.detailedCustomerDtoToCustomerDto( customerService.findById(customerId) ), roomService.findById(roomId));
         bookingService.addBooking(bookingDto);
@@ -237,22 +176,17 @@ public class BookingControllerTH {
     }
 
 
-
-
-
-
-
     //UPDATE BOOKING - STAGE 1 - AUTOFILL WITH EXISTING BOOKING INFO
     @RequestMapping("/updateBookingByView/{bookingId}/")
-    public String sendUpdateBookingToSearchRooms(@Valid @PathVariable Long bookingId, Model model, RedirectAttributes redirectAttributes) {
+    public String sendUpdateBookingToSearchRooms(@Valid @PathVariable Long bookingId, Model model) {
         //TODO - HANDLE NULL CUSTOMER
 
         DetailedBookingDto thisBooking = bookingService.findById(bookingId);
 
-        //List<RoomDto> roomList = roomService.getAllRoom();
+
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
+
         model.addAttribute("roomTypes", roomTypeList);
-        //model.addAttribute("allRooms", roomList);
         model.addAttribute("roomId", "Room number: ");
         model.addAttribute("roomSize", "Room Size: ");
         model.addAttribute("maxExtraBeds", "Max extra beds: ");
@@ -263,26 +197,8 @@ public class BookingControllerTH {
         model.addAttribute("endDateField", thisBooking.getEndDate());
         model.addAttribute("guestQuantityField", thisBooking.getGuestQuantity());
         model.addAttribute("maxExtraBedsField", thisBooking.getExtraBedsQuantity());
-        model.addAttribute("roomTypeIdField", thisBooking.getRoom().getRoomType().getId()); // får inte denna att fungera helt ännu
+        model.addAttribute("roomTypeIdField", thisBooking.getRoom().getRoomType().getId());
 
-
-        //Send variables to fill fields next time
-        //model.addAttribute("startDate", "Room number: ");
-        //model.addAttribute("endDate", "Room Size: ");
-        //model.addAttribute("guestQuantity", "Max extra beds: ");
-        //model.addAttribute("extraBedsQuantity", "Max extra beds: ");
-
-        //Redirect attempt, might work, can try later
-        /*redirectAttributes.addAttribute("roomType", model.getAttribute("roomType"));
-        redirectAttributes.addAttribute("startDate", model.getAttribute("startDate"));
-        redirectAttributes.addAttribute("endDate", model.getAttribute("endDate"));
-        redirectAttributes.addAttribute("guestQuantityField", 3);
-        redirectAttributes.addAttribute("extraBedsQuantity", model.getAttribute("extraBedsQuantity"));*/
-
-        //session.setAttribute("startDateField", model.getAttribute("startDate"));
-        //session.setAttribute("guestQuantityField", 3);
-
-        //redirectAttributes.addFlashAttribute();
         return "searchRoomsUpdateBooking";
     }
 
@@ -298,25 +214,11 @@ public class BookingControllerTH {
             Model model) {
         //TODO - HANDLE NULL CUSTOMER
 
-
-
-        //System.out.println("ROOM TYPE ID FROM FORM: " + roomTypeId);
-        //System.out.println("START DATE FROM FORM: " + startDate);
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
-        model.addAttribute("roomTypes", roomTypeList);
-        model.addAttribute("roomTypeIdField", roomTypeId);
-
-
-
-        //Dates parameter are string
         List<Room> availableRoomList = bookingService.findAvailableRooms(LocalDate.parse(startDate), LocalDate.parse(endDate), roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
 
-        //Dates parameter are localdate
-        //List<Room> availableRoomList = bookingService.findAvailableRooms(startDate, endDate, roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(roomTypeId)));
-
-
-        //List<RoomDto> availableRoomList = roomService.getAllRoom();
-        System.out.println("ROOM LIST AVAILABLE SIZE: " + availableRoomList.size());
+        model.addAttribute("roomTypes", roomTypeList);
+        model.addAttribute("roomTypeIdField", roomTypeId);
         model.addAttribute("allRooms", availableRoomList);
 
         //TABLE HEADS
@@ -342,10 +244,8 @@ public class BookingControllerTH {
                              @PathVariable("endDate") String endDate,
                              @PathVariable("guestQuantity") int guestQuantity,
                              @PathVariable("extraBedsQuantity") int extraBedsQuantity,
-                             //@RequestParam("roomTypeId") Long roomTypeId,
                              @PathVariable("bookingId") Long bookingId,
                              @PathVariable("roomId") Long roomId,
-                             Model model,
                              RedirectAttributes redirectAttributes) {
         System.out.println("RECEIVED TO ADDBOOKING STARTDATE: " + startDate);
 
@@ -363,17 +263,5 @@ public class BookingControllerTH {
         redirectAttributes.addFlashAttribute("feedbackMessageUpdateBooking", feedbackMessage);
         return "redirect:/booking/all";
     }
-
-
-
-
-   /* @RequestMapping("/booking/searchAvailableRooms/")
-    public String searchAvailableRooms(Model model, @RequestParam Long roomId, @RequestParam int maxExtraBeds) {
-        bookingService.findAvailableRooms(
-                LocalDate.parse(model.getAttribute("startDate").toString()),
-                LocalDate.parse(model.getAttribute("endDate").toString()),
-        //List<RoomDto> roomList = roomService.getAllRoom();
-
-*/
 
 }

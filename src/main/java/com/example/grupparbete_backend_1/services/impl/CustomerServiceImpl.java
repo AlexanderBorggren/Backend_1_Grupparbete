@@ -7,13 +7,12 @@ import com.example.grupparbete_backend_1.services.CustomerService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.util.Collections;
 import java.util.List;
 
-@Repository // Error without this (Could not autowire. No beans of 'RoomService' type found.)
+@Repository
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
@@ -71,21 +70,6 @@ public class CustomerServiceImpl implements CustomerService {
         return customer.getName() + " has been removed, customer had no active bookings.";
     }
 
-    @Override
-    public DetailedCustomerDto editCustomer(Long id, String name, String ssn, String email) {
-        Customer c = customerRepo.findById(id).stream().findFirst().orElse(null);
-        if(c == null){
-            return null;
-        }
-        c.setName(name);
-        c.setSsn(ssn);
-        c.setEmail(email);
-
-        customerRepo.save(c);
-
-        return customerToDetailedCustomerDto(c);
-
-    }
     public DetailedCustomerDto findById(Long id) {
         Customer c = customerRepo.findById(id).stream().findFirst().orElse(null);
         if(c == null){
@@ -104,30 +88,5 @@ public class CustomerServiceImpl implements CustomerService {
         return c;
 
     }
- /*   @Override
-    public void deleteCustomer(Long id) {
-        bookingService.getAllBookings().forEach(booking -> bookingService.);
-        customerRepo.deleteById(id);
-        //customerRepo.saveAll(customerRepo.findAll());
-    }*/
-//    @Override
-//    public BookingDto bookingToBookingDto(Booking booking) {
-//        return BookingDto.builder().id(booking.getId())
-//                .startDate(booking.getStartDate())
-//                .endDate(booking.getEndDate())
-//                .build();
-//    }
 
-//    @Override
-//    public Booking bookingDtoToBooking(BookingDto booking, Customer customer, Room room) {
-//        return Booking.builder().id(booking.getId()).customer(customer).room(room).build();
-//    }
-//    @Override
-//    public Room roomDtoToRoom(RoomDto room, RoomType roomType) {
-//        return Room.builder().id(room.getId()).roomType(roomType).build();
-//    }
-//    @Override
-//    public RoomType roomTypeDtoToRoomType(DetailedRoomTypeDto roomType) {
-//        return RoomType.builder().id(roomType.getId()).roomSize(roomType.getRoomSize()).maxExtraBeds(roomType.getMaxExtraBeds()).build();
-//    }
 }

@@ -1,7 +1,6 @@
 package com.example.grupparbete_backend_1.services.impl;
 
 import com.example.grupparbete_backend_1.dto.DetailedRoomTypeDto;
-import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.models.RoomType;
 import com.example.grupparbete_backend_1.repositories.RoomTypeRepo;
 import com.example.grupparbete_backend_1.services.RoomTypeService;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Repository // Error without this (Could not autowire. No beans of 'RoomService' type found.)
+@Repository
 @Service
 public class RoomTypeServiceImpl implements RoomTypeService {
 

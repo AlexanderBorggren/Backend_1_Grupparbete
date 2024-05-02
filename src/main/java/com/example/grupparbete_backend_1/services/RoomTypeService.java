@@ -2,7 +2,6 @@ package com.example.grupparbete_backend_1.services;
 
 import com.example.grupparbete_backend_1.dto.DetailedRoomTypeDto;
 import com.example.grupparbete_backend_1.models.RoomType;
-
 import java.util.List;
 
 public interface RoomTypeService {
