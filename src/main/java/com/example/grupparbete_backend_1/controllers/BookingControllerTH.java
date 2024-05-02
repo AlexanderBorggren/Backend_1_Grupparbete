@@ -132,7 +132,6 @@ public class BookingControllerTH {
             Model model) {
         //TODO - HANDLE NULL CUSTOMER
 
-        System.out.println("START DATE FROM FORM: " + startDate);
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
         model.addAttribute("roomTypes", roomTypeList);
         model.addAttribute("roomTypeIdField", roomTypeId);
@@ -247,7 +246,6 @@ public class BookingControllerTH {
                              @PathVariable("bookingId") Long bookingId,
                              @PathVariable("roomId") Long roomId,
                              RedirectAttributes redirectAttributes) {
-        System.out.println("RECEIVED TO ADDBOOKING STARTDATE: " + startDate);
 
         //SET NEW VALUES FOR EXISTING BOOKING
         DetailedBookingDto bookingDto = bookingService.findById(bookingId);
