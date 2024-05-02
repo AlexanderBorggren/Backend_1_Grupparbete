@@ -2,12 +2,10 @@ package com.example.grupparbete_backend_1.services;
 
 import com.example.grupparbete_backend_1.dto.BookingDto;
 import com.example.grupparbete_backend_1.dto.DetailedBookingDto;
-import com.example.grupparbete_backend_1.dto.RoomDto;
 import com.example.grupparbete_backend_1.models.Booking;
 import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.models.Room;
 import com.example.grupparbete_backend_1.models.RoomType;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,26 +22,6 @@ public interface BookingService {
 
     String deleteBooking(Long bookingId);
 
-   /* public boolean isRoomAvailable(Long bookingId, LocalDate startDate, LocalDate endDate, RoomType roomType);*/
-
-    /*@Override
-    public boolean isRoomAvailable(Long roomId, LocalDate startDate, LocalDate endDate, RoomType roomType) {
-        ChronoLocalDate now = ChronoLocalDate.from(LocalDateTime.now());
-
-        List<Booking> bookingsWithThisRoom = bookingRepo.findAll().stream().filter(booking -> booking.getRoom().getId().equals(roomId)).toList();
-        System.out.println(bookingsWithThisRoom);
-        Booking booking = bookingRepo.findById(roomId).stream().findFirst().orElse(null);
-
-
-        if(booking == null)
-        {
-            return true;
-        }
-
-        return booking.getStartDate().isAfter(startDate) ||
-                booking.getEndDate().isBefore(endDate);
-
-    }*/
     boolean isRoomAvailable(LocalDate startDate, LocalDate endDate, Long roomId);
 
     public DetailedBookingDto findById(Long id);

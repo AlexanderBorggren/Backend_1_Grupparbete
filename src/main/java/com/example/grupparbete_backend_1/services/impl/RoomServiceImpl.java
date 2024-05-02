@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Repository // Error without this (Could not autowire. No beans of 'RoomService' type found.)
+@Repository
 @Service
 public class RoomServiceImpl implements RoomService {
 
