@@ -263,9 +263,8 @@ public class BookingControllerTH {
         model.addAttribute("endDateField", thisBooking.getEndDate());
         model.addAttribute("guestQuantityField", thisBooking.getGuestQuantity());
         model.addAttribute("maxExtraBedsField", thisBooking.getExtraBedsQuantity());
-        model.addAttribute("roomTypeIdField", thisBooking.getRoom().getRoomType().getRoomSize()); // får inte denna att fungera helt ännu
+        model.addAttribute("roomTypeIdField", thisBooking.getRoom().getRoomType().getId()); // får inte denna att fungera helt ännu
 
-        System.out.println("RECEIVED ROOMTYPE : " + thisBooking.getRoom().getRoomType().getRoomSize());
 
         //Send variables to fill fields next time
         //model.addAttribute("startDate", "Room number: ");
