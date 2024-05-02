@@ -6,7 +6,6 @@ import com.example.grupparbete_backend_1.services.BookingService;
 import com.example.grupparbete_backend_1.services.CustomerService;
 import com.example.grupparbete_backend_1.services.RoomService;
 import com.example.grupparbete_backend_1.services.RoomTypeService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -134,7 +133,7 @@ public class BookingControllerTH {
 
     //CREATE NEW BOOKING - STAGE 1 - EMPTY FIELDS
     @RequestMapping("/bookingByView/{customerId}/")
-    public String sendCustomerToSearch(@Valid @PathVariable Long customerId, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+    public String sendCustomerToSearch(@Valid @PathVariable Long customerId, Model model, RedirectAttributes redirectAttributes) {
         //TODO - HANDLE NULL CUSTOMER
 
 
@@ -245,7 +244,7 @@ public class BookingControllerTH {
 
     //UPDATE BOOKING - STAGE 1 - AUTOFILL WITH EXISTING BOOKING INFO
     @RequestMapping("/updateBookingByView/{bookingId}/")
-    public String sendUpdateBookingToSearchRooms(@Valid @PathVariable Long bookingId, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+    public String sendUpdateBookingToSearchRooms(@Valid @PathVariable Long bookingId, Model model, RedirectAttributes redirectAttributes) {
         //TODO - HANDLE NULL CUSTOMER
 
         DetailedBookingDto thisBooking = bookingService.findById(bookingId);
