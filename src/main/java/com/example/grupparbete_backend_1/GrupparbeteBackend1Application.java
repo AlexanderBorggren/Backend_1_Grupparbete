@@ -24,7 +24,7 @@ public class GrupparbeteBackend1Application {
         SpringApplication.run(GrupparbeteBackend1Application.class, args);
     }
 
-
+/*
     @Bean
     public CommandLineRunner addDefaultData(CustomerRepo customerRepo, RoomTypeRepo roomTypeRepo, RoomRepo roomRepo, BookingRepo bookingRepo) {
         return (args) -> {
@@ -130,7 +130,7 @@ public class GrupparbeteBackend1Application {
 
         };
     }
-
+*/
 
 
 

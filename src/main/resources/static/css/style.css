@@ -24,6 +24,54 @@ nav {
     text-align: center;
 }
 
+#Home {
+    text-align: left;
+}
+.deleteButton
+{
+    display: inline-block;
+    margin: -10px;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #af1717;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+.updateButton
+{
+    display: inline-block;
+    margin: -10px;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #313131;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.updateButton:hover {
+    background-color: #101010;
+}
+.bookRoomButton
+{
+    display: inline-block;
+    margin: -10px;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #3a9f31;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.bookRoomButton:hover {
+    background-color: #20591b;
+}
+.deleteButton:hover {
+    background-color: #5d0c0c;
+}
+
 nav a {
     display: inline-block;
     margin: 0 10px;

@@ -89,7 +89,8 @@
 
         // Regular expressions for validation
         var dateRegex = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD
-        var quantityRegex = /^[1-4]$/; // 1 to 4
+        var guestQuantityRegex = /^[1-4]$/; // 1 to 4
+        var extraBedsQuantityRegex = /^[0-2]$/;
 
         // Set min and max dates
         var today = new Date();
@@ -108,25 +109,34 @@
                 case '1':
                     extraBedsQuantity.max = '0';
                     guestQuantity.max = '2';
+                    guestQuantityRegex = /^[1-2]$/; // 1 to 4
+                    extraBedsQuantityRegex = /^[0]$/;
                     break;
                 case '2':
                     extraBedsQuantity.max = '1';
                     guestQuantity.max = '3';
+                    guestQuantityRegex = /^[1-3]$/; // 1 to 4
+                    extraBedsQuantityRegex = /^[0-1]$/;
+
                     break;
                 case '3':
                     extraBedsQuantity.max = '2';
                     guestQuantity.max = '4';
+                    guestQuantityRegex = /^[1-4]$/; // 1 to 4
+                    extraBedsQuantityRegex = /^[0-2]$/;
                     break;
                 default:
                     extraBedsQuantity.max = '0';
                     guestQuantity.max = '2';
+                    guestQuantityRegex = /^[1-2]$/; // 1 to 4
+                    extraBedsQuantityRegex = /^[0]$/;
             }
-            validateQuantities()
-        });
+            validateField(guestQuantity, guestQuantityError, guestQuantityRegex, 'Gästen antal är ogiltigt');
+            validateField(extraBedsQuantity, extraBedsQuantityError, extraBedsQuantityRegex, 'Extra bädder antal är ogiltigt');
+            checkAllFields();
+        }
+        );
 
-        // Validate extraBedsQuantity whenever its value changes
-        extraBedsQuantity.addEventListener('input', validateQuantities);
-        guestQuantity.addEventListener('input', validateQuantities);
 
         function validateField(input, inputError, regex, errorMessage) {
             input.addEventListener('input', function() {
@@ -139,63 +149,34 @@
             });
         }
 
-        function validateQuantities() {
-            let isValid = true;
-
-            if (!extraBedsQuantity.value) {
-                extraBedsQuantityError.textContent = 'Extra sängar fältet kan inte vara tomt';
-                isValid = false;}
-            else if (!guestQuantity.value) {
-                guestQuantityError.textContent = 'Gäster fältet kan inte vara tomt';
-                isValid = false;}
-
-            else if(extraBedsQuantity.value > extraBedsQuantity.max) {
-                extraBedsQuantityError.textContent = 'Antal extra sängar valda är felaktigt baserat på din valda rumstyp';
-                isValid = false;
-            } else if (extraBedsQuantity.value < 0) {
-                extraBedsQuantityError.textContent = 'Antalet extra sängar kan inte vara mindre än 0';
-                isValid = false;
-            } else if (guestQuantity.value < 1) {
-                guestQuantityError.textContent = 'Antalet gäster kan inte vara mindre än 1';
-                isValid = false;
-            }
-            else {
-                extraBedsQuantityError.textContent = '';
-            }
-
-            if (guestQuantity.value > guestQuantity.max) {
-                guestQuantityError.textContent = 'Antal gäster valda är felaktigt baserat på din valda rumstyp';
-                isValid = false;
-            } else if (guestQuantity.value < 0) {
-                guestQuantityError.textContent = 'Antalet gäster kan inte vara mindre än 0';
-                isValid = false;
-            } else {
-                guestQuantityError.textContent = '';
-            }
-
-            submitButton.disabled = !isValid;
-        }
-
         function checkAllFields() {
             var startDateValue = new Date(startDate.value);
             var endDateValue = new Date(endDate.value);
+            var maxGuests = parseInt(guestQuantity.max, 10);
+            var maxExtraBeds = parseInt(extraBedsQuantity.max, 10);
+
             if (startDateValue < today.setHours(0,0,0,0)) {
                 startDateError.textContent = 'Startdatumet kan inte vara tidigare än dagens datum';
                 submitButton.disabled = true;
             } else if (endDateValue <= startDateValue) {
                 endDateError.textContent = 'Slutdatumet kan inte vara tidigare än startdatumet';
                 submitButton.disabled = true;
-            } else if (dateRegex.test(startDate.value) && dateRegex.test(endDate.value) && quantityRegex.test(guestQuantity.value) && roomTypeId.value !== "") {
-                submitButton.disabled = false;
-            } else {
+            } else if (parseInt(guestQuantity.value, 10) > maxGuests) {
+                guestQuantityError.textContent = 'Gästen antal överstiger det maximala tillåtna';
                 submitButton.disabled = true;
-            }
+            } else if (parseInt(extraBedsQuantity.value, 10) > maxExtraBeds) {
+                extraBedsQuantityError.textContent = 'Extra bädder antal överstiger det maximala tillåtna';
+                submitButton.disabled = true;
+            } else if (dateRegex.test(startDate.value) && dateRegex.test(endDate.value) && guestQuantityRegex.test(guestQuantity.value) && extraBedsQuantityRegex.test(extraBedsQuantity.value) && roomTypeId.value !== "") {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
         }
 
-        // Set default values
-        //guestQuantity.value = '1';
+
+
         guestQuantity.min = '1';
-        //extraBedsQuantity.value = '0';
         extraBedsQuantity.min = '0';
 
         validateField(roomTypeId, roomTypeError, /.+/, 'Välj ett rumstyp');

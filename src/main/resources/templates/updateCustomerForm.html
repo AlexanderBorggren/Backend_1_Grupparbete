@@ -19,8 +19,8 @@
 
 
     <label for="ssn">SSN:</label><br>
-    <input type="text" id="ssn" th:field="*{ssn}" disabled><br>
-    <span id="ssn-error" class="error-message"></span> <br>
+    <input type="text" id="ssn" th:field="*{ssn}"><br>
+    <span id="ssn-error" class="error-message" th:text="${errorMessage}"></span> <br>
 
 
     <label for="email">Email:</label><br>

@@ -21,6 +21,7 @@ public interface CustomerService {
     public DetailedCustomerDto findById(Long id);
     public DetailedCustomerDto findBySsn(String ssn);
     public boolean doesSsnExist(String ssn);
+    public boolean doesSsnExistUpdate(String ssn, Long id);
 
 
 }

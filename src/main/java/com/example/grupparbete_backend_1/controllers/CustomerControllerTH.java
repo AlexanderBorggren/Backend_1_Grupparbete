@@ -53,6 +53,11 @@ public class CustomerControllerTH{
 
     @PostMapping("/update")
     public String updateCustomer(@Valid Model model, DetailedCustomerDto c, RedirectAttributes redirectAttributes) {
+        String id = String.valueOf(c.getId());
+        if (customerService.doesSsnExistUpdate(c.getSsn(), c.getId())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Customer with SSN " + c.getSsn() + " already exists.");
+            return "redirect:/customer/editByView/" + id + "/";
+        }
         customerService.addCustomer(c);
         model.addAttribute("name", "name");
         model.addAttribute("ssn", "ssn");
@@ -93,13 +98,16 @@ public class CustomerControllerTH{
         model.addAttribute("name", "name");
         model.addAttribute("ssn", "ssn");
         model.addAttribute("email", "email");
+
+        if (customerService.doesSsnExist(ssn)) {
+            model.addAttribute("errorMessage", "Customer with SSN " + ssn + " already exists.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Customer with SSN " + ssn + " already exists.");
+            return "addCustomerNewForm";}
+
         customerService.addCustomer(new DetailedCustomerDto(name, ssn, email));
         DetailedCustomerDto customer = customerService.findBySsn(ssn);
         Long customerId = customer.getId();
-        if (customerService.findBySsn(ssn) == null) {
 
-            return "redirect:/customer/all";
-        }
         redirectAttributes.addAttribute("customerId", customerId);
         return "redirect:/booking/bookingByView/{customerId}/";
     }

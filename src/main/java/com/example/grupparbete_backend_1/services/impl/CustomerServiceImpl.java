@@ -83,6 +83,14 @@ public class CustomerServiceImpl implements CustomerService {
         return customers.stream()
                 .anyMatch(customer -> customer.getSsn().equals(ssn));
     }
+    public boolean doesSsnExistUpdate(String ssn, Long customerId) {
+        List<DetailedCustomerDto> customers = getAllCustomer();
+        return customers.stream()
+                .anyMatch(customer -> customer.getSsn().equals(ssn) && (!customer.getId().equals(customerId)));
+    }
+
+
+
     public DetailedCustomerDto findBySsn(String ssn) {
         DetailedCustomerDto c = customerToDetailedCustomerDto(customerRepo.findAll().stream().filter(customer -> customer.getSsn().equals(ssn)).findFirst().orElse(null));
         return c;
