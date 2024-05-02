@@ -69,14 +69,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking bookingDtoToBooking(BookingDto bookingDto, Customer customer, Room room) {
-        return Booking.builder()
-                .id(bookingDto.getId())
-                .startDate(bookingDto.getStartDate())
-                .endDate(bookingDto.getEndDate())
-                .customer(customer)
-                .room(room)
-                .build();
+    public Booking bookingDtoToBooking(BookingDto booking, Customer customer, Room room) {
+        return Booking.builder().id(booking.getId()).customer(customer).room(room).build();
     }
 
     @Override
@@ -107,20 +101,15 @@ public class BookingServiceImpl implements BookingService {
 
       allBookingsWithThisRoom = allBookingsWithThisRoom.stream().filter(booking -> !booking.getEndDate().isBefore(now)).toList();
 
-      for(Booking booking : allBookingsWithThisRoom) { //2024-04-30 till 2024-05-03
-           /* if((booking.getStartDate().isAfter(startDate) && booking.getEndDate().isBefore(endDate))||
-                    (booking.getStartDate().isBefore(startDate) && (booking.getEndDate().isBefore(endDate)||booking.getEndDate().isAfter(endDate))))*/
+      for(Booking booking : allBookingsWithThisRoom) {
 
           if((booking.getStartDate().isAfter(startDate) && endDate.isAfter(booking.getStartDate())) ||
-                  //booking.getStartDate(2024-04-25).isBefore(2024-04-30) && 2024-05-03.isAfter(booking.getEndDate(2024-05-02)) == false
                   (booking.getEndDate().isAfter(startDate) && endDate.isAfter(booking.getEndDate())) ||
                   ((booking.getStartDate().isBefore(startDate) || booking.getStartDate().isEqual(startDate)) && (endDate.isBefore(booking.getEndDate()) || endDate.isEqual(booking.getEndDate())))
           )
-          //booking.getEndDate(2024-05-02).isAfter(2024-04-30) && 2024-05-03.isAfter(booking.getEndDate(2024-05-02)) == false
           {
               return false;
           }
-
 
       }
 
@@ -141,18 +130,10 @@ public class BookingServiceImpl implements BookingService {
 
         List<Room> roomIsAvailable = roomRepo.findAll().stream().toList();
 
-        System.out.println("Rooms available size stage1(all rooms): " + roomIsAvailable.size());
-        for(Room room : roomIsAvailable)
-        {
-            System.out.println("ROOMTYPE OF ROOM IN LIST: " + room.getRoomType());
-            System.out.println("ROOMTYPE OF IN PARAMETER ROOMTYPE: " + roomType);
-        }
         //Filter room
         roomIsAvailable = roomIsAvailable.stream().filter(room -> (room.getRoomType().getId().equals(roomType.getId()))).toList();
-        System.out.println("Rooms available size stage2(all rooms with this roomtype): " + roomIsAvailable.size());
 
         roomIsAvailable = roomIsAvailable.stream().filter(room -> isRoomAvailable(startDate, endDate, room.getId())).toList();
-        System.out.println("Rooms available size final stage: " + roomIsAvailable.size());
 
 
         return roomIsAvailable;
