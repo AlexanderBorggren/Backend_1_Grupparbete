@@ -54,11 +54,14 @@
         <th th:text="${roomId}"></th>
         <th th:text="${roomSize}"></th>
         <th th:text="${maxExtraBeds}"></th>
+        <th></th>
+
 
         <tbody>
         <tr th:each="room : ${allRooms}">
             <td th:text="${room.id}"></td>
             <td th:text="${room.roomType.roomSize}"></td>
+            <td th:text="${room.roomType.maxExtraBeds}"></td>
 
             <td>
                 <a th:href="@{/booking/updateBooking/{startDate}/{endDate}/{guestQuantity}/{extraBedsQuantity}/{bookingId}/{roomId}/(startDate=${startDateField}, endDate=${endDateField}, guestQuantity=${guestQuantityField}, extraBedsQuantity=${maxExtraBedsField}, bookingId=${bookingId}, roomId=${room.id})}">
