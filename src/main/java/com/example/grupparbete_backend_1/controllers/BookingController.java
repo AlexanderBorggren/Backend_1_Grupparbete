@@ -22,11 +22,7 @@ public class BookingController {
 
     @PostMapping("AddBooking")
     public void addBooking(@RequestBody DetailedBookingDto booking){
-        /*Customer customer = customerRepo.findById(1L).get();
-        if (customer == null){
-            System.out.println("Customer not found");
-            return;
-        }*/
+
         bookingService.addBooking(booking);
     }
 
@@ -34,8 +30,5 @@ public class BookingController {
     public List<DetailedBookingDto> getAllBookings(){
         return bookingService.getAllBookings();
     }
-
-    //@RequestMapping("ActiveBookings")
-    //public
 
 }
