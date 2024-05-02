@@ -17,8 +17,7 @@
 
     <label for="roomTypeId">Room type: </label><br>
     <select id="roomTypeId" name="roomTypeId">
-        <option value="roomIdField">--Please choose an option--</option>
-        <option th:each="roomType : ${roomTypes}" th:value="${roomType.id}" th:text="${roomType.roomSize}" th:selected="${roomType.id == roomTypeIdField}"></option>
+        <option value="roomIdField" th:each="roomType : ${roomTypes}" th:value="${roomType.id}" th:text="${roomType.roomSize}" th:selected="${roomType.id == roomTypeIdField}"></option>
     </select><br>
     <span id="roomType-error" class="error-message"></span> <br>
 
@@ -63,7 +62,7 @@
             <td th:text="${room.roomType.maxExtraBeds}"></td>
 
             <td>
-                <a th:href="@{/booking/addBooking/{startDate}/{endDate}/{guestQuantity}/{extraBedsQuantity}/{customerId}/{roomId}/(startDate=${startDateField}, endDate=${endDateField}, guestQuantity=${guestQuantityField}, extraBedsQuantity=${maxExtraBedsField}, customerId=${customerId}, roomId=${room.id})}">
+                <a class="bookRoomButton" th:href="@{/booking/addBooking/{startDate}/{endDate}/{guestQuantity}/{extraBedsQuantity}/{customerId}/{roomId}/(startDate=${startDateField}, endDate=${endDateField}, guestQuantity=${guestQuantityField}, extraBedsQuantity=${maxExtraBedsField}, customerId=${customerId}, roomId=${room.id})}">
                     Book room
                 </a>
             </td>
@@ -169,6 +168,10 @@
                 submitButton.disabled = true;
             } else if (dateRegex.test(startDate.value) && dateRegex.test(endDate.value) && guestQuantityRegex.test(guestQuantity.value) && extraBedsQuantityRegex.test(extraBedsQuantity.value) && roomTypeId.value !== "") {
             submitButton.disabled = false;
+            extraBedsQuantityError.textContent = '';
+            guestQuantityError.textContent = '';
+            endDateError.textContent = '';
+            startDateError.textContent = '';
         } else {
             submitButton.disabled = true;
         }
