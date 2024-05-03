@@ -25,15 +25,18 @@ public class Customer {
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Long id;
+
     @NotNull
     @NotEmpty(message = "Namnet får inte vara tomt")
     @Size(min = 1, max = 50, message = "Namnet får inte vara längre än 50 tecken")
     private String name;
+
     @NotNull
     @NotEmpty(message = "Personnumret får inte vara tomt")
     @Pattern(regexp = "^\\d{10}$", message = "Personnumret måste ha exakt 10 siffror")
     @Column(unique = true)
     private String ssn;
+
     @Email (message = "E-posten är ej giltig")
     @NotNull
     @NotEmpty(message = "E-post får inte vara tomt")

@@ -30,14 +30,17 @@ public class Booking {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @FutureOrPresent (message = "Startdatumet måste vara efter gårdagens datum")
     private LocalDate startDate;
+
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Future (message = "Slutdatumet måste minst en dag i framtiden")
     private LocalDate endDate;
+
     @NotNull
     @Min(value = 1, message = "Antal gäster måste vara mer än 0")
     @Max(value = 4, message = "Antalet gäster sängar kan inte vara mer än 4")
     private int guestQuantity;
+
     @NotNull
     @Min(value = 0, message = "Antalet extra sängar kan inte vara mindre än 0")
     @Max(value = 2, message = "Antalet extra sängar kan inte vara mer än 2")
