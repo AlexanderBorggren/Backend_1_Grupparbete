@@ -186,6 +186,8 @@
         validateField(roomTypeId, roomTypeError, /.+/, 'Välj ett rumstyp');
         validateField(startDate, startDateError, dateRegex, 'Startdatumet är ogiltigt');
         validateField(endDate, endDateError, dateRegex, 'Slutdatumet är ogiltigt');
+        validateField(guestQuantity, guestQuantityError, guestQuantityRegex, 'Antal gäster är ogiltigt');
+        validateField(extraBedsQuantity, extraBedsQuantityError, extraBedsQuantityRegex, 'Antal extrasängar är ogiltigt');
     }
 
 
