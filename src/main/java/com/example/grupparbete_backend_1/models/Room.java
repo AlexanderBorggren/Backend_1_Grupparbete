@@ -21,11 +21,14 @@ public class Room {
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Long id;
+
     @ManyToOne
     @JoinColumn
     private RoomType roomType;
+
     @CreationTimestamp
     private Timestamp regdate;
+
     @UpdateTimestamp
     private Timestamp updatedate;
 

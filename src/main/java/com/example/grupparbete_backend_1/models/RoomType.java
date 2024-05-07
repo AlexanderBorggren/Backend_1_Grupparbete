@@ -27,8 +27,10 @@ public class RoomType {
 
     private String roomSize;
     private int maxExtraBeds;
+
     @CreationTimestamp
     private Timestamp regdate;
+
     @UpdateTimestamp
     private Timestamp updatedate;
 
