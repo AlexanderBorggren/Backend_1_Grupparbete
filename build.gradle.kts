@@ -27,11 +27,17 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation ("com.fasterxml.jackson.core:jackson-databind:2.17.0")
+    implementation ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.0")
+    implementation ("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.17.0")
+
+
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.mysql:mysql-connector-j")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
 
 }
 
