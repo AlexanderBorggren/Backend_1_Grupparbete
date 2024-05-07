@@ -1,4 +1,4 @@
-package com.example.grupparbete_backend_1;
+package com.example.grupparbete_backend_1.controllerTests;
 
 import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.services.CustomerService;

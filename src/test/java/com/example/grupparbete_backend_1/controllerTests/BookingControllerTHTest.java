@@ -1,4 +1,4 @@
-package com.example.grupparbete_backend_1;
+package com.example.grupparbete_backend_1.controllerTests;
 
 import ch.qos.logback.core.model.Model;
 import com.example.grupparbete_backend_1.controllers.BookingController;
@@ -59,7 +59,7 @@ public class BookingControllerTHTest {
 
 
     @Test
-    void testGetAllBookings() throws Exception {
+    void getAllBookings() throws Exception {
 
         DetailedRoomTypeDto rt1 = new DetailedRoomTypeDto(1L,"Single", 0);
         DetailedRoomTypeDto rt2 = new DetailedRoomTypeDto(2L,"Double room 1", 1);

@@ -1,4 +1,4 @@
-package com.example.grupparbete_backend_1;
+package com.example.grupparbete_backend_1.controllerTests;
 
 import com.example.grupparbete_backend_1.controllers.BookingControllerTH;
 import com.example.grupparbete_backend_1.controllers.CustomerControllerTH;

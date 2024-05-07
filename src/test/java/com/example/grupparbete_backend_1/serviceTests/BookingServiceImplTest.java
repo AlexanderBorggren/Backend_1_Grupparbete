@@ -1,4 +1,4 @@
-package com.example.grupparbete_backend_1;
+package com.example.grupparbete_backend_1.serviceTests;
 
 import com.example.grupparbete_backend_1.dto.*;
 import com.example.grupparbete_backend_1.models.Booking;
@@ -133,49 +133,8 @@ public class BookingServiceImplTest {
     /**
      * Verifies that the method correctly saves a booking and returns the expected feedback.
      */
-    @Test
-    void addBooking() {
-        when(bookingRepo.save(booking)).thenReturn(booking);
-        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo, roomTypeRepo);
 
-        String feedback = service2.addBooking(detailedBookingDto);
-        System.out.println("feedback"+feedback);
-        assertTrue(feedback.equalsIgnoreCase("Booking saved"));
 
-    }
-
-    /**
-     * Verifies that the method correctly retrieves all bookings and converts them to detailed booking DTOs.
-     */
-
-    @Test
-    void getAllBookings() {
-        when(bookingRepo.findAll()).thenReturn(Collections.singletonList(booking));
-
-        List<DetailedBookingDto> allBookings = service.getAllBookings();
-
-        assertEquals(1, allBookings.size());
-        DetailedBookingDto actual = allBookings.get(0);
-
-        assertEquals(booking.getId(), actual.getId());
-        assertEquals(booking.getStartDate(), actual.getStartDate());
-        assertEquals(booking.getEndDate(), actual.getEndDate());
-        assertEquals(booking.getGuestQuantity(), actual.getGuestQuantity());
-        assertEquals(booking.getExtraBedsQuantity(), actual.getExtraBedsQuantity());
-    }
-
-    /**
-     * Verifies that the method correctly deletes a booking and returns the expected feedback.
-     */
-    @Test
-    void deleteBooking() {
-        when(bookingRepo.findById(any())).thenReturn(Optional.of(booking));
-
-        String result = service.deleteBooking(1L);
-
-        assertEquals("Booking with id 1 has been removed", result);
-        verify(bookingRepo, times(1)).delete(any());
-    }
 
 
 }

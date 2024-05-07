@@ -1,4 +1,4 @@
-package com.example.grupparbete_backend_1;
+package com.example.grupparbete_backend_1.serviceTests;
 
 import com.example.grupparbete_backend_1.dto.DetailedRoomTypeDto;
 import com.example.grupparbete_backend_1.dto.RoomDto;

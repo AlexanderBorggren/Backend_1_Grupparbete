@@ -1,5 +1,6 @@
-package com.example.grupparbete_backend_1;
+package com.example.grupparbete_backend_1.controllerTests;
 
+import com.example.grupparbete_backend_1.GrupparbeteBackend1Application;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
