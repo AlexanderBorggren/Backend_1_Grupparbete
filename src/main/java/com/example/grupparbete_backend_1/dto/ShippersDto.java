@@ -1,10 +1,7 @@
-package com.example.grupparbete_backend_1.models;
+package com.example.grupparbete_backend_1.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
@@ -15,39 +12,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.validation.annotation.Validated;
 
 import java.sql.Timestamp;
 
 @Data
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@Validated
-@JsonIgnoreProperties(ignoreUnknown = true)
+public class ShippersDto {
 
-public class Shippers {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id", nullable = false)
-    @JsonIgnore
     private Long id;
-    @JsonProperty("id")
     @Column(unique = true)
+    @JsonProperty("id")
     private Long external_Shippers_Id;
     @NotNull
     @NotEmpty
     private String companyName;
-    @NotNull
-    @NotEmpty
     private String phone;
-
     @CreationTimestamp
     private Timestamp regdate;
 
     @UpdateTimestamp
     private Timestamp updatedate;
 }
-

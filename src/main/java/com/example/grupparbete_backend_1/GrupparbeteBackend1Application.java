@@ -9,19 +9,30 @@ import com.example.grupparbete_backend_1.repositories.RoomRepo;
 import com.example.grupparbete_backend_1.repositories.RoomTypeRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Objects;
 
 
 @SpringBootApplication
 public class GrupparbeteBackend1Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(GrupparbeteBackend1Application.class, args);
+
+        if (args.length == 0) {
+           // SpringApplication.run(GrupparbeteBackend1Application.class, args);
+
+        //else if (Objects.equals(args[0], "fetchShippers")) {
+            SpringApplication fetchShippers = new SpringApplication(FetchShippers.class);
+            fetchShippers.setWebApplicationType(WebApplicationType.NONE);
+            fetchShippers.run(args);
+        }
+
     }
 
 /*
