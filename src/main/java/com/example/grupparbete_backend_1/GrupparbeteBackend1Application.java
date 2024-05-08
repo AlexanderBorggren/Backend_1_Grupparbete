@@ -24,7 +24,6 @@ public class GrupparbeteBackend1Application {
         SpringApplication.run(GrupparbeteBackend1Application.class, args);
     }
 
-/*
     @Bean
     public CommandLineRunner addDefaultData(CustomerRepo customerRepo, RoomTypeRepo roomTypeRepo, RoomRepo roomRepo, BookingRepo bookingRepo) {
         return (args) -> {
@@ -94,23 +93,23 @@ public class GrupparbeteBackend1Application {
             roomRepo.save(room10);
 
 
-            Booking booking1 = new Booking(LocalDate.parse("2024-05-02"), LocalDate.parse("2024-05-03"), 2, 0, customer1, room1, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Booking booking2 = new Booking(LocalDate.parse("2024-05-02"), LocalDate.parse("2024-05-03"), 3, 1, customer2, room5, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Booking booking3 = new Booking(LocalDate.parse("2024-05-02"), LocalDate.parse("2024-05-03"), 4, 2, customer3, room7, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Booking booking4 = new Booking(LocalDate.parse("2024-05-02"), LocalDate.parse("2024-05-03"), 1, 0, customer4, room2, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Booking booking5 = new Booking(LocalDate.parse("2024-05-02"), LocalDate.parse("2024-05-03"), 2, 0, customer5, room3, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking1 = new Booking(LocalDate.parse("2024-06-02"), LocalDate.parse("2024-06-03"), 2, 0, customer1, room1, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking2 = new Booking(LocalDate.parse("2024-06-02"), LocalDate.parse("2024-06-03"), 3, 1, customer2, room5, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking3 = new Booking(LocalDate.parse("2024-06-02"), LocalDate.parse("2024-06-03"), 4, 2, customer3, room7, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking4 = new Booking(LocalDate.parse("2024-06-02"), LocalDate.parse("2024-06-03"), 1, 0, customer4, room2, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking5 = new Booking(LocalDate.parse("2024-06-02"), LocalDate.parse("2024-06-03"), 2, 0, customer5, room3, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
 
-            Booking booking11 = new Booking(LocalDate.parse("2024-05-03"), LocalDate.parse("2024-05-08"), 4, 2, customer11, room9, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Booking booking12 = new Booking(LocalDate.parse("2024-05-03"), LocalDate.parse("2024-05-08"), 1, 0, customer12, room7, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Booking booking13 = new Booking(LocalDate.parse("2024-05-03"), LocalDate.parse("2024-05-08"), 2, 0, customer13, room8, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Booking booking14 = new Booking(LocalDate.parse("2024-05-03"), LocalDate.parse("2024-05-08"), 3, 1, customer14, room10, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Booking booking15 = new Booking(LocalDate.parse("2024-05-03"), LocalDate.parse("2024-05-08"), 1, 0, customer1, room1, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking11 = new Booking(LocalDate.parse("2024-06-03"), LocalDate.parse("2024-06-08"), 4, 2, customer11, room9, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking12 = new Booking(LocalDate.parse("2024-06-03"), LocalDate.parse("2024-06-08"), 1, 0, customer12, room7, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking13 = new Booking(LocalDate.parse("2024-06-03"), LocalDate.parse("2024-06-08"), 2, 0, customer13, room8, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking14 = new Booking(LocalDate.parse("2024-06-03"), LocalDate.parse("2024-06-08"), 3, 1, customer14, room10, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking15 = new Booking(LocalDate.parse("2024-06-03"), LocalDate.parse("2024-06-08"), 1, 0, customer1, room1, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
 
-            Booking booking16 = new Booking(LocalDate.parse("2024-05-15"), LocalDate.parse("2024-05-18"), 1, 0, customer2, room10, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Booking booking17 = new Booking(LocalDate.parse("2024-05-15"), LocalDate.parse("2024-05-18"), 2, 0, customer3, room9, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Booking booking18 = new Booking(LocalDate.parse("2024-05-15"), LocalDate.parse("2024-05-18"), 3, 1, customer4, room8, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Booking booking19 = new Booking(LocalDate.parse("2024-05-15"), LocalDate.parse("2024-05-18"), 4, 2, customer5, room7, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            Booking booking20 = new Booking(LocalDate.parse("2024-05-15"), LocalDate.parse("2024-05-18"), 1, 0, customer6, room6, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking16 = new Booking(LocalDate.parse("2024-06-15"), LocalDate.parse("2024-06-18"), 1, 0, customer2, room10, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking17 = new Booking(LocalDate.parse("2024-06-15"), LocalDate.parse("2024-06-18"), 2, 0, customer3, room9, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking18 = new Booking(LocalDate.parse("2024-06-15"), LocalDate.parse("2024-06-18"), 3, 1, customer4, room8, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking19 = new Booking(LocalDate.parse("2024-06-15"), LocalDate.parse("2024-06-18"), 4, 2, customer5, room7, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            Booking booking20 = new Booking(LocalDate.parse("2024-06-15"), LocalDate.parse("2024-06-18"), 1, 0, customer6, room6, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
 
             bookingRepo.save(booking1);
             bookingRepo.save(booking2);
@@ -130,13 +129,19 @@ public class GrupparbeteBackend1Application {
 
         };
     }
-
-*/
-
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         

@@ -6,16 +6,12 @@ import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.models.ContractCustomer;
 import com.example.grupparbete_backend_1.repositories.ContractCustomerRepo;
 import com.example.grupparbete_backend_1.services.ContractCustomerService;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-@Repository
 @Service
 public class ContractCustomerServiceImpl implements ContractCustomerService {
     ContractCustomerRepo contractCustomerRepo;
+
 
     public ContractCustomerServiceImpl(ContractCustomerRepo contractCustomerRepo){
         this.contractCustomerRepo=contractCustomerRepo;
@@ -30,20 +26,32 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
         return ContractCustomerDto.builder().id(contractCustomer.getId()).companyName(contractCustomer.getContactName())
                 .contactName(contractCustomer.getContactName()).contactTitle(contractCustomer.getContactTitle()).build();
     }
-/*private Long id;
+    /*    @Id
+    @GeneratedValue
+    private Long id;
+
+    @JacksonXmlProperty(localName = "id")
+    private Long externalId;
+
     private String companyName;
     private String contactName;
     private String contactTitle;
     private String streetAddress;
     private String city;
+    private String postalCode;
     private String country;
-    private String phone;*/
+    private String phone;
+    private String fax;
+
+*/
     @Override
     public DetailedContractCustomerDto contractCustomerToDetailedContractCustomerDto(ContractCustomer contractCustomer) {
         return DetailedContractCustomerDto.builder().id(contractCustomer.getId()).companyName(contractCustomer.getContactName())
                 .contactName(contractCustomer.getContactName()).contactTitle(contractCustomer.getContactTitle())
-                .streetAddress(contractCustomer.getStreetAddress()).city(contractCustomer.getCity()).country(contractCustomer.getCountry())
-                .phone(contractCustomer.getPhone()).build();
+                .streetAddress(contractCustomer.getStreetAddress()).city(contractCustomer.getCity()).postalCode(contractCustomer.getPostalCode())
+                .country(contractCustomer.getCountry())
+                .phone(contractCustomer.getPhone())
+                .fax(contractCustomer.getFax()).build();
     }
 
     @Override
@@ -71,13 +79,6 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
         return DetailedContractCustomerDto.builder().id(contractCustomerDto.getId()).companyName(contractCustomerDto.getContactName())
                 .contactName(contractCustomerDto.getContactName()).contactTitle(contractCustomerDto.getContactTitle()).build();    }
 
-    @Override
-    public List<DetailedContractCustomerDto> getAllDetailedContractCustomers() {
-        return contractCustomerRepo.findAll()
-                .stream()
-                .map(this::contractCustomerToDetailedContractCustomerDto)
-                .collect(Collectors.toList());
-    }
 
 
     @Override

@@ -1,24 +1,37 @@
 package com.example.grupparbete_backend_1.utils;
 
+import com.example.grupparbete_backend_1.dto.DetailedContractCustomerDto;
 import com.example.grupparbete_backend_1.models.AllContractCustomers;
 import com.example.grupparbete_backend_1.models.ContractCustomer;
+import com.example.grupparbete_backend_1.services.impl.ContractCustomerServiceImpl;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Component;
 
 import java.net.URL;
-@SpringBootApplication
+@Component
 public class XmlDataProcessing implements CommandLineRunner {
-
+    private static final Logger logger = LoggerFactory.getLogger(XmlDataProcessing.class);
+    @Autowired
+    ContractCustomerServiceImpl contractCustomerService;
     @Override
     public void run(String... args) throws Exception {
+
         JacksonXmlModule module = new JacksonXmlModule();
         module.setDefaultUseWrapper(false);
         XmlMapper xmlMapper = new XmlMapper(module);
+
         AllContractCustomers allContractCustomers = xmlMapper.readValue(new URL("https://javaintegration.systementor.se/customers"), AllContractCustomers.class);
 
-        for(ContractCustomer customers : allContractCustomers.contractCustomers){
+        for(ContractCustomer customer : allContractCustomers.getContractCustomers()){
+            DetailedContractCustomerDto detailedContractCustomerDto = contractCustomerService.contractCustomerToDetailedContractCustomerDto(customer);
+            contractCustomerService.addContractCustomer(detailedContractCustomerDto);
+            System.out.println("Successfully added customer");
 
         }
 

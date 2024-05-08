@@ -11,11 +11,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DetailedContractCustomerDto {
     private Long id;
+    private Long externalId;
     private String companyName;
     private String contactName;
     private String contactTitle;
     private String streetAddress;
     private String city;
+    private String postalCode;
     private String country;
     private String phone;
+    private String fax;
 }
