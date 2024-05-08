@@ -14,6 +14,5 @@ public interface ShippersService {
     public Shippers shippersDtoToShippers(ShippersDto shippers);
     public List<ShippersDto> getAllShippers();
     public void addShippers(ShippersDto shippers);
-
-
+    Shippers getShippersByExternalId(Long externalShippersId);
 }

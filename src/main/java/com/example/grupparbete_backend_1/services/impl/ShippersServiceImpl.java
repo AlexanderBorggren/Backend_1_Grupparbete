@@ -62,5 +62,9 @@ public class ShippersServiceImpl implements ShippersService {
     public void addShippers(ShippersDto shippers) {
         shippersRepo.save(shippersDtoToShippers(shippers));
     }
+    @Override
+    public Shippers getShippersByExternalId(Long externalShippersId){
+        return shippersRepo.findByExternal_Shippers_Id(externalShippersId);
+    }
 
 }

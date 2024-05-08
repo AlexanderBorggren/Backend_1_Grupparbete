@@ -32,8 +32,10 @@ public class FetchShippers implements CommandLineRunner {
 
             ShippersDto shippersDto = shippersService.shippersToShippersDto(s);
 
-
-            shippersService.addShippers(shippersDto);
+            Shippers existingShippers = shippersService.getShippersByExternalId(s.getExternal_Shippers_Id());
+            if (existingShippers == null) {
+                shippersService.addShippers(shippersDto);
+            }
         }
     }
 }
