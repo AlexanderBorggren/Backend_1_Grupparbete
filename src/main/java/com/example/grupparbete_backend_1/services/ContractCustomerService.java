@@ -5,6 +5,8 @@ import com.example.grupparbete_backend_1.dto.DetailedContractCustomerDto;
 import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.models.ContractCustomer;
 
+import java.util.List;
+
 public interface ContractCustomerService {
 
     public ContractCustomerDto contractCustomerToContractCustomerDto(ContractCustomer contractCustomer);
@@ -21,5 +23,8 @@ public interface ContractCustomerService {
     public String deleteContractCustomer(Long id);
 
     public DetailedCustomerDto findById(Long id);
+    public List<DetailedContractCustomerDto> getAllContractCustomers();
+
+
 
 }

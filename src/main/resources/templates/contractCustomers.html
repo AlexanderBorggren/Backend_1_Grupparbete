@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<nav id="Home"><a href="http://localhost:8080">Home</a>
+<h2 th:text="${contractCustomerTitle}"></h2>
+<div class="allContractCustomers" th:unless="${#lists.isEmpty(allContractCustomers)}">
+
+    <h4 th:text="${message}"></h4>
+    <h4 th:text="${updateCustomerFeedbackMessage}"></h4>
+
+    <table>
+        <th th:text="${companyName}"></th>
+        <th th:text="${contactName}"></th>
+        <th th:text="${contactTitle}"></th>
+        <th th:text="${country}"></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <tbody>
+        <tr th:each="contr : ${allContractCustomers}">
+            <td th:text="${contr.companyName}"></td>
+            <td th:text="${contr.contactName}"></td>
+            <td th:text="${contr.contactTitle}"></td>
+            <td th:text="${contr.country}"></td>
+
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<p>
+
+</p>
+
+
+</body>
+</html>

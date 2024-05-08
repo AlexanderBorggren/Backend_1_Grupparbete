@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DetailedContractCustomerDto {
     private Long id;
-    private Long externalId;
     private String companyName;
     private String contactName;
     private String contactTitle;
