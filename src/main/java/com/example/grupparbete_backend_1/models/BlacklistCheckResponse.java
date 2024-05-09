@@ -9,6 +9,8 @@ public class BlacklistCheckResponse {
             this.statusText = statusText;
             this.ok = ok;
         }
+    public BlacklistCheckResponse() {
+    }
 
     public String getStatusText() {
         return statusText;

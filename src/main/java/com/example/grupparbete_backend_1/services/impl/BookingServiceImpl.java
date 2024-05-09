@@ -9,9 +9,13 @@ import com.example.grupparbete_backend_1.repositories.BookingRepo;
 import com.example.grupparbete_backend_1.repositories.CustomerRepo;
 import com.example.grupparbete_backend_1.repositories.RoomRepo;
 import com.example.grupparbete_backend_1.repositories.RoomTypeRepo;
+import com.example.grupparbete_backend_1.services.BlacklistService;
 import com.example.grupparbete_backend_1.services.BookingService;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
@@ -25,7 +29,7 @@ public class BookingServiceImpl implements BookingService {
     private final CustomerRepo customerRepo;
     private final RoomRepo roomRepo;
     private final RoomTypeRepo roomTypeRepo;
-    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, RoomTypeRepo roomTypeRepo){
+    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, RoomTypeRepo roomTypeRepo) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
@@ -80,11 +84,27 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public String addBooking(DetailedBookingDto booking) {
+    public String addBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException {
         Customer customer = customerRepo.findById(booking.getCustomer().getId()).get();
+        BlacklistService blacklistService = new BlacklistServiceImpl();
         Room room = roomRepo.findById(booking.getRoom().getId()).get();
-        bookingRepo.save(detailedBookingDtoToBooking(booking, customer, room));
-        return "Booking har sparats";
+
+        if (blacklistService.isBlacklistOk(customer.getEmail())) {
+            bookingRepo.save(detailedBookingDtoToBooking(booking, customer, room));
+            return "You have created a new booking for customer " + customer.getName() + ". Booked a " + room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " + booking.getGuestQuantity() + " extra beds. Date booked is " + booking.getStartDate() + " to " + booking.getEndDate();
+        }
+        else return customer.getEmail() + " is blacklisted.";
+    }
+    public String updateBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException {
+        Customer customer = customerRepo.findById(booking.getCustomer().getId()).get();
+        BlacklistService blacklistService = new BlacklistServiceImpl();
+        Room room = roomRepo.findById(booking.getRoom().getId()).get();
+
+        if (blacklistService.isBlacklistOk(customer.getEmail())) {
+            bookingRepo.save(detailedBookingDtoToBooking(booking, customer, room));
+            return "You have updaed an existing booking for customer " + customer.getName() + ". Booked a " + room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " + booking.getGuestQuantity() + " extra beds. Date booked is " + booking.getStartDate() + " to " + booking.getEndDate();
+        }
+        else return customer.getEmail() + " is blacklisted, cannot be updated";
     }
     @Override
     public List<DetailedBookingDto> getAllBookings() {

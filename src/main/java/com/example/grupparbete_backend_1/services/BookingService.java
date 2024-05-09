@@ -6,6 +6,9 @@ import com.example.grupparbete_backend_1.models.Booking;
 import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.models.Room;
 import com.example.grupparbete_backend_1.models.RoomType;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,7 +21,9 @@ public interface BookingService {
 
 
     public List<DetailedBookingDto> getAllBookings();
-    public String addBooking(DetailedBookingDto booking);
+    public String addBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException;
+    public String updateBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException;
+
 
     String deleteBooking(Long bookingId);
 

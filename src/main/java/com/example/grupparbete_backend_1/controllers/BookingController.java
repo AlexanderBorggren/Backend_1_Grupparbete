@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -21,7 +23,7 @@ public class BookingController {
 
 
     @PostMapping("AddBooking")
-    public void addBooking(@RequestBody DetailedBookingDto booking){
+    public void addBooking(@RequestBody DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException {
 
         bookingService.addBooking(booking);
     }
