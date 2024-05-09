@@ -51,10 +51,22 @@ public class Customer {
     @UpdateTimestamp
     private Timestamp updatedate;
 
+ /*   private boolean isOk; // ny boolean för att hantera om OK eller ej.*/
 
     public Customer(String name, String ssn, String email, Timestamp regdate, Timestamp updatedate){
         this.name = name;
         this.ssn = ssn;
         this.email = email;
     }
+
+/*
+    public boolean isOk(){
+        return isOk;
+    }
+    public void setOk(boolean isOk) {
+        this.isOk = isOk;
+    }
+*/
+
+
 }

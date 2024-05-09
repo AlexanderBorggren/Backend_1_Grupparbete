@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Repository
 @Service
@@ -88,8 +90,6 @@ public class CustomerServiceImpl implements CustomerService {
         return customers.stream()
                 .anyMatch(customer -> customer.getSsn().equals(ssn) && (!customer.getId().equals(customerId)));
     }
-
-
 
     public DetailedCustomerDto findBySsn(String ssn) {
         DetailedCustomerDto c = customerToDetailedCustomerDto(customerRepo.findAll().stream().filter(customer -> customer.getSsn().equals(ssn)).findFirst().orElse(null));

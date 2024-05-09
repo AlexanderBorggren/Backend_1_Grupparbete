@@ -1,19 +1,29 @@
 package com.example.grupparbete_backend_1.controllers;
 
-import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
-import com.example.grupparbete_backend_1.models.Customer;
-import com.example.grupparbete_backend_1.services.CustomerService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import com.example.grupparbete_backend_1.dto.BlacklistedCustomerDto;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 
 @RestController
-@RequiredArgsConstructor
 public class CustomerController {
 
-    private final CustomerService customerService;
+   private final WebClient webClient;
 
+    public CustomerController(WebClient.Builder webClientBuilder){
+        this.webClient = webClientBuilder.baseUrl("https://javabl.systementor.se/api/stefan/blacklist").build();
+    }
+    @GetMapping("/getBlacklist")
+    public Mono<List<BlacklistedCustomerDto>> getBlacklist(){
+        return webClient.get()
+                .retrieve()
+                .bodyToFlux(BlacklistedCustomerDto.class)
+                .collectList();
+
+    }
 
 }
 

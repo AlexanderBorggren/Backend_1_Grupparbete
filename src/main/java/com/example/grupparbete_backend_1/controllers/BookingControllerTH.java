@@ -29,6 +29,7 @@ public class BookingControllerTH {
     CustomerService customerService;
     RoomTypeService roomTypeService;
 
+
     public BookingControllerTH(BookingService bookingService, RoomService roomService, CustomerService customerService, RoomTypeService roomTypeService) {
         this.bookingService=bookingService;
         this.roomService=roomService;
@@ -116,6 +117,7 @@ public class BookingControllerTH {
         model.addAttribute("roomSize", "Room Size: ");
         model.addAttribute("maxExtraBeds", "Max extra beds: ");
         model.addAttribute("customerId", customerId);
+
 
         return "searchRooms";
     }

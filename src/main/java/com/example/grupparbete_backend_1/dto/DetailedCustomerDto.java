@@ -22,11 +22,20 @@ public class DetailedCustomerDto {
     private String ssn;
     private List<BookingDto> bookingDtoList;
 
+
     public DetailedCustomerDto(String name, String ssn, String email) {
         this.email = email;
         this.name = name;
         this.ssn = ssn;
         bookingDtoList = Collections.emptyList();
     }
+    /*  private boolean isOk;*/
+/*
+    public boolean isOk() {
+        return isOk;
+    }
 
+    public void setOk(boolean ok) {
+        isOk = ok;
+    }*/
 }

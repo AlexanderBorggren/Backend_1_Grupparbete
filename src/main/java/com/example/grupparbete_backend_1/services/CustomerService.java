@@ -3,6 +3,7 @@ package com.example.grupparbete_backend_1.services;
 import com.example.grupparbete_backend_1.dto.*;
 import com.example.grupparbete_backend_1.models.Customer;
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerService {
 
