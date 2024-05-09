@@ -2,7 +2,6 @@ package com.example.grupparbete_backend_1.services.impl;
 
 import com.example.grupparbete_backend_1.dto.ContractCustomerDto;
 import com.example.grupparbete_backend_1.dto.DetailedContractCustomerDto;
-import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.models.ContractCustomer;
 import com.example.grupparbete_backend_1.repositories.ContractCustomerRepo;
 import com.example.grupparbete_backend_1.services.ContractCustomerService;
@@ -81,9 +80,19 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
     public String deleteContractCustomer(Long id) {
         return null;
     }
-
+/*    public DetailedCustomerDto findById(Long id) {
+        Customer c = customerRepo.findById(id).stream().findFirst().orElse(null);
+        if(c == null){
+            return null;
+        }
+        return customerToDetailedCustomerDto(c);
+    };*/
     @Override
-    public DetailedCustomerDto findById(Long id) {
-        return null;
+    public DetailedContractCustomerDto findById(Long id) {
+        ContractCustomer contractCustomer = contractCustomerRepo.findById(id).stream().findFirst().orElse(null);
+        if(contractCustomer==null){
+            return null;
+        }
+        return contractCustomerToDetailedContractCustomerDto(contractCustomer);
     }
 }

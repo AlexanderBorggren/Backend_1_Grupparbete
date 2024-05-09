@@ -167,3 +167,15 @@ form input[type="submit"]:hover {
 form input[type="submit"]:disabled {
     background-color: #808080;
 }
+
+/* Increase specificity for .nameLink */
+td .nameLink {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Increase specificity for .linkedText */
+td .linkedText {
+    font-weight: bold;
+    color: #333;
+}
