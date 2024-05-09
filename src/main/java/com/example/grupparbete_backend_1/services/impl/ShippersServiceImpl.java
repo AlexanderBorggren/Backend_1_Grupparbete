@@ -1,22 +1,13 @@
 package com.example.grupparbete_backend_1.services.impl;
 
-import com.example.grupparbete_backend_1.dto.CustomerDto;
-import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.dto.ShippersDto;
-import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.models.Shippers;
-import com.example.grupparbete_backend_1.repositories.CustomerRepo;
 import com.example.grupparbete_backend_1.repositories.ShippersRepo;
-import com.example.grupparbete_backend_1.services.CustomerService;
 import com.example.grupparbete_backend_1.services.ShippersService;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDate;
-import java.util.Collections;
+
 import java.util.List;
 
 @Repository
