@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -163,6 +166,17 @@ public class BookingControllerTH {
                              @PathVariable("roomId") Long roomId,
                              Model model,
                              RedirectAttributes redirectAttributes) {
+
+        //sendHttprequest to get blacklist response:
+
+        //String email = customerService.findById(customerId).getEmail();
+        //https://javabl.systementor.se/api/rosa/blacklistcheck/ + email
+
+       //getBlacklist response is ok
+
+        //TODO if (customerRepo.customerid.email is ok)
+        // continue
+        // else return message with error
 
         DetailedBookingDto bookingDto = new DetailedBookingDto(LocalDate.parse(startDate), LocalDate.parse(endDate), guestQuantity, extraBedsQuantity, customerService.detailedCustomerDtoToCustomerDto( customerService.findById(customerId) ), roomService.findById(roomId));
         bookingService.addBooking(bookingDto);
