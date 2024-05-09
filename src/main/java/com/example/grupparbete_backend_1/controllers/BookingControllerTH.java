@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -165,13 +168,26 @@ public class BookingControllerTH {
                              @PathVariable("customerId") Long customerId,
                              @PathVariable("roomId") Long roomId,
                              Model model,
-                             RedirectAttributes redirectAttributes) {
+                             RedirectAttributes redirectAttributes) throws URISyntaxException, IOException, InterruptedException {
 
         //sendHttprequest to get blacklist response:
 
-        //String email = customerService.findById(customerId).getEmail();
+        String email = customerService.findById(customerId).getEmail();
+        HttpClient client = HttpClient.newHttpClient();
+
         //https://javabl.systementor.se/api/rosa/blacklistcheck/ + email
 
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI("https://javabl.systementor.se/api/rosa/blacklistcheck/" + email))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+
+        if (response.statusCode() == 200) {
+            // Begäran var framgångsrik
+        /*    Gson gson = new Gson();
+            BlacklistCheckResponse blacklistCheckResponse = gson.fromJson(response.body(), BlacklistCheckResponse.class);
+*/
        //getBlacklist response is ok
 
         //TODO if (customerRepo.customerid.email is ok)
