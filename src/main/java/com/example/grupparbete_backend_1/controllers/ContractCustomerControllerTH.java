@@ -33,20 +33,15 @@ public class ContractCustomerControllerTH {
         return "contractCustomers";
     }
 
-    @RequestMapping("/contractcustomerview/{id}/")
-    public String createCustomerByForm(@PathVariable Long id, Model model) {
-        DetailedContractCustomerDto detailedContractCustomerDto = contractCustomerService.findById(id);
-        model.addAttribute("contractCustomers", detailedContractCustomerDto);
-        model.addAttribute("contractCustomerTitle", "Contract customer details");
-        model.addAttribute("companyName", "Company name: ");
-        model.addAttribute("country", "Country: ");
-        model.addAttribute("contactName", "Contact name: ");
-        model.addAttribute("contactTitle", "Title: ");
-        model.addAttribute("streetAddress", "Address: ");
-        model.addAttribute("postalCode", "Postal code: ");
-        model.addAttribute("country", "Country: ");
-        model.addAttribute("phone", "Phone number: ");
+    @RequestMapping("/contractcustomerview/{id}")
+    public String viewCustomerDetails(@PathVariable Long id, Model model) {
+        System.out.println("Requested customer ID: " + id);
 
+        DetailedContractCustomerDto detailedContractCustomerDto = contractCustomerService.getById(id);
+
+        System.out.println("Retrieved customer details: " + detailedContractCustomerDto);
+
+        model.addAttribute("contractCustomer", detailedContractCustomerDto);
         return "contractCustomerView";
     }
 

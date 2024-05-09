@@ -22,7 +22,7 @@ public interface ContractCustomerService {
 
     public String deleteContractCustomer(Long id);
 
-    public DetailedContractCustomerDto findById(Long id);
+    public DetailedContractCustomerDto getById(Long id);
     public List<DetailedContractCustomerDto> getAllContractCustomers();
 
 

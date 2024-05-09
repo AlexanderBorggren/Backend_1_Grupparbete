@@ -1,21 +1,10 @@
 package com.example.grupparbete_backend_1;
-import com.example.grupparbete_backend_1.models.Booking;
-import com.example.grupparbete_backend_1.models.Customer;
-import com.example.grupparbete_backend_1.models.Room;
-import com.example.grupparbete_backend_1.models.RoomType;
-import com.example.grupparbete_backend_1.repositories.BookingRepo;
-import com.example.grupparbete_backend_1.repositories.CustomerRepo;
-import com.example.grupparbete_backend_1.repositories.RoomRepo;
-import com.example.grupparbete_backend_1.repositories.RoomTypeRepo;
-import org.springframework.boot.CommandLineRunner;
+import com.example.grupparbete_backend_1.controllers.ContractCustomerControllerTH;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Objects;
 
 

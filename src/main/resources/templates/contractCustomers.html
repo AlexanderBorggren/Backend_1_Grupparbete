@@ -25,16 +25,13 @@
         <tr th:each="contr : ${allContractCustomers}">
             <td th:text="${contr.companyName}"></td>
             <td class="linkedText">
-                <a class="nameLink" th:href="@{'/contractcustomerview/' + ${contr.id}}">
+                <a class="nameLink" th:href="@{/contractcustomerview/{id}(id=${contr.id})}">
                     <span th:text="${contr.contactName}"></span>
                 </a>
             </td>
-<!--            <td th:text="${contr.contactName}"></td>-->
             <td th:text="${contr.contactTitle}"></td>
             <td th:text="${contr.country}"></td>
-
         </tr>
-
         </tbody>
     </table>
 </div>

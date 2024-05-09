@@ -88,9 +88,10 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
         return customerToDetailedCustomerDto(c);
     };*/
     @Override
-    public DetailedContractCustomerDto findById(Long id) {
-        ContractCustomer contractCustomer = contractCustomerRepo.findById(id).stream().findFirst().orElse(null);
-        if(contractCustomer==null){
+    public DetailedContractCustomerDto getById(Long id) {
+
+        ContractCustomer contractCustomer = contractCustomerRepo.findById(id).orElse(null);
+        if(contractCustomer == null) {
             return null;
         }
         return contractCustomerToDetailedContractCustomerDto(contractCustomer);
