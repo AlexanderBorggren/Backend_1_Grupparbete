@@ -4,9 +4,10 @@ import com.example.grupparbete_backend_1.dto.ContractCustomerDto;
 import com.example.grupparbete_backend_1.dto.DetailedContractCustomerDto;
 import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.models.ContractCustomer;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public interface ContractCustomerService {
 
     public ContractCustomerDto contractCustomerToContractCustomerDto(ContractCustomer contractCustomer);

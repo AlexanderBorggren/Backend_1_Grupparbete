@@ -5,12 +5,14 @@ import com.example.grupparbete_backend_1.dto.DetailedContractCustomerDto;
 import com.example.grupparbete_backend_1.models.ContractCustomer;
 import com.example.grupparbete_backend_1.repositories.ContractCustomerRepo;
 import com.example.grupparbete_backend_1.services.ContractCustomerService;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Repository
 public class ContractCustomerServiceImpl implements ContractCustomerService {
     ContractCustomerRepo contractCustomerRepo;
 

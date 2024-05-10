@@ -14,7 +14,12 @@
     <h4 th:text="${updateCustomerFeedbackMessage}"></h4>
 
     <table>
-        <th th:text="${companyName}"></th>
+        <th>
+            <span th:text="${companyName}"></span>
+            <a th:href="@{'/contractcustomers/' + '?pageNo=1&pageSize=10&sortCol=companyName&sortOrder=asc&q=' + ${q}}">
+                <img th:src="@{/assets/arrowsAscDesc.png}" alt="Asc/Desc">
+            </a>
+        </th>
         <th th:text="${contactName}"></th>
         <th th:text="${contactTitle}"></th>
         <th th:text="${country}"></th>
