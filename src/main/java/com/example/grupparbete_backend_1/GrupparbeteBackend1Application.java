@@ -24,10 +24,9 @@ public class GrupparbeteBackend1Application {
 
     public static void main(String[] args) {
 
-        if (Objects.equals(args[0], "main")) {
+        if (args.length ==0){
             SpringApplication.run(GrupparbeteBackend1Application.class, args);
         }
-
         else if (Objects.equals(args[0], "fetchShippers")) {
             SpringApplication fetchShippers = new SpringApplication(FetchShippers.class);
             fetchShippers.setWebApplicationType(WebApplicationType.NONE);
