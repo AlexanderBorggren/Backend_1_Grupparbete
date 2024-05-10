@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-<nav id="Home"><a href="http://localhost:8080">Home</a>
+<nav><a class="indexButtons" href="http://localhost:8080">Home</a>
 <h2 th:text="${contractCustomerTitle}"></h2>
 <div class="allContractCustomers" th:unless="${#lists.isEmpty(allContractCustomers)}">
 
