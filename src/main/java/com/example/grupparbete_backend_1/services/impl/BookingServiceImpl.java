@@ -29,6 +29,7 @@ public class BookingServiceImpl implements BookingService {
     private final CustomerRepo customerRepo;
     private final RoomRepo roomRepo;
     private final RoomTypeRepo roomTypeRepo;
+
     public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, RoomTypeRepo roomTypeRepo) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
@@ -86,9 +87,9 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public String addBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException {
         Customer customer = customerRepo.findById(booking.getCustomer().getId()).get();
-        BlacklistService blacklistService = new BlacklistServiceImpl();
-        Room room = roomRepo.findById(booking.getRoom().getId()).get();
 
+        Room room = roomRepo.findById(booking.getRoom().getId()).get();
+        BlacklistService blacklistService = new BlacklistServiceImpl();
         if (blacklistService.isBlacklistOk(customer.getEmail())) {
             bookingRepo.save(detailedBookingDtoToBooking(booking, customer, room));
             return "You have created a new booking for customer " + customer.getName() + ". Booked a " + room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " + booking.getGuestQuantity() + " extra beds. Date booked is " + booking.getStartDate() + " to " + booking.getEndDate();
