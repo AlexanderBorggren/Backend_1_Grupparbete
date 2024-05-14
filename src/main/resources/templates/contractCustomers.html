@@ -16,12 +16,22 @@
     <table>
         <th>
             <span th:text="${companyName}"></span>
-            <a th:href="@{'/contractcustomers/' + '?pageNo=1&pageSize=10&sortCol=companyName&sortOrder=asc&q=' + ${q}}">
+            <a th:href="@{'/contractcustomers/?pageNo=1&pageSize=10&sortCol=companyName' + '&sortOrder=' + ${sortOrder} + '&q=' + ${q}}">
                 <img th:src="@{/assets/arrowsAscDesc.png}" alt="Asc/Desc">
             </a>
         </th>
-        <th th:text="${contactName}"></th>
-        <th th:text="${contactTitle}"></th>
+        <th>
+            <span th:text="${contactName}"></span>
+            <a th:href="@{'/contractcustomers/?pageNo=1&pageSize=10&sortCol=contactName' + '&sortOrder=' + ${sortOrder} + '&q=' + ${q}}">
+                <img th:src="@{/assets/arrowsAscDesc.png}" alt="Asc/Desc">
+            </a>
+        </th>
+        <th>
+            <span th:text="${contactTitle}"></span>
+            <a th:href="@{'/contractcustomers/?pageNo=1&pageSize=10&sortCol=contactTitle' + '&sortOrder=' + ${sortOrder} + '&q=' + ${q}}">
+                <img th:src="@{/assets/arrowsAscDesc.png}" alt="Asc/Desc">
+            </a>
+        </th>
         <th th:text="${country}"></th>
         <th></th>
         <th></th>

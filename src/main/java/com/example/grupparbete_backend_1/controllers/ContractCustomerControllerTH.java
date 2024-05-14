@@ -39,6 +39,7 @@ public class ContractCustomerControllerTH {
         model.addAttribute("country", "Country ");
         model.addAttribute("contactName", "Contact name ");
         model.addAttribute("contactTitle", "Title ");
+        model.addAttribute("sortOrder", "asc");
         return "contractCustomers";
     }
 
@@ -57,10 +58,10 @@ public class ContractCustomerControllerTH {
 
     @GetMapping(path="/")
     String sorting(Model model, @RequestParam(defaultValue = "1") int pageNo,
-                 @RequestParam(defaultValue = "10") int pageSize,
-                 @RequestParam(defaultValue = "companyName") String sortCol,
-                 @RequestParam(defaultValue = "ASC") String sortOrder,
-                 @RequestParam(defaultValue = "") String g)
+                   @RequestParam(defaultValue = "10") int pageSize,
+                   @RequestParam(defaultValue = "companyName") String sortCol,
+                   @RequestParam(defaultValue = "asc") String sortOrder,
+                   @RequestParam(defaultValue = "") String g)
     {
         model.addAttribute("activeFunction", "home");
 
@@ -70,17 +71,29 @@ public class ContractCustomerControllerTH {
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortCol);
         Pageable pageable = PageRequest.of(pageNo-1,pageSize,sort);
 
+        model.addAttribute("companyName", "Company name ");
+        model.addAttribute("country", "Country ");
+        model.addAttribute("contactName", "Contact name ");
+        model.addAttribute("contactTitle", "Title ");
+
         if(!g.isEmpty()){
-            model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByCompanyNameContains(g,sort));
+            if(sortCol.equals("companyName")) {
+                model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByCompanyNameContains(g,sort));
+            } else if (sortCol.equals("contactName")){
+                model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByContactNameContains(g,sort));
+            } else {
+                model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByContactTitleContains(g,sort));
+            }
             model.addAttribute("totalPages",1);
             model.addAttribute("pageNo",1);
         }else{
+            model.addAttribute("sortOrder", sortOrder.equals("asc") ? "desc" : "asc");
             List<ContractCustomer> page = contractCustomerRepo.findAll(sort);
             model.addAttribute("pageNo", pageNo);
             model.addAttribute("allContractCustomers", page);
-
         }
         return "contractCustomers";
     }
+
 
 }

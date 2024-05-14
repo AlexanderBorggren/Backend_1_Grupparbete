@@ -9,6 +9,9 @@ import java.util.Optional;
 
 public interface ContractCustomerRepo extends JpaRepository<ContractCustomer, Long> {
    List<ContractCustomer> findAllByCompanyNameContains(String companyName, Sort sort);
+   List<ContractCustomer> findAllByContactNameContains(String contactName, Sort sort);
+   List<ContractCustomer> findAllByContactTitleContains(String contactTitle, Sort sort);
+
    List<ContractCustomer> findAll(Sort sort);
 
    public Optional<ContractCustomer> findById(Long id);
