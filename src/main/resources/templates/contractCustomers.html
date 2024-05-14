@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<nav><a class="indexButtons" href="http://localhost:8080">Home</a>
+<h2 th:text="${contractCustomerTitle}"></h2>
+<div class="allContractCustomers" th:unless="${#lists.isEmpty(allContractCustomers)}">
+
+    <h4 th:text="${message}"></h4>
+    <h4 th:text="${updateCustomerFeedbackMessage}"></h4>
+
+    <table>
+        <th>
+            <span th:text="${companyName}"></span>
+            <a th:href="@{'/contractcustomers/?pageNo=1&pageSize=10&sortCol=companyName' + '&sortOrder=' + ${sortOrder} + '&q=' + ${q}}">
+                <img th:src="@{/assets/arrowsAscDesc.png}" alt="Asc/Desc">
+            </a>
+        </th>
+        <th>
+            <span th:text="${contactName}"></span>
+            <a th:href="@{'/contractcustomers/?pageNo=1&pageSize=10&sortCol=contactName' + '&sortOrder=' + ${sortOrder} + '&q=' + ${q}}">
+                <img th:src="@{/assets/arrowsAscDesc.png}" alt="Asc/Desc">
+            </a>
+        </th>
+        <th>
+            <span th:text="${contactTitle}"></span>
+            <a th:href="@{'/contractcustomers/?pageNo=1&pageSize=10&sortCol=contactTitle' + '&sortOrder=' + ${sortOrder} + '&q=' + ${q}}">
+                <img th:src="@{/assets/arrowsAscDesc.png}" alt="Asc/Desc">
+            </a>
+        </th>
+        <th th:text="${country}"></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <tbody>
+        <tr th:each="contr : ${allContractCustomers}">
+            <td th:text="${contr.companyName}"></td>
+            <td class="linkedText">
+                <a class="nameLink" th:href="@{/contractcustomers/contractcustomerview/{id}(id=${contr.id})}">
+                    <span th:text="${contr.contactName}"></span>
+                </a>
+            </td>
+            <td th:text="${contr.contactTitle}"></td>
+            <td th:text="${contr.country}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<p>
+
+</p>
+
+
+</body>
+</html>

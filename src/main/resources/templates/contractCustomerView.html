@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+
+<nav><a class="indexButtons" href="http://localhost:8080">Home</a>
+    <h2 th:text="${contractCustomerTitle}"></h2>
+    <div class="contractCustomerView" >
+
+        <h4 th:text="${message}"></h4>
+        <h4 th:text="${updateCustomerFeedbackMessage}"></h4>
+
+        <table>
+            <tr>
+                <th>Company name:</th>
+                <td th:text="${contractCustomer.companyName}"></td>
+            </tr>
+            <tr>
+                <th>Contact name:</th>
+                <td th:text="${contractCustomer.contactName}"></td>
+            </tr>
+            <tr>
+                <th>Title:</th>
+                <td th:text="${contractCustomer.contactTitle}"></td>
+            </tr>
+            <tr>
+                <th>Street address:</th>
+                <td th:text="${contractCustomer.streetAddress}"></td>
+            </tr>
+            <tr>
+                <th>Postal code:</th>
+                <td th:text="${contractCustomer.postalCode}"></td>
+            </tr>
+            <tr>
+                <th>City:</th>
+                <td th:text="${contractCustomer.city}"></td>
+            </tr>
+            <tr>
+                <th>Country:</th>
+                <td th:text="${contractCustomer.country}"></td>
+            </tr>
+            <tr>
+                <th>Phone:</th>
+                <td th:text="${contractCustomer.phone}"></td>
+            </tr>
+        </table>
+    </div>
+</nav>
+
+</body>
+</html>

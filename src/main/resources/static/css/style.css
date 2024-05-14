@@ -72,7 +72,7 @@ nav {
     background-color: #5d0c0c;
 }
 
-nav a {
+nav a.indexButtons {
     display: inline-block;
     margin: 0 10px;
     padding: 10px 20px;
@@ -83,9 +83,11 @@ nav a {
     transition: all 0.3s ease;
 }
 
-nav a:hover {
+nav a.indexButtons:hover {
     background-color: #0056b3;
 }
+
+
 
 /* Table */
 table {
@@ -166,4 +168,16 @@ form input[type="submit"]:hover {
 
 form input[type="submit"]:disabled {
     background-color: #808080;
+}
+
+/* Increase specificity for .nameLink */
+td .nameLink {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Increase specificity for .linkedText */
+td .linkedText {
+    font-weight: bold;
+    color: #333;
 }
