@@ -1,5 +1,6 @@
 package com.example.grupparbete_backend_1.models;
 
+import com.example.grupparbete_backend_1.Events.EventBase;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,9 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 public class Room {
+
+
+    public EventBase eventBase;
 
     @Id
     @GeneratedValue
