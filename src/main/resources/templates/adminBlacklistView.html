@@ -8,9 +8,9 @@
 </head>
 <body>
 <nav id="Home">
-    <a href="http://localhost:8080">Home</a>
-    <a th:href="@{addBlacklistView}">Add to Blacklist</a>
-    <a href="http://localhost:8080/blacklist/externalBlacklistView">Check blacklist</a>
+    <a class="indexButtons" href="http://localhost:8080">Home</a>
+    <a class="indexButtons" th:href="@{addBlacklistView}">Add to Blacklist</a>
+    <a class="indexButtons" href="http://localhost:8080/blacklist/externalBlacklistView">Check blacklist</a>
 </nav>
 <h2 th:text="${customerTitle}"></h2>
 <div class="allCustomers" th:unless="${#lists.isEmpty(allCustomers)}">
