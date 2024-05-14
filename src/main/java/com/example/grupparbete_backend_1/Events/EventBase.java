@@ -1,5 +1,6 @@
 package com.example.grupparbete_backend_1.Events;
 
+import com.example.grupparbete_backend_1.models.RoomType;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
@@ -22,19 +23,16 @@ import java.time.LocalDateTime;
         @JsonSubTypes.Type(value = RoomOpened.class,name="RoomOpened")
 })
 @Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Validated
 public class EventBase {
-    @Id
-    @GeneratedValue
-    @Column(name = "id", nullable = false)
-    private Long id;
-
-    private String eventType;
+    //Behövs nog inte?
+    //private String eventType;
+    private String message;
 
     public LocalDateTime TimeStamp;
+
 }
 
