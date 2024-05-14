@@ -71,6 +71,7 @@ public class ContractCustomerControllerTH {
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortCol);
         Pageable pageable = PageRequest.of(pageNo-1,pageSize,sort);
 
+        model.addAttribute("contractCustomerTitle", "All contract customers");
         model.addAttribute("companyName", "Company name ");
         model.addAttribute("country", "Country ");
         model.addAttribute("contactName", "Contact name ");
