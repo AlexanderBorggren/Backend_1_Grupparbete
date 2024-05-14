@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<nav id="Home">
+    <a href="http://localhost:8080">Home</a>
+    <a th:href="@{addBlacklistView}">Add to Blacklist</a>
+    <a href="http://localhost:8080/blacklist/externalBlacklistView">Check blacklist</a>
+</nav>
+<h2 th:text="${customerTitle}"></h2>
+<div class="allCustomers" th:unless="${#lists.isEmpty(allCustomers)}">
+
+    <h4 th:text="${message}"></h4>
+    <h4 th:text="${updateCustomerFeedbackMessage}"></h4>
+
+    <table>
+        <th th:text="${customerId}"></th>
+        <th th:text="${name}"></th>
+        <th th:text="${ssn}"></th>
+        <th th:text="${email}"></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <tbody>
+        <tr th:each="cust : ${allCustomers}">
+            <td th:text="${cust.id}"></td>
+            <td th:text="${cust.name}"></td>
+            <td th:text="${cust.ssn}"></td>
+            <td th:text="${cust.email}"></td>
+            <td><a class="addButton" th:href="@{addToBlacklist/{id}/(id=${cust.id})}">Add to blacklist</a></td>
+            <td> <a class="updateButton" th:href="@{updateBlacklist/{email}/(email=${cust.email})}">Update</a></td>
+
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<p>
+
+</p>
+
+
+</body>
+</html>

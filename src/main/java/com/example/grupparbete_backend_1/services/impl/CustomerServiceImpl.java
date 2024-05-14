@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Service
@@ -76,7 +77,10 @@ public class CustomerServiceImpl implements CustomerService {
             return null;
         }
         return customerToDetailedCustomerDto(c);
-    };
+    }
+
+
+
 
     public boolean doesSsnExist(String ssn) {
         List<DetailedCustomerDto> customers = getAllCustomer();
@@ -96,5 +100,11 @@ public class CustomerServiceImpl implements CustomerService {
         return c;
 
     }
+
+    public DetailedCustomerDto findByEmail(String email) {
+        DetailedCustomerDto c = customerToDetailedCustomerDto(customerRepo.findAll().stream().filter(customer -> customer.getEmail().equals(email)).findFirst().orElse(null));
+        return c;
+    }
+
 
 }
