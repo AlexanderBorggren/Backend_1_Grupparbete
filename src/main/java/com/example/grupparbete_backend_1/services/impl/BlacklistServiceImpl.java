@@ -89,8 +89,6 @@ public class BlacklistServiceImpl implements BlacklistService {
            return null;
        }
 
-
-
     }
 
     @Override
