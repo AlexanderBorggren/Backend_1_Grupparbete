@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<h2>Add to blacklist</h2>
+
+<form id="BlacklistForm" action="#" th:action="@{/blacklist/addNewCustomerToBlacklist}"  method="post" >
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required maxlength="50" minlength="1"><br>
+    <span id="name-error" class="error-message"></span> <br>
+
+    <label for="email">Email:</label><br>
+    <input type="text" id="email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"><br>
+    <span id="email-error" class="error-message"></span> <br>
+
+    <input type=hidden id="id"><br>
+    <input type="submit" value="Next" id="submit-button" disabled>
+</form>
+
+<script>
+    window.onload = function() {
+        var name = document.getElementById('name');
+
+        var email = document.getElementById('email');
+        var nameError = document.getElementById('name-error');
+
+        var emailError = document.getElementById('email-error');
+        var submitButton = document.getElementById('submit-button');
+
+        // Regular expressions for validation
+        var nameRegex = /^.{1,50}$/;
+
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        function validateField(input, inputError, regex, errorMessage) {
+            input.addEventListener('input', function() {
+                if (!regex.test(input.value)) {
+                    inputError.textContent = errorMessage;
+                    submitButton.disabled = true;
+                } else {
+                    inputError.textContent = '';
+                    if (nameRegex.test(name.value)  && emailRegex.test(email.value)) {
+                        submitButton.disabled = false;
+                    }
+                }
+            });
+        }
+
+        validateField(name, nameError, nameRegex, 'Namnet får inte vara tomt eller längre än 50 tecken');
+
+        validateField(email, emailError, emailRegex, 'E-postadressen är ogiltig');
+    }
+</script>
+
+</body>
+</html>

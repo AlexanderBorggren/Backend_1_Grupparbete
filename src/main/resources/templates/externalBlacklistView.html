@@ -9,30 +9,33 @@
 <body>
 <nav id="Home">
     <a href="http://localhost:8080">Home</a>
-    <a th:href="@{addBlacklistView}">Add to Blacklist</a>
-    <a href="http://localhost:8080/blacklist/externalBlacklistView">Check blacklist</a>
+    <a href="http://localhost:8080/blacklist/adminBlacklistView">Return to admin</a>
 </nav>
-<h2 th:text="${customerTitle}"></h2>
-<div class="allCustomers" th:unless="${#lists.isEmpty(allCustomers)}">
+<h2 th:text="${blacklistTitle}"></h2>
+<div class="allOnList" th:unless="${#lists.isEmpty(allOnList)}">
 
     <h4 th:text="${message}"></h4>
     <h4 th:text="${updateCustomerFeedbackMessage}"></h4>
 
     <table>
-        <th th:text="${customerId}"></th>
-        <th th:text="${name}"></th>
-        <th th:text="${ssn}"></th>
+        <th th:text="${id}"></th>
         <th th:text="${email}"></th>
+        <th th:text="${name}"></th>
+        <th th:text="${group}"></th>
+        <th th:text="${created}"></th>
+        <th th:text="${ok}"></th>
         <th></th>
         <th></th>
         <th></th>
         <tbody>
-        <tr th:each="cust : ${allCustomers}">
+        <tr th:each="cust : ${allOnList}">
             <td th:text="${cust.id}"></td>
-            <td th:text="${cust.name}"></td>
-            <td th:text="${cust.ssn}"></td>
             <td th:text="${cust.email}"></td>
-            <td><a class="addButton" th:href="@{addToBlacklist/{id}/(id=${cust.id})}">Add to blacklist</a></td>
+            <td th:text="${cust.name}"></td>
+            <td th:text="${cust.group}"></td>
+            <td th:text="${cust.created}"></td>
+            <td th:text="${cust.ok}"></td>
+
             <td> <a class="updateButton" th:href="@{updateBlacklist/{email}/(email=${cust.email})}">Update</a></td>
 
         </tr>

@@ -13,8 +13,10 @@ public interface BlacklistService {
 
     public List<BlacklistedCustomerDto> getBlacklistedCustomers() throws IOException, InterruptedException, URISyntaxException;
 
-    public BlacklistedCustomerDto addCustomer(Long id) throws IOException, InterruptedException, URISyntaxException;
+    public BlacklistedCustomerDto addCustomerFromList(Long id) throws IOException, InterruptedException, URISyntaxException;
 
     public BlacklistedCustomerDto updateCustomer(String email) throws IOException, InterruptedException, URISyntaxException;
+
+    public BlacklistedCustomerDto addNewCustomer(String name, String email) throws IOException, InterruptedException, URISyntaxException;
 
 }

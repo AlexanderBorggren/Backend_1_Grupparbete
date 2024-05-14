@@ -53,6 +53,24 @@ nav {
 .updateButton:hover {
     background-color: #101010;
 }
+
+.addButton
+{
+    display: inline-block;
+    margin: -10px;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #000000;
+    background-color: #ffeb34;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.addButton:hover {
+    background-color: #f4ed9c;
+}
+
+
 .bookRoomButton
 {
     display: inline-block;
