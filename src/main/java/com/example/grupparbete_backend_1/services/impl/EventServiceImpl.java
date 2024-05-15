@@ -2,23 +2,21 @@ package com.example.grupparbete_backend_1.services.impl;
 
 import com.example.grupparbete_backend_1.dto.ShippersDto;
 import com.example.grupparbete_backend_1.models.Shippers;
+import com.example.grupparbete_backend_1.repositories.EventRepo;
 import com.example.grupparbete_backend_1.repositories.ShippersRepo;
+import com.example.grupparbete_backend_1.services.EventService;
 import com.example.grupparbete_backend_1.services.ShippersService;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 
 @Service
-public class ShippersServiceImpl implements ShippersService {
+public class EventServiceImpl implements EventService {
 
-    private final ShippersRepo shippersRepo;
-    public ShippersServiceImpl(ShippersRepo shippersRepo){
-        this.shippersRepo = shippersRepo;
+    private final EventRepo eventRepo;
+    public EventServiceImpl(EventRepo eventRepo){
+        this.eventRepo = eventRepo;
     }
-    //    public ShippersDto shippersToShippersDto(Shippers shippers);
-    //    public Shippers shippersDtoToShippers(ShippersDto shippers);
 
     @Override
     public ShippersDto shippersToShippersDto(Shippers shippers) {

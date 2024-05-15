@@ -12,7 +12,6 @@ import java.time.chrono.ChronoLocalDate;
 import java.util.Collections;
 import java.util.List;
 
-@Repository
 @Service
 public class CustomerServiceImpl implements CustomerService {
 

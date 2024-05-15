@@ -1,6 +1,6 @@
 package com.example.grupparbete_backend_1.Events;
 
-import com.example.grupparbete_backend_1.models.RoomType;
+import com.example.grupparbete_backend_1.models.Room;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
@@ -8,8 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.validation.annotation.Validated;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @JsonTypeInfo(
@@ -27,12 +29,22 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Validated
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class EventBase {
-    //Behövs nog inte?
-    //private String eventType;
+
+    @Id
+    @GeneratedValue
+    @Column(name = "id", nullable = false)
+    private Long id;
     private String message;
+    @OneToOne
+    @JoinColumn
+    private Room roomNo;
+    LocalDateTime timeStamp;
+    @UpdateTimestamp
+    private Timestamp updatedate;
 
-    public LocalDateTime TimeStamp;
-
+    //public List <String> allEvents; -- I EventService
 }
 

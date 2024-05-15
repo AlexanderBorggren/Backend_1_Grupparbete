@@ -7,14 +7,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
-@JsonTypeName("roomCleaningFinished")
 @Entity
+@JsonTypeName("roomCleaningFinished")
 public class RoomCleaningFinished extends EventBase {
-    @Id
-    @GeneratedValue
-    @Column(name = "id", nullable = false)
-    private Long id;
 
-    public String CleaningByUser;
+    public String cleaningByUser;
 }
 

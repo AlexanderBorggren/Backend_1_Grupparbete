@@ -6,14 +6,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
-@JsonTypeName("roomOpened")
 @Entity
+@JsonTypeName("roomOpened")
 public class RoomOpened extends EventBase {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id", nullable = false)
-    private Long id;
-
-    public String RoomNo;
+    public String roomOpenedByUser;
 }

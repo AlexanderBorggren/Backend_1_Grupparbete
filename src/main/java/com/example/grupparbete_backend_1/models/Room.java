@@ -18,9 +18,6 @@ import java.sql.Timestamp;
 @Builder
 public class Room {
 
-
-    public EventBase eventBase;
-
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)

@@ -1,4 +1,4 @@
-package com.example.grupparbete_backend_1;
+/*package com.example.grupparbete_backend_1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -50,3 +50,5 @@ public class QueueStreamer implements CommandLineRunner {
     }
 
 }
+
+ */
