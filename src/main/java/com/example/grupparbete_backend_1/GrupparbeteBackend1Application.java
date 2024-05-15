@@ -38,6 +38,11 @@ public class GrupparbeteBackend1Application {
             application.setWebApplicationType(WebApplicationType.NONE);
             application.run(args);
 
+        } else if (Objects.equals(args[0], "queueStreamer")) {
+            SpringApplication application = new SpringApplication(QueueStreamer.class);
+            application.setWebApplicationType(WebApplicationType.NONE);
+            application.run(args);
+
         }
     }
 /*

@@ -1,3 +1,4 @@
+
 plugins {
     java
     id("org.springframework.boot") version "3.2.4"
@@ -32,6 +33,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("com.rabbitmq:amqp-client:5.21.0")
 
 
      implementation ("com.fasterxml.jackson.core:jackson-databind:2.15.4")
@@ -45,6 +47,7 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
 
 
 }

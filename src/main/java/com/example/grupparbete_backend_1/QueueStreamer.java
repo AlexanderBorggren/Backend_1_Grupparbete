@@ -1,9 +1,9 @@
-/*package com.example.grupparbete_backend_1;
+package com.example.grupparbete_backend_1;
 
+import com.example.grupparbete_backend_1.Events.*;
+import com.example.grupparbete_backend_1.services.EventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -12,17 +12,17 @@ import com.rabbitmq.client.DeliverCallback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
-import se.systementor.backend2start.demos.Catalog;
-import se.systementor.backend2start.demos.book;
-import se.systementor.backend2start.events.*;
-
-import java.net.URL;
 
 @ComponentScan
 public class QueueStreamer implements CommandLineRunner {
 
+    @Autowired
+    private EventService eventService;
 
-    private String queueName = "3b009a69-8ab6-4437-a13a-cfc9c4069067";
+
+    private String queueName = "06edcc3d-7c5c-4de3-a004-ede368b3a030";
+
+
     @Override
     public void run(String... args) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
@@ -43,6 +43,23 @@ public class QueueStreamer implements CommandLineRunner {
             String message = new String(delivery.getBody(), "UTF-8");
             System.out.println(" [x] Received '" + message + "'");
             // https://www.baeldung.com/jackson-annotations#bd-jackson-polymorphic-type-handling-annotations
+
+
+            // Deserialisera meddelandet till rätt EventBase subklass
+            EventBase event = mapper.readValue(message, EventBase.class);
+
+            // Nu kan du använda event-objektet och dess metoder
+            if(event instanceof RoomClosed) {
+                eventService.addEvent(new RoomClosed())
+            } else if(event instanceof RoomCleaningFinished) {
+                // Hantera RoomCleaningFinished event
+            } else if(event instanceof RoomCleaningStarted) {
+                // Hantera RoomCleaningStarted event
+            } else if(event instanceof RoomOpened) {
+                // Hantera RoomOpened event
+            }
+
+
         };
         channel.basicConsume(queueName, true, deliverCallback, consumerTag -> { });
 
@@ -51,4 +68,3 @@ public class QueueStreamer implements CommandLineRunner {
 
 }
 
- */
