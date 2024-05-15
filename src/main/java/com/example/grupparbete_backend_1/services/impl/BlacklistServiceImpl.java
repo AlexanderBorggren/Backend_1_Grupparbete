@@ -39,14 +39,15 @@ public class BlacklistServiceImpl implements BlacklistService {
 
    @Override
     public boolean isBlacklistOk(String email) throws IOException, InterruptedException, URISyntaxException {
-       HttpResponse<String> response;
-       try (HttpClient client = HttpClient.newHttpClient()) {
+
+       HttpClient client = HttpClient.newHttpClient();
 
            HttpRequest request = HttpRequest.newBuilder()
                    .uri(new URI("https://javabl.systementor.se/api/rosa/blacklistcheck/" + email))
                    .build();
-           response = client.send(request, HttpResponse.BodyHandlers.ofString());
-       }
+
+           HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
 
        if (response.statusCode() == 200) {
             // Begäran var framgångsrik
@@ -64,15 +65,15 @@ public class BlacklistServiceImpl implements BlacklistService {
 
     @Override
     public List<BlacklistedCustomerDto> getBlacklistedCustomers() throws IOException, InterruptedException, URISyntaxException {
-        HttpResponse<String> response;
-        try (HttpClient client = HttpClient.newHttpClient()) {
+
+        HttpClient client = HttpClient.newHttpClient();
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI("https://javabl.systementor.se/api/rosa/blacklist"))
                     .build();
 
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        }
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
 
         if (response.statusCode() == 200) {
 
@@ -114,8 +115,8 @@ public class BlacklistServiceImpl implements BlacklistService {
             user.setCreated(Instant.now().toString());
             user.setOk(false);
 
-            HttpResponse<String> response;
-            try (HttpClient client = HttpClient.newHttpClient()) {
+
+            HttpClient client = HttpClient.newHttpClient();
 
                 // Convert user object to JSON
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -129,8 +130,8 @@ public class BlacklistServiceImpl implements BlacklistService {
                         .build();
 
                 // Send HttpRequest and get HttpResponse
-                response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            }
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
 
             // Check the response status code
             if (response.statusCode() == 200) {
@@ -168,8 +169,8 @@ public class BlacklistServiceImpl implements BlacklistService {
                 System.out.println("Hittade kund med id: " + updateCustomer.getId() + ". Sattes till false");
             }
 
-            HttpResponse<String> response;
-            try (HttpClient client = HttpClient.newHttpClient()) {
+
+            HttpClient client = HttpClient.newHttpClient();
 
                 // Convert user object to JSON
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -183,8 +184,8 @@ public class BlacklistServiceImpl implements BlacklistService {
                         .build();
 
                 // Send HttpRequest and get HttpResponse
-                response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            }
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
 
             // Check the response status code
             if (response.statusCode() == 204) {
@@ -227,8 +228,8 @@ public class BlacklistServiceImpl implements BlacklistService {
             user.setCreated(Instant.now().toString());
             user.setOk(false);
 
-            HttpResponse<String> response;
-            try (HttpClient client = HttpClient.newHttpClient()) {
+
+            HttpClient client = HttpClient.newHttpClient();
 
                 // Convert user object to JSON
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -242,8 +243,8 @@ public class BlacklistServiceImpl implements BlacklistService {
                         .build();
 
                 // Send HttpRequest and get HttpResponse
-                response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            }
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
 
             // Check the response status code
             if (response.statusCode() == 200) {
