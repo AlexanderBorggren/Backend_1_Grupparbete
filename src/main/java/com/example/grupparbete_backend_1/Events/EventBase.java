@@ -38,10 +38,10 @@ public class EventBase {
     @Column(name = "id", nullable = false)
     private Long id;
     private String message;
-    @OneToOne
+    @ManyToOne
     @JoinColumn
     private Room RoomNo;
-    private Timestamp TimeStamp;
+    private LocalDateTime TimeStamp;
     @UpdateTimestamp
     private Timestamp updatedate;
 

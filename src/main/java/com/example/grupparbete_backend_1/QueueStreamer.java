@@ -1,7 +1,12 @@
 package com.example.grupparbete_backend_1;
 
 import com.example.grupparbete_backend_1.Events.*;
+import com.example.grupparbete_backend_1.dto.RoomDto;
+import com.example.grupparbete_backend_1.models.Room;
 import com.example.grupparbete_backend_1.services.EventService;
+import com.example.grupparbete_backend_1.services.RoomService;
+import com.example.grupparbete_backend_1.services.RoomTypeService;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -13,11 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.time.LocalDateTime;
+
 @ComponentScan
 public class QueueStreamer implements CommandLineRunner {
 
     @Autowired
     private EventService eventService;
+    @Autowired
+    private RoomService roomService;
+    @Autowired
+    private RoomTypeService roomTypeService;
 
 
     private String queueName = "06edcc3d-7c5c-4de3-a004-ede368b3a030";
@@ -48,17 +59,26 @@ public class QueueStreamer implements CommandLineRunner {
             // Deserialisera meddelandet till rätt EventBase subklass
             EventBase event = mapper.readValue(message, EventBase.class);
 
+            // Använd JSONPath för att extrahera RoomNo
+            //String roomNo = JsonPath.read(message, "$.RoomNo");
+            JsonNode json = mapper.readTree(message);
+
+            RoomDto room = roomService.findById(json.get("RoomNo").asLong());
+            event.setRoomNo(roomService.roomDtoToRoom(  room, roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(room.getRoomType().getId()))  ));
+            event.setTimeStamp(LocalDateTime.parse(json.get("TimeStamp").asText()));
+
 
             if(event instanceof RoomClosed) {
-            eventService.addEvent(event);
+                event.setMessage("Room closed ");
             } else if(event instanceof RoomCleaningFinished) {
-            eventService.addEvent(event);
+                event.setMessage("Room cleaning finished ");
             } else if(event instanceof RoomCleaningStarted) {
-            eventService.addEvent(event);
+                event.setMessage("Room cleaning started ");
             } else if(event instanceof RoomOpened) {
-            eventService.addEvent(event);
+                event.setMessage("Room opened ");
             }
 
+            eventService.addEvent(event);
 
         };
         channel.basicConsume(queueName, true, deliverCallback, consumerTag -> { });
