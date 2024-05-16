@@ -85,15 +85,29 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public String addBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException {
+
         Customer customer = customerRepo.findById(booking.getCustomer().getId()).get();
         BlacklistService blacklistService = new BlacklistServiceImpl();
         Room room = roomRepo.findById(booking.getRoom().getId()).get();
 
-        if (blacklistService.isBlacklistOk(customer.getEmail())) {
-            bookingRepo.save(detailedBookingDtoToBooking(booking, customer, room));
-            return "You have created a new booking for customer " + customer.getName() + ". Booked a " + room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " + booking.getGuestQuantity() + " extra beds. Date booked is " + booking.getStartDate() + " to " + booking.getEndDate();
+        // Check blacklist
+        if (!blacklistService.isBlacklistOk(customer.getEmail())) {
+            return customer.getEmail() + " is blacklisted.";
         }
-        else return customer.getEmail() + " is blacklisted.";
+
+        // Calculate total price with discounts
+        Double totalPriceWithDiscounts = calculateTotalPriceWithDiscounts(booking.getId());
+
+        // Create booking entity
+        Booking newBooking = detailedBookingDtoToBooking(booking, customer, room);
+        newBooking.setTotalPrice(totalPriceWithDiscounts);
+
+        bookingRepo.save(newBooking);
+
+        return "You have created a new booking for customer " + customer.getName() + ". Booked a " +
+                room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " +
+                booking.getExtraBedsQuantity() + " extra beds. Date booked is " + booking.getStartDate() +
+                " to " + booking.getEndDate() + ". Total price with discounts: " + totalPriceWithDiscounts;
     }
     public String updateBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException {
         Customer customer = customerRepo.findById(booking.getCustomer().getId()).get();
@@ -102,7 +116,7 @@ public class BookingServiceImpl implements BookingService {
 
         if (blacklistService.isBlacklistOk(customer.getEmail())) {
             bookingRepo.save(detailedBookingDtoToBooking(booking, customer, room));
-            return "You have updaed an existing booking for customer " + customer.getName() + ". Booked a " + room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " + booking.getGuestQuantity() + " extra beds. Date booked is " + booking.getStartDate() + " to " + booking.getEndDate();
+            return "You have updated an existing booking for customer " + customer.getName() + ". Booked a " + room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " + booking.getGuestQuantity() + " extra beds. Date booked is " + booking.getStartDate() + " to " + booking.getEndDate();
         }
         else return customer.getEmail() + " is blacklisted, cannot be updated";
     }
@@ -163,6 +177,16 @@ public class BookingServiceImpl implements BookingService {
 
 
         return roomIsAvailable;
+    }
+
+    @Override
+    public Double calculateTotalPriceForBooking(Long id) {
+        return bookingRepo.calculateTotalPriceForBooking(id);
+    }
+
+    @Override
+    public Double calculateTotalPriceWithDiscounts(Long bookingId) {
+        return bookingRepo.calculateTotalPriceWithDiscounts(bookingId);
     }
 
 

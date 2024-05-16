@@ -54,14 +54,14 @@ public class BookingServiceImplTest {
     private BookingServiceImpl service;
 
 
-    RoomType roomType = new RoomType(1L, "Single", 0, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+    RoomType roomType = new RoomType(1L, "Single", 0, 300, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
 
     Room room = new Room(1L,roomType, Timestamp.from(Instant.now()),Timestamp.from(Instant.now()));
 
     Customer customer = new Customer(1L, "Bert", "9708045566", "bert@gmail.com",Collections.emptyList(),Timestamp.from(Instant.now()),Timestamp.from(Instant.now()));
 
-    Booking booking = new Booking(1L,LocalDate.parse("2024-05-06"),
-            LocalDate.parse("2024-05-10"),2,0,customer,room,
+    Booking booking = new Booking(1L,LocalDate.parse("2024-06-06"),
+            LocalDate.parse("2024-06-07"),2,0,customer,room,300.0,
             Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
 
     BookingDto bookingDto = new BookingDto(1L,LocalDate.parse("2024-05-06"),LocalDate.parse("2024-05-10"));
@@ -128,6 +128,19 @@ public class BookingServiceImplTest {
         assertEquals(customer, actual.getCustomer());
         assertEquals(room, actual.getRoom());
 
+    }
+
+
+    @Test
+    void calculateTotalPriceWithDiscounts() {
+
+        Long bookingId = 1L;
+        Double totalPriceWithDiscounts = 90.0; // Mocked total price with discounts
+
+        when(bookingRepo.calculateTotalPriceWithDiscounts(bookingId)).thenReturn(totalPriceWithDiscounts);
+        Double result = service.calculateTotalPriceWithDiscounts(bookingId);
+
+        assertEquals(totalPriceWithDiscounts, result, 0.01); // Use delta for double comparison
     }
 
     /**

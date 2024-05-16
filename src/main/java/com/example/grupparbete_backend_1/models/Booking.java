@@ -52,6 +52,8 @@ public class Booking {
     @ManyToOne
     @JoinColumn
     private Room room;
+    private Double totalPrice;
+
 
     @CreationTimestamp
     private Timestamp regdate;
@@ -59,13 +61,14 @@ public class Booking {
     @UpdateTimestamp
     private Timestamp updatedate;
 
-    public Booking (LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, Customer customer, Room room, Timestamp regdate, Timestamp updatedate) {
+    public Booking (LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, Customer customer, Room room, Double totalPrice, Timestamp regdate, Timestamp updatedate) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.guestQuantity = guestQuantity;
         this.extraBedsQuantity = extraBedsQuantity;
         this.customer = customer;
         this.room = room;
+        this.totalPrice = totalPrice;
     }
 }
 
