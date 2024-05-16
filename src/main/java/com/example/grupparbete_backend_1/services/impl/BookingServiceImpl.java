@@ -96,7 +96,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         // Calculate total price with discounts
-        Double totalPriceWithDiscounts = calculateTotalPriceWithDiscounts(booking.getId());
+        Double totalPriceWithDiscounts = calculateTotalPriceWithDiscounts(room.getId(), booking.getStartDate(),booking.getEndDate());
 
         // Create booking entity
         Booking newBooking = detailedBookingDtoToBooking(booking, customer, room);
@@ -179,14 +179,14 @@ public class BookingServiceImpl implements BookingService {
         return roomIsAvailable;
     }
 
-    @Override
+   /* @Override
     public Double calculateTotalPriceForBooking(Long id) {
         return bookingRepo.calculateTotalPriceForBooking(id);
-    }
+    }*/
 
     @Override
-    public Double calculateTotalPriceWithDiscounts(Long bookingId) {
-        return bookingRepo.calculateTotalPriceWithDiscounts(bookingId);
+    public Double calculateTotalPriceWithDiscounts(Long roomId, LocalDate startDate, LocalDate endDate) {
+        return bookingRepo.calculateTotalPriceWithDiscounts(roomId, startDate,endDate);
     }
 
 

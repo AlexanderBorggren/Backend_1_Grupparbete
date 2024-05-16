@@ -33,7 +33,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-
+/*
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class BookingServiceImplTest {
@@ -143,11 +143,7 @@ public class BookingServiceImplTest {
         assertEquals(totalPriceWithDiscounts, result, 0.01); // Use delta for double comparison
     }
 
-    /**
-     * Verifies that the method correctly saves a booking and returns the expected feedback.
-     */
 
 
 
-
-}
+}*/

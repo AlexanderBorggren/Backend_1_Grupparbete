@@ -31,6 +31,6 @@ public interface BookingService {
 
     public DetailedBookingDto findById(Long id);
     public List<Room> findAvailableRooms(LocalDate startDate, LocalDate endDate, RoomType roomType);
-    public Double calculateTotalPriceForBooking(Long id);
-    public Double calculateTotalPriceWithDiscounts(Long bookingId);
+  //  public Double calculateTotalPriceForBooking(Long id);
+    public Double calculateTotalPriceWithDiscounts(Long roomId, LocalDate startDate, LocalDate endDate);
 }
