@@ -32,9 +32,11 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDto eventToEventDto(EventBase event) {
+
         return EventDto.builder()
                 .id(event.getId())
                 .message(event.getMessage())
+                .user(event.getUse())
                 .RoomNo(event.getRoomNo())
                 .TimeStamp(event.getTimeStamp())
                 .build();
@@ -52,6 +54,12 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDto> getAllEvent() {
         return eventRepo.findAll().stream().map(this::eventToEventDto).toList();
+    }
+
+    @Override
+    public List<EventDto> getEventsByRoomNo(long roomId) {
+        System.out.println(eventRepo.findAllByRoomNo(roomId).stream().map(this::eventToEventDto).toList());
+        return eventRepo.findAllByRoomNo(roomId).stream().map(this::eventToEventDto).toList();
     }
 
 }

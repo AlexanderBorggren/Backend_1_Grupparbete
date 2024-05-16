@@ -15,9 +15,14 @@ import java.util.List;
 
 public interface EventService {
     public void addEventDto(EventDto event);
+
     public void addEvent(EventBase event);
+
     public EventDto eventToEventDto(EventBase event);
+
     public EventBase eventDtoToEvent(EventDto event);
+
     public List<EventDto> getAllEvent();
 
+    public List<EventDto> getEventsByRoomNo(long roomId);
 }

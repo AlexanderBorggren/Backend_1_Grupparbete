@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rooms</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<nav><a class="indexButtons" href="http://localhost:8080">Home</a></nav>
+
+<h2 th:text="${roomTitle}"></h2>
+
+<h4 th:text="${message}"></h4>
+<h4 th:text="${feedbackMessageUpdateBooking}"></h4>
+<h4 th:text="${feedbackMessageCreateBooking}"></h4>
+
+
+    <table>
+        <th th:text="${RoomNo}"></th>
+        <th th:text="${RoomType}"></th>
+        <th th:text="${Events}"></th>
+
+        <th></th>
+        <th></th>
+        <tbody>
+        <tr th:each="room : ${allRooms}">
+            <td th:text="${room.id}"></td>
+            <td th:text="${room.roomType.roomSize}"></td>
+            <td><a class="updateButton" th:href="@{/events/getEventByRoomId/{id}/(id=${room.id})}">Events</a></td>
+        </tr>
+
+        </tbody>
+    </table>
+
+</body>
+</html>

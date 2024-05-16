@@ -20,5 +20,6 @@ public class EventDto {
     private Long id;
     private String message;
     private Room RoomNo;
+    private String user;
     private LocalDateTime TimeStamp;
 }
