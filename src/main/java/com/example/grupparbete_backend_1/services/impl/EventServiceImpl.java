@@ -21,8 +21,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void addEvent(EventDto event) {
+    public void addEventDto(EventDto event) {
         eventRepo.save(eventDtoToEvent(event));
+    }
+
+    @Override
+    public void addEvent(EventBase event) {
+        eventRepo.save(event);
     }
 
     @Override
@@ -30,8 +35,8 @@ public class EventServiceImpl implements EventService {
         return EventDto.builder()
                 .id(event.getId())
                 .message(event.getMessage())
-                .roomNo(event.getRoomNo())
-                .timeStamp(event.getTimeStamp())
+                .RoomNo(event.getRoomNo())
+                .TimeStamp(event.getTimeStamp())
                 .build();
     }
 
@@ -40,8 +45,8 @@ public class EventServiceImpl implements EventService {
         return EventBase.builder()
                 .id(eventDto.getId())
                 .message(eventDto.getMessage())
-                .roomNo(eventDto.getRoomNo())
-                .timeStamp(eventDto.getTimeStamp())
+                .RoomNo(eventDto.getRoomNo())
+                .TimeStamp(eventDto.getTimeStamp())
                 .build();
     }
     @Override

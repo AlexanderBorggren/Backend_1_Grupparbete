@@ -40,8 +40,8 @@ public class EventBase {
     private String message;
     @OneToOne
     @JoinColumn
-    private Room roomNo;
-    LocalDateTime timeStamp;
+    private Room RoomNo;
+    private Timestamp TimeStamp;
     @UpdateTimestamp
     private Timestamp updatedate;
 

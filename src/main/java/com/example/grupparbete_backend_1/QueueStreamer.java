@@ -48,15 +48,15 @@ public class QueueStreamer implements CommandLineRunner {
             // Deserialisera meddelandet till rätt EventBase subklass
             EventBase event = mapper.readValue(message, EventBase.class);
 
-            // Nu kan du använda event-objektet och dess metoder
+
             if(event instanceof RoomClosed) {
-                eventService.addEvent(new RoomClosed())
+            eventService.addEvent(event);
             } else if(event instanceof RoomCleaningFinished) {
-                // Hantera RoomCleaningFinished event
+            eventService.addEvent(event);
             } else if(event instanceof RoomCleaningStarted) {
-                // Hantera RoomCleaningStarted event
+            eventService.addEvent(event);
             } else if(event instanceof RoomOpened) {
-                // Hantera RoomOpened event
+            eventService.addEvent(event);
             }
 
 

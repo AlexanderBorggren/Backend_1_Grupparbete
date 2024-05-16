@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -18,6 +19,6 @@ import java.time.LocalDateTime;
 public class EventDto {
     private Long id;
     private String message;
-    private Room roomNo;
-    LocalDateTime timeStamp;
+    private Room RoomNo;
+    private Timestamp TimeStamp;
 }

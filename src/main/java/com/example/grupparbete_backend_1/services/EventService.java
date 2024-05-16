@@ -14,7 +14,8 @@ import java.util.List;
 
 
 public interface EventService {
-    public void addEvent(EventDto event);
+    public void addEventDto(EventDto event);
+    public void addEvent(EventBase event);
     public EventDto eventToEventDto(EventBase event);
     public EventBase eventDtoToEvent(EventDto event);
     public List<EventDto> getAllEvent();
