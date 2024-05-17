@@ -53,18 +53,16 @@ public class QueueStreamer implements CommandLineRunner {
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), "UTF-8");
             System.out.println(" [x] Received '" + message + "'");
-            // https://www.baeldung.com/jackson-annotations#bd-jackson-polymorphic-type-handling-annotations
 
 
             // Deserialisera meddelandet till rätt EventBase subklass
             EventBase event = mapper.readValue(message, EventBase.class);
 
-            // Använd JSONPath för att extrahera RoomNo
-            //String roomNo = JsonPath.read(message, "$.RoomNo");
             JsonNode json = mapper.readTree(message);
 
             RoomDto room = roomService.findById(json.get("RoomNo").asLong());
-            event.setRoomNo(roomService.roomDtoToRoom(  room, roomTypeService.roomTypeDtoToRoomType(roomTypeService.findById(room.getRoomType().getId()))  ));
+            event.setRoomNo(roomService.roomDtoToRoom(  room, roomTypeService.roomTypeDtoToRoomType(
+                    roomTypeService.findById(room.getRoomType().getId()))));
             event.setTimeStamp(LocalDateTime.parse(json.get("TimeStamp").asText()));
 
 

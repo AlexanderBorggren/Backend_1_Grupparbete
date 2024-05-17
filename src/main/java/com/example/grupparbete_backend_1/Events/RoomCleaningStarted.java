@@ -15,4 +15,9 @@ import jakarta.persistence.Id;
 public class RoomCleaningStarted extends EventBase {
 
     public String CleaningByUser;
+
+    @Override
+    public String getUser() {
+        return this.CleaningByUser;
+    }
 }

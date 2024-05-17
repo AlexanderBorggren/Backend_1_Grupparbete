@@ -19,12 +19,11 @@ public class RoomCleaningFinished extends EventBase {
 
     public String CleaningByUser;
 
-  /*  RoomCleaningFinished(Long id, String message, Long roomNo, LocalDateTime timeStamp, Timestamp updatedate, String cleaningByUser) {
-
-        super(id, message, roomNo, timeStamp, updatedate);
-        this.cleaningByUser = cleaningByUser;
+    @Override
+    public String getUser() {
+        return this.CleaningByUser;
     }
 
-   */
+
 }
 

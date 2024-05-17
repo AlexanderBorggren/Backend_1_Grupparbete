@@ -45,6 +45,8 @@ public class EventBase {
     @UpdateTimestamp
     private Timestamp updatedate;
 
-    //public List <String> allEvents; -- I EventService
+    public String getUser() {
+        return "No user specified";
+    }
 }
 

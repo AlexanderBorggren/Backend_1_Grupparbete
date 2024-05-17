@@ -31,8 +31,10 @@ public class EventControllerTH {
 
         model.addAttribute("eventList", eventDtoList);
 
+        model.addAttribute("eventTitle", "All Events for Room " + id);
+
         model.addAttribute("id", "Id ");
-        model.addAttribute("message", "Message");
+        model.addAttribute("event", "Event");
         model.addAttribute("timeStamp", "Time");
         model.addAttribute("user", "User");
 

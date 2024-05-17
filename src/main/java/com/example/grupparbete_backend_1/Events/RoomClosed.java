@@ -12,5 +12,7 @@ import jakarta.persistence.Id;
 @JsonTypeName("roomClosed")
 public class RoomClosed extends EventBase{
 
+    //For future use
     public String roomClosedByUser;
+
 }
