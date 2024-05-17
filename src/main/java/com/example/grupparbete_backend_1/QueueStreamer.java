@@ -65,17 +65,6 @@ public class QueueStreamer implements CommandLineRunner {
                     roomTypeService.findById(room.getRoomType().getId()))));
             event.setTimeStamp(LocalDateTime.parse(json.get("TimeStamp").asText()));
 
-
-            if(event instanceof RoomClosed) {
-                event.setMessage("Room closed ");
-            } else if(event instanceof RoomCleaningFinished) {
-                event.setMessage("Room cleaning finished ");
-            } else if(event instanceof RoomCleaningStarted) {
-                event.setMessage("Room cleaning started ");
-            } else if(event instanceof RoomOpened) {
-                event.setMessage("Room opened ");
-            }
-
             eventService.addEvent(event);
 
         };

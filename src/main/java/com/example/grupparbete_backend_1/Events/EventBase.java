@@ -48,5 +48,8 @@ public class EventBase {
     public String getUser() {
         return "No user specified";
     }
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
 

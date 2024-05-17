@@ -24,6 +24,11 @@ public class RoomCleaningFinished extends EventBase {
         return this.CleaningByUser;
     }
 
+    @Override
+    public void setMessage() {
+        super.setMessage("Room cleaning finished");
+    }
+
 
 }
 

@@ -15,5 +15,10 @@ public class RoomOpened extends EventBase {
     // For future use
     public String roomOpenedByUser;
 
+    @Override
+    public void setMessage() {
+        super.setMessage("Room opened");
+    }
+
 
 }

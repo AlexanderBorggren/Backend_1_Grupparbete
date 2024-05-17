@@ -20,4 +20,9 @@ public class RoomCleaningStarted extends EventBase {
     public String getUser() {
         return this.CleaningByUser;
     }
+
+    @Override
+    public void setMessage() {
+        super.setMessage("Room cleaning started");
+    }
 }
