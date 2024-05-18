@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @Data
@@ -53,6 +54,9 @@ public class Booking {
     @JoinColumn
     private Room room;
     private Double totalPrice;
+
+    @OneToMany
+    private List<Discount> discount;
 
 
     @CreationTimestamp

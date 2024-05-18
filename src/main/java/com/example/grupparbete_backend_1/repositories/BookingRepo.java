@@ -10,14 +10,15 @@ import java.time.LocalDate;
 public interface BookingRepo extends JpaRepository<Booking, Long> {
 
 
-/*    @Query("SELECT rt.pricePerNight * DATEDIFF(b.startDate, b.endDate) " +
+    @Query("SELECT rt.pricePerNight * DATEDIFF(b.endDate, b.startDate) " +
             "FROM Booking b " +
             "JOIN Room r ON b.room.id = r.id " +
             "JOIN RoomType rt ON r.roomType.id = rt.id " +
             "WHERE b.id = :bookingId")
-    Double calculateTotalPriceForBooking(Long bookingId);*/
+    Double getTotalPriceForBooking(Long bookingId);
+}
 
-    @Query("SELECT " +
+  /*  @Query("SELECT " +
             "CASE " +
             "WHEN datediff(:endDate, :startDate) >= 2 THEN rt.pricePerNight * datediff(:endDate, :startDate) * 0.995 " +
             "ELSE rt.pricePerNight * datediff(:endDate, :startDate) " +
@@ -26,4 +27,6 @@ public interface BookingRepo extends JpaRepository<Booking, Long> {
             "JOIN r.roomType rt " +
             "WHERE r.id = :roomId")
     Double calculateTotalPriceWithDiscounts(@Param("roomId") Long roomId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+
 }

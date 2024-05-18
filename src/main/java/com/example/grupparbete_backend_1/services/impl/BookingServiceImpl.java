@@ -1,14 +1,8 @@
 package com.example.grupparbete_backend_1.services.impl;
 
 import com.example.grupparbete_backend_1.dto.*;
-import com.example.grupparbete_backend_1.models.Booking;
-import com.example.grupparbete_backend_1.models.Customer;
-import com.example.grupparbete_backend_1.models.Room;
-import com.example.grupparbete_backend_1.models.RoomType;
-import com.example.grupparbete_backend_1.repositories.BookingRepo;
-import com.example.grupparbete_backend_1.repositories.CustomerRepo;
-import com.example.grupparbete_backend_1.repositories.RoomRepo;
-import com.example.grupparbete_backend_1.repositories.RoomTypeRepo;
+import com.example.grupparbete_backend_1.models.*;
+import com.example.grupparbete_backend_1.repositories.*;
 import com.example.grupparbete_backend_1.services.BlacklistService;
 import com.example.grupparbete_backend_1.services.BookingService;
 import org.springframework.stereotype.Repository;
@@ -29,11 +23,15 @@ public class BookingServiceImpl implements BookingService {
     private final CustomerRepo customerRepo;
     private final RoomRepo roomRepo;
     private final RoomTypeRepo roomTypeRepo;
-    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, RoomTypeRepo roomTypeRepo) {
+    private final DiscountServiceImpl discountService;
+    private final DiscountRepo discountRepo;
+    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, RoomTypeRepo roomTypeRepo, DiscountServiceImpl discountService, DiscountRepo discountRepo) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
         this.roomTypeRepo = roomTypeRepo;
+        this.discountService=discountService;
+        this.discountRepo=discountRepo;
     }
 
     @Override
@@ -83,7 +81,7 @@ public class BookingServiceImpl implements BookingService {
                 .build();
     }
 
-    @Override
+ /*   @Override
     public String addBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException {
 
         Customer customer = customerRepo.findById(booking.getCustomer().getId()).get();
@@ -108,7 +106,58 @@ public class BookingServiceImpl implements BookingService {
                 room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " +
                 booking.getExtraBedsQuantity() + " extra beds. Date booked is " + booking.getStartDate() +
                 " to " + booking.getEndDate() + ". Total price with discounts: " + totalPriceWithDiscounts;
+    }*/
+
+    @Override
+    public String addBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException {
+
+        Customer customer = customerRepo.findById(booking.getCustomer().getId()).orElseThrow(() -> new RuntimeException("Customer not found"));
+        BlacklistService blacklistService = new BlacklistServiceImpl();
+        Room room = roomRepo.findById(booking.getRoom().getId()).orElseThrow(() -> new RuntimeException("Room not found"));
+
+        // Check blacklist
+        if (!blacklistService.isBlacklistOk(customer.getEmail())) {
+            return customer.getEmail() + " is blacklisted.";
+        }
+
+        // Create booking entity
+        Booking newBooking = detailedBookingDtoToBooking(booking, customer, room);
+        Booking savedBooking = bookingRepo.save(newBooking);
+
+        // Calculate total price without discounts
+        Double totalPriceNoDiscount = bookingRepo.getTotalPriceForBooking(savedBooking.getId());
+        if (totalPriceNoDiscount == null) {
+            totalPriceNoDiscount = 0.0;
+        }
+
+        // Calculate discounts
+        Discount discountSunToMon = discountService.calculateDiscountSunToMon(savedBooking.getId());
+        Discount discount2NightsPlus = discountService.calculateDiscount2NightsOrMore(savedBooking.getId());
+
+        // Save discounts to the database
+        discountRepo.save(discountSunToMon);
+        discountRepo.save(discount2NightsPlus);
+
+        // Recalculate total discount value after saving discounts
+        Double discountValue = discountService.getTotalDiscountValueForBooking(savedBooking.getId());
+        if (discountValue == null) {
+            discountValue = 0.0;
+        }
+
+        // Calculate total price with discounts
+        Double totalPriceWithDiscounts = totalPriceNoDiscount - discountValue;
+        savedBooking.setTotalPrice(totalPriceWithDiscounts);
+
+        // Save the updated booking with total price
+        bookingRepo.save(savedBooking);
+
+        return "You have created a new booking for customer " + customer.getName() + ". Booked a " +
+                room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " +
+                booking.getExtraBedsQuantity() + " extra beds. Date booked is " + booking.getStartDate() +
+                " to " + booking.getEndDate() + ". Total price without discounts: " + totalPriceNoDiscount
+                + ". Total price with discounts: " + totalPriceWithDiscounts;
     }
+
     public String updateBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException {
         Customer customer = customerRepo.findById(booking.getCustomer().getId()).get();
         BlacklistService blacklistService = new BlacklistServiceImpl();
@@ -128,6 +177,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public String deleteBooking(Long bookingId) {
         Booking booking = bookingRepo.findById(bookingId).get();
+        List<Discount> discounts = discountRepo.findByBookingId(bookingId);
+        discountRepo.deleteAll(discounts);
 
         bookingRepo.delete(booking);
         return "Booking with id " + booking.getId() + " has been removed.";
@@ -184,10 +235,14 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepo.calculateTotalPriceForBooking(id);
     }*/
 
-    @Override
+  /*  @Override
     public Double calculateTotalPriceWithDiscounts(Long roomId, LocalDate startDate, LocalDate endDate) {
         return bookingRepo.calculateTotalPriceWithDiscounts(roomId, startDate,endDate);
-    }
+    }*/
 
+    @Override
+    public Double getTotalPriceForBooking(Long bookingId){
+        return bookingRepo.getTotalPriceForBooking(bookingId);
+    }
 
 }
