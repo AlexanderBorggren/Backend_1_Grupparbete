@@ -1,5 +1,6 @@
 package com.example.grupparbete_backend_1.models;
 
+import com.example.grupparbete_backend_1.Events.EventBase;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

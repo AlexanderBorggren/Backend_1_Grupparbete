@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Repository
 @Service
 public class RoomServiceImpl implements RoomService {
 

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Repository
 public class ContractCustomerServiceImpl implements ContractCustomerService {
     ContractCustomerRepo contractCustomerRepo;
 

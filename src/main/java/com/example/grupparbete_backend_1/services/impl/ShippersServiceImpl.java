@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Repository
 @Service
 public class ShippersServiceImpl implements ShippersService {
 

@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.util.List;
 
-@Repository
 @Service
 public class BookingServiceImpl implements BookingService {
 

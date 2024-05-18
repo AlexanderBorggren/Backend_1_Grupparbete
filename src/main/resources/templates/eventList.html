@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Events</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<nav><a class="indexButtons" href="http://localhost:8080">Home</a></nav>
+
+<h2 th:text="${eventTitle}"></h2>
+
+<h4 th:text="${message}"></h4>
+<h4 th:text="${feedbackMessageUpdateBooking}"></h4>
+<h4 th:text="${feedbackMessageCreateBooking}"></h4>
+
+    <table>
+        <th th:text="${id}"></th>
+        <th th:text="${event}"></th>
+        <th th:text="${timeStamp}"></th>
+        <th th:text="${user}"></th>
+
+        <th></th>
+        <th></th>
+        <tbody>
+        <tr th:each="event : ${eventList}">
+            <td th:text="${event.id}"></td>
+            <td th:text="${event.message}"></td>
+            <td th:text="${event.timeStamp}"></td>
+            <td th:text="${event.user}"></td>
+        </tr>
+
+        </tbody>
+    </table>
+
+</body>
+</html>

@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
