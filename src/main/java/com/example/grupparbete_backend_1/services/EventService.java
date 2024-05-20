@@ -2,15 +2,11 @@ package com.example.grupparbete_backend_1.services;
 
 import com.example.grupparbete_backend_1.Events.EventBase;
 import com.example.grupparbete_backend_1.dto.EventDto;
-import com.example.grupparbete_backend_1.dto.RoomDto;
-import com.example.grupparbete_backend_1.dto.ShippersDto;
-import com.example.grupparbete_backend_1.models.Room;
-import com.example.grupparbete_backend_1.models.RoomType;
-import org.springframework.stereotype.Service;
+
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 
 public interface EventService {
@@ -25,4 +21,6 @@ public interface EventService {
     public List<EventDto> getAllEvent();
 
     public List<EventDto> getEventsByRoomNo(long roomId);
+
+    public void fetchEventsFromQueueStreaming() throws IOException, TimeoutException;
 }
