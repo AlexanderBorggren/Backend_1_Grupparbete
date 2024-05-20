@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.2.4"
     id("io.spring.dependency-management") version "1.1.4"
+    id ("java")
 }
 
 group = "com.example"
@@ -45,10 +46,30 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation ("org.junit.jupiter:junit-jupiter:5.7.2")
+
 
 
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+val integrationTestTask = tasks.register<Test>("integrationTest") {
+    group = "verification"
+    filter {
+        includeTestsMatching("*IT")
+    }
+}
+
+tasks.test{
+    filter{
+        includeTestsMatching("*Tests")
+
+    }
+}
+
+tasks.check {
+    dependsOn(integrationTestTask)
 }

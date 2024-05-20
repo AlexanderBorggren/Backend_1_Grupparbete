@@ -24,19 +24,22 @@ public class FetchContractCustomers implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        JacksonXmlModule module = new JacksonXmlModule();
+
+        contractCustomerService.fetchContractCustomers();
+/*
+         module = new JacksonXmlModule();
         module.setDefaultUseWrapper(false);
         XmlMapper xmlMapper = new XmlMapper(module);
 
         AllContractCustomers allContractCustomers = xmlMapper.readValue(new URL("https://javaintegration.systementor.se/customers"), AllContractCustomers.class);
 
-        for(ContractCustomer customer : allContractCustomers.getContractCustomers()){
+        for (ContractCustomer customer : allContractCustomers.getContractCustomers()) {
             logger.info("Postal Code: {}", customer.getPostalCode());
             DetailedContractCustomerDto detailedContractCustomerDto = contractCustomerService.contractCustomerToDetailedContractCustomerDto(customer);
             contractCustomerService.addContractCustomer(detailedContractCustomerDto);
             System.out.println("Successfully added customer with ID " + contractCustomerService.getById(detailedContractCustomerDto.getId()));
 
-        }
+        }*/
 
     }
 }

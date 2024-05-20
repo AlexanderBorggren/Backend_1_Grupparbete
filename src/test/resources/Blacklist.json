@@ -1,0 +1,26 @@
+[
+{
+  "id": 26,
+  "email": "stefan6@aaa.com",
+  "name": "Stefan Holmberg",
+  "group": "rosa",
+  "created": "2024-05-08T15:08:48.636289",
+  "ok": true
+},
+{
+"id": 37,
+"email": "karl.nilsson@example.com",
+"name": "Stefan Holmberg",
+"group": "rosa",
+"created": "2024-05-09T11:05:22.185159",
+"ok": false
+},
+{
+"id": 74,
+"email": "test.email@example.com",
+"name": "Test Name",
+"group": "rosa",
+"created": "2024-05-09T22:30:08.310806",
+"ok": true
+}
+]
