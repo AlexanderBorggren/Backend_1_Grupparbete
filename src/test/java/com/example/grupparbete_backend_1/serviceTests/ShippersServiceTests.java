@@ -30,10 +30,12 @@ public class ShippersServiceTests {
     @Test
     void fetchShippersShouldMapCorrectly() throws IOException {
 
+        //arrange
         when(jSonStreamProvider.getDataStream()).thenReturn(getClass().getClassLoader().getResourceAsStream("Shippers.json"));
 
 
         sut.fetchShippers();
+
 
 
 
