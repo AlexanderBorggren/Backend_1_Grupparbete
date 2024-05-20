@@ -55,7 +55,7 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
                 DetailedContractCustomerDto detailedContractCustomerDto = contractCustomerToDetailedContractCustomerDto(customer);
                 logger.info("DetailedContractCustomerDto: {}", detailedContractCustomerDto); // här är kunden rätt
                 addContractCustomer(detailedContractCustomerDto); //här är den null
-                System.out.println("Successfully added customer with ID " + getById(detailedContractCustomerDto.getId()));
+                //System.out.println("Successfully added customer with ID " + getById(detailedContractCustomerDto.getId()));
 
             }
         }
