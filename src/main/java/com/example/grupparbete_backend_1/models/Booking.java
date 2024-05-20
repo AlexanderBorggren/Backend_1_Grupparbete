@@ -29,12 +29,12 @@ public class Booking {
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @FutureOrPresent (message = "Startdatumet måste vara efter gårdagens datum")
+ //   @FutureOrPresent (message = "Startdatumet måste vara efter gårdagens datum")
     private LocalDate startDate;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Future (message = "Slutdatumet måste minst en dag i framtiden")
+  //  @Future (message = "Slutdatumet måste minst en dag i framtiden")
     private LocalDate endDate;
 
     @NotNull

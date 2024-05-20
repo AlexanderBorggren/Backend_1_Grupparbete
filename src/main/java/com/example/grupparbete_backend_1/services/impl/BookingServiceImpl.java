@@ -13,6 +13,7 @@ import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Repository
@@ -134,6 +135,7 @@ public class BookingServiceImpl implements BookingService {
         Discount discountSunToMon = discountService.calculateDiscountSunToMon(savedBooking.getId());
         Discount discount2NightsPlus = discountService.calculateDiscount2NightsOrMore(savedBooking.getId());
 
+
         // Save discounts to the database
         discountRepo.save(discountSunToMon);
         discountRepo.save(discount2NightsPlus);
@@ -142,6 +144,18 @@ public class BookingServiceImpl implements BookingService {
         Double discountValue = discountService.getTotalDiscountValueForBooking(savedBooking.getId());
         if (discountValue == null) {
             discountValue = 0.0;
+        }
+
+        int totalBookedNights = getTotalBookedNightsLastYear(customer.getId());
+        if (totalBookedNights >= 10) {
+            Double additionalDiscount = totalPriceNoDiscount * 0.02;
+            discountValue += additionalDiscount;
+
+            Discount discount10Nights = Discount.builder()
+                    .discount(additionalDiscount)
+                    .booking(savedBooking)
+                    .build();
+            discountRepo.save(discount10Nights);
         }
 
         // Calculate total price with discounts
@@ -243,6 +257,20 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Double getTotalPriceForBooking(Long bookingId){
         return bookingRepo.getTotalPriceForBooking(bookingId);
+    }
+
+    //Method to check condition for additional 2% dicount on booking price
+    public int getTotalBookedNightsLastYear(Long customerId) {
+        LocalDate oneYearAgo = LocalDate.now().minusDays(365);
+        List<Booking> bookings = bookingRepo.findBookingsByCustomerIdAndStartDateAfter(customerId, oneYearAgo);
+
+        int totalNights = 0;
+        for (Booking booking : bookings) {
+            long nights = ChronoUnit.DAYS.between(booking.getStartDate(), booking.getEndDate());
+            totalNights += nights;
+        }
+
+        return totalNights;
     }
 
 }
