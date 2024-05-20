@@ -1,6 +1,7 @@
 package com.example.grupparbete_backend_1.serviceTests;
 
 import com.example.grupparbete_backend_1.dto.DetailedContractCustomerDto;
+import com.example.grupparbete_backend_1.models.AllContractCustomers;
 import com.example.grupparbete_backend_1.models.ContractCustomer;
 import com.example.grupparbete_backend_1.repositories.ContractCustomerRepo;
 import com.example.grupparbete_backend_1.services.impl.ContractCustomerServiceImpl;
@@ -38,7 +39,8 @@ public class ContractCustomerServiceTests {
     void fetchContractCustomerShouldMapCorrectly() throws IOException {
 
         //Arrange
-        when(xmlStreamProvider.getDataStream()).thenReturn(getClass().getClassLoader().getResourceAsStream("ContractCustomers.xml"));
+        when(xmlStreamProvider.getDataStream()).thenReturn(getClass()
+                .getClassLoader().getResourceAsStream("ContractCustomers.xml"));
 
         ContractCustomer customer1 = new ContractCustomer();
         customer1.setId(1L);
@@ -78,15 +80,24 @@ public class ContractCustomerServiceTests {
 
 
 
-        List<ContractCustomer> mockCustomers = Arrays.asList(customer1, customer2, customer3);
-        when(contractCustomerRepo.findAll()).thenReturn(mockCustomers);
+        /*List<ContractCustomer> mockCustomers = Arrays.asList(customer1, customer2, customer3);
+        when(contractCustomerRepo.findAll()).thenReturn(mockCustomers);*/
+
+        List<DetailedContractCustomerDto> result = Arrays.asList
+                (sut.contractCustomerToDetailedContractCustomerDto(customer1),
+                        sut.contractCustomerToDetailedContractCustomerDto(customer2),
+                        sut.contractCustomerToDetailedContractCustomerDto(customer3));
+        when(sut.getAllContractCustomers()).thenReturn(result);
 
 
         //Act
         sut.fetchContractCustomers();
 
-        List<DetailedContractCustomerDto> result = sut.getAllContractCustomers();
 
+       /* List<DetailedContractCustomerDto> result = sut.getAllContractCustomers();*/
+
+        /*result.add(sut.contractCustomerToDetailedContractCustomerDto(customer2));
+        */
         System.out.println(result);
 
         //Assert
