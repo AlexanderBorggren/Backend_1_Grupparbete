@@ -1,8 +1,8 @@
 package com.example.grupparbete_backend_1.services.impl;
 
-import com.example.grupparbete_backend_1.dto.BlacklistedCustomerDto;
-import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
+import com.example.grupparbete_backend_1.dto.*;
 import com.example.grupparbete_backend_1.models.BlacklistCheckResponse;
+import com.example.grupparbete_backend_1.models.Booking;
 import com.example.grupparbete_backend_1.models.User;
 import com.example.grupparbete_backend_1.repositories.RoleRepo;
 import com.example.grupparbete_backend_1.repositories.UserRepo;
@@ -37,7 +37,16 @@ public class UserServiceImpl implements UserService {
     RoleRepo roleRepo;
     UserRepo userRepo;
 
-    public void addUser(String mail, String group) {
+    @Override
+    public UserDto userToUserDTO(User user) {
+        return UserDto.builder()
+                .roles(user.getRoles().stream().toList())
+                .email(user.getUsername())
+                .enabled(user.isEnabled())
+                .build();
+    }
+
+    public String addUser(String mail, String group) {
         ArrayList<Role> roles = new ArrayList<>();
         roles.add(roleRepo.findByName(group));
 
@@ -45,11 +54,16 @@ public class UserServiceImpl implements UserService {
         String hash = encoder.encode("Hejsan123#");
         User user = User.builder().enabled(true).password(hash).username(mail).roles(roles).build();
         userRepo.save(user);
+        return "Added new user : " + mail;
     }
 
     public void addRole(String name) {
         Role role = new Role();
         roleRepo.save(Role.builder().name(name).build());
+    }
+
+    public List<UserDto> getAllUsers() {
+        return userRepo.findAll().stream().map(k -> userToUserDTO(k)).toList();
     }
 
 }
