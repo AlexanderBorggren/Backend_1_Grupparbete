@@ -28,25 +28,27 @@ import java.util.Optional;
 public class BlacklistServiceImpl implements BlacklistService {
 
 
-    CustomerService customerService;
+    private CustomerService customerService;
+
 
     @Autowired
-    public BlacklistServiceImpl(CustomerService customerService) {
-        this.customerService = customerService;}
-
+    public BlacklistServiceImpl(CustomerService customerService){
+        this.customerService = customerService;
+    }
 
     public BlacklistServiceImpl(){}
 
    @Override
     public boolean isBlacklistOk(String email) throws IOException, InterruptedException, URISyntaxException {
 
+
        HttpClient client = HttpClient.newHttpClient();
 
-           HttpRequest request = HttpRequest.newBuilder()
-                   .uri(new URI("https://javabl.systementor.se/api/rosa/blacklistcheck/" + email))
-                   .build();
+       HttpRequest request = HttpRequest.newBuilder()
+               .uri(new URI("https://javabl.systementor.se/api/rosa/blacklist"))
+               .build();
 
-           HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+       HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
 
        if (response.statusCode() == 200) {
@@ -55,10 +57,10 @@ public class BlacklistServiceImpl implements BlacklistService {
             BlacklistCheckResponse blacklistCheckResponse = gson.fromJson(response.body(), BlacklistCheckResponse.class);
             return blacklistCheckResponse.isOk();
         }
-		    else {
-                // Något gick fel
-                System.out.println("Ett fel uppstod: " + response.statusCode());
-                return false;
+       else {
+           // Något gick fel
+           System.out.println("Ett fel uppstod: " + response.statusCode());
+           return false;
             }
 
         }

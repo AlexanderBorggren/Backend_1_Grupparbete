@@ -12,16 +12,17 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 public class ContractCustomerServiceTests {
@@ -31,6 +32,8 @@ public class ContractCustomerServiceTests {
     private final ContractCustomerRepo contractCustomerRepo = mock(ContractCustomerRepo.class);
     private final XmlStreamProvider xmlStreamProvider = mock(XmlStreamProvider.class);
 
+    AllContractCustomers allContractCustomers = mock(AllContractCustomers.class);
+
 
 
     private ContractCustomerServiceImpl sut;
@@ -39,9 +42,10 @@ public class ContractCustomerServiceTests {
     void setUp() {
         sut = new ContractCustomerServiceImpl(contractCustomerRepo,xmlStreamProvider);
 
+
     }
 
-
+/*
     @Test
     void fetchContractCustomerShouldMapCorrectly() throws IOException {
 
@@ -68,9 +72,42 @@ public class ContractCustomerServiceTests {
             assertEquals("gardener", allContractCustomers.getContractCustomers().get(0).getContactTitle());
             assertEquals("Arlöv", allContractCustomers.getContractCustomers().get(2).getCity());
 
+        }*/
+
+        @Test
+        void  TestXmlMapperToAllContractCustomers() throws IOException {
+            //arrange
+            when(xmlStreamProvider.getDataStream()).thenReturn(getClass().getClassLoader().getResourceAsStream("ContractCustomers.xml"));
+            when(contractCustomerRepo.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+           /* ContractCustomer contractCustomer = new ContractCustomer();
+            contractCustomer.setId(0L);*/
+
+
+
+            // Act
+            sut.fetchContractCustomers();
+
+            List<DetailedContractCustomerDto> allContractCustomerDtos = sut.getAllContractCustomers();
+
+            // Assert
+            verify(contractCustomerRepo, times(1)).save(argThat(contractCustomer -> contractCustomer.getId() == 1L));
+            verify(contractCustomerRepo, times(1)).save(argThat(contractCustomer -> contractCustomer.getId() == 2L));
+            verify(contractCustomerRepo, times(1)).save(argThat(contractCustomer -> contractCustomer.getId() == 3L));
+
+
+
+
+           /* ));
+            List<DetailedContractCustomerDto> actualDtos = sut.getAllContractCustomers();
+
+            assertEquals(3, actualDtos.size());
+            assertEquals("Persson Kommanditbolag", actualDtos.get(0).getCompanyName());
+            assertEquals("Maria Åslund", actualDtos.get(0).getContactName());
+            assertEquals("gardener", actualDtos.get(0).getContactTitle());
+            assertEquals("Arlöv", actualDtos.get(2).getCity());*/
+
         }
-
-
 
 
    /* @Test
