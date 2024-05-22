@@ -19,8 +19,8 @@ import java.util.List;
 @Service
 public class ShippersServiceImpl implements ShippersService {
 
-    private final ShippersRepo shippersRepo;
-    private final JSonStreamProvider jsonStreamProvider;
+    public final ShippersRepo shippersRepo;
+    public final JSonStreamProvider jsonStreamProvider;
 
     public ShippersServiceImpl(ShippersRepo shippersRepo, JSonStreamProvider jsonStreamProvider){
         this.shippersRepo = shippersRepo;

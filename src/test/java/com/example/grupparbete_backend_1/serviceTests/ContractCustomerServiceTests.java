@@ -11,7 +11,6 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
-
 public class ContractCustomerServiceTests {
 
 

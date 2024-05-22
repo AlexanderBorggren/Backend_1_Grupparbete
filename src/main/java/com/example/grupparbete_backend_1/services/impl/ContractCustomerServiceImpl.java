@@ -26,9 +26,9 @@ import java.util.List;
 public class ContractCustomerServiceImpl implements ContractCustomerService {
     private static final Logger log = LoggerFactory.getLogger(ContractCustomerServiceImpl.class);
     ContractCustomerRepo contractCustomerRepo;
-    final XmlStreamProvider xmlStreamProvider;
+    public final XmlStreamProvider xmlStreamProvider;
 
-
+    @Autowired
     public ContractCustomerServiceImpl(ContractCustomerRepo contractCustomerRepo, XmlStreamProvider xmlStreamProvider){
         this.contractCustomerRepo=contractCustomerRepo;
         this.xmlStreamProvider=xmlStreamProvider;
