@@ -103,15 +103,16 @@ public class UserServiceImpl implements UserService {
    }
 
     @Override
-    public void updateUser(UserDto userDto) {
+    public void updateUser(User user) {
         // Convert UserDto to User entity
-        User user = findUserByUsername(userDto.getEmail());
-        if (user != null) {
-            user.setPassword(userDto.getPassword());
-            user.setRoles(userDto.getRoles().stream()
-                    .map(roleName -> roleRepo.findByName(roleName)).orElse(null))
+        UserDto userDB = findUserByUsername(user.getUsername());
+        if (userDB != null) {
+            userDB.setPassword(user.getPassword());
+            userDB.setRoles(user.getRoles().stream()
+                    .map(roleName -> roleRepo.findByName(roleName.getName()))
                     .collect(Collectors.toList()));
-            userRepo.save(user);  // Update existing user
+
+            userRepo.save(userDtoToUser(userDB));  // Update existing user
         }
     }
 }

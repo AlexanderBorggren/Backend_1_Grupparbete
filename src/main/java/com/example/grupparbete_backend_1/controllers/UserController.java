@@ -67,27 +67,50 @@ public class UserController {
         //TODO - HANDLE NULL CUSTOMER
         model.addAttribute("user", userDto);
         model.addAttribute("userRoles", userDto.getRoles());
+        model.addAttribute("originalUsername", username);
         return "updateUserForm";
     }
 
-    public String updateUser(@Valid UserDto userDto, Model model, RedirectAttributes redirectAttributes) {
+    @PostMapping("/update/{origUsername}/")
+    public String updateUser(@PathVariable String origUsername, @Valid UserDto userDto, Model model, RedirectAttributes redirectAttributes) throws IOException, URISyntaxException, InterruptedException {
         String username = userDto.getEmail();
 
         // Fetch existing user
         UserDto existingUser = userService.findUserByUsername(username);
-        if (existingUser == null) {
-            model.addAttribute("errorMessage", "User with username " + username + " does not exist.");
-            return "redirect:/users/editByView/" + username + "/";
+
+
+        if(existingUser != null) {
+            //Update self without changing username
+            if(username.equals(origUsername)) {
+                // Update existing user's details
+                existingUser.setPassword(userDto.getPassword());
+                existingUser.setRoles(userDto.getRoles().stream().distinct().collect(Collectors.toList()));
+
+                userService.updateUser(userService.userDtoToUser(existingUser));
+            }
+            //Update username to another user that has same name already
+            else {
+                redirectAttributes.addFlashAttribute("errorMessageUpdateUser", "User with username " + username + " already exist.");
+                //String originalNameString = model.getAttribute("originalUsername").toString();
+                return "redirect:/editByView/"+origUsername+"/";
+                //return "redirect:/users/all";
+            }
+
         }
 
-        // Update existing user's details
-        existingUser.setPassword(userDto.getPassword());
-        existingUser.setRoles(userDto.getRoles().stream().distinct().collect(Collectors.toList()));
+        if (existingUser == null) {
+            UserDto userSelf = userService.findUserByUsername(model.getAttribute("originalUsername").toString());
+            // Update existing user's details
+            userSelf.setEmail(username);
+            userSelf.setPassword(userDto.getPassword());
+            userSelf.setRoles(userDto.getRoles().stream().distinct().collect(Collectors.toList()));
 
-        userService.updateUser(existingUser);
+            userService.updateUser(userService.userDtoToUser(userSelf));
+
+        }
 
         String feedbackMessage = "User " + userDto.getEmail() + " has been updated.";
-        redirectAttributes.addFlashAttribute("updateCustomerFeedbackMessage", feedbackMessage);
+        redirectAttributes.addFlashAttribute("errorMessageUpdateUser", feedbackMessage);
 
         return "redirect:/users/all";
     }
