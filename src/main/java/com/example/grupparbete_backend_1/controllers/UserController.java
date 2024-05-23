@@ -39,17 +39,12 @@ public class UserController {
 
 
 
-        model.addAttribute("bookingTitle", "All bookings: ");
-        model.addAttribute("bookingId", "Booking id: ");
-        model.addAttribute("customerId", "Customer id: ");
-        model.addAttribute("customerName", "Customer name: ");
-        model.addAttribute("customerEmail", "Customer email: ");
+        model.addAttribute("usersTitle", "All Users: ");
+        model.addAttribute("email", "Username: ");
+        model.addAttribute("roles", "Customer email: ");
+        model.addAttribute("enabled", "Customer email: ");
 
-        model.addAttribute("startDate", "Start Date: ");
-        model.addAttribute("endDate", "End Date: ");
-        model.addAttribute("guestQuantity", "Total guests: ");
-        model.addAttribute("roomId", "Room number: ");
-        model.addAttribute("roomSize", "Room Size: ");
+        model.addAttribute("", "Start Date: ");
         model.addAttribute("extraBedsQuantity", "Extra beds: ");
         return "users";
     }

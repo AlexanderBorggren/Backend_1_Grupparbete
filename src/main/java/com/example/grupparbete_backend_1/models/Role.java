@@ -1,4 +1,4 @@
-package com.example.grupparbete_backend_1.securities;
+package com.example.grupparbete_backend_1.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,9 +17,14 @@ import java.util.UUID;
 public class Role {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String name;
+
+    public Role(String name) {
+        this.name = name;
+    }
 
 }

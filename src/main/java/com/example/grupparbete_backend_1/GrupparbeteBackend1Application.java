@@ -1,24 +1,20 @@
 package com.example.grupparbete_backend_1;
 import com.example.grupparbete_backend_1.Events.EventBase;
 import com.example.grupparbete_backend_1.Events.RoomClosed;
-import com.example.grupparbete_backend_1.controllers.ContractCustomerControllerTH;
-import com.example.grupparbete_backend_1.models.Booking;
-import com.example.grupparbete_backend_1.models.Customer;
-import com.example.grupparbete_backend_1.models.Room;
-import com.example.grupparbete_backend_1.models.RoomType;
+import com.example.grupparbete_backend_1.models.*;
 import com.example.grupparbete_backend_1.repositories.*;
+import com.example.grupparbete_backend_1.models.Role;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.Objects;
+import java.util.Set;
 
 
 @SpringBootApplication
@@ -47,13 +43,34 @@ public class GrupparbeteBackend1Application {
     }
 /*
     @Bean
+    public CommandLineRunner addUsersRoles(UserRepo userRepo, RoleRepo roleRepo) {
+        return (args) -> {
+
+            Role role = new Role("ADMIN");
+            Role role2 = new Role("RECEPTIONIST");
+            roleRepo.save(role);
+            roleRepo.save(role2);
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String hash = encoder.encode("admin");
+            String hash2 = encoder.encode("receptionist");
+
+            List <Role> rolesAdmin = List.of(role, role2);
+            List<Role> roleReceptionist = List.of(role2);
+            User user1 = new User("admin@admin.se", hash, true, rolesAdmin);
+            User user2 = new User("receptionist@receptionist.se", hash2, true, roleReceptionist);
+            userRepo.save(user1);
+            userRepo.save(user2);
+        };*/
+
+/*
+    @Bean
     public CommandLineRunner addDefaultData(EventRepo eventRepo) {
         return (args) -> {
             EventBase eventBase = new EventBase();
             eventRepo.save(eventBase);
             eventRepo.save(new RoomClosed());
         };
-    }
+
 
     /*
     @Bean
@@ -165,8 +182,6 @@ public class GrupparbeteBackend1Application {
 */
 
 }
-
-
 
 
 

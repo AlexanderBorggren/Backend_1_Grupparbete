@@ -104,7 +104,13 @@ nav a.indexButtons {
 nav a.indexButtons:hover {
     background-color: #0056b3;
 }
+#adminButton {
+    background-color: #101010;
+}
 
+#adminButton:hover {
+    background-color: #313131;
+}
 
 
 /* Table */

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,19 @@
 <body>
 <div class="container">
     <h2>Booking Portal</h2>
+    <div>
+        <span sec:authorize="isAuthenticated()">Welcome, <span sec:authentication="name"></span>!</span>
+        <a href="/logout" sec:authorize="isAuthenticated()">Logout</a>
+    </div>
     <nav>
-        <a class="indexButtons" href="http://localhost:8080/customer/all">Customers</a>
-        <a class="indexButtons" href="http://localhost:8080/booking/all">Bookings</a>
-        <a class="indexButtons" href="http://localhost:8080/customer/addCustomerNewView">New Customer booking</a>
-        <a class="indexButtons" href="http://localhost:8080/contractcustomers/all">Contract customers</a>
-        <a class="indexButtons" href="http://localhost:8080/blacklist/adminBlacklistView">Admin blacklist</a>
-        <a class="indexButtons" href="http://localhost:8080/rooms/all">Rooms</a>
+        <a class="indexButtons" href="http://localhost:8080/customer/all" sec:authorize="hasAuthority('RECEPTIONIST')">Customers</a>
+        <a class="indexButtons" href="http://localhost:8080/booking/all" sec:authorize="hasAuthority('RECEPTIONIST')">Bookings</a>
+        <a class="indexButtons" href="http://localhost:8080/customer/addCustomerNewView" sec:authorize="hasAuthority('RECEPTIONIST')">New Customer booking</a>
+        <a class="indexButtons" href="http://localhost:8080/contractcustomers/all" sec:authorize="hasAuthority('RECEPTIONIST')">Contract customers</a>
+        <a class="indexButtons" href="http://localhost:8080/rooms/all" sec:authorize="hasAuthority('RECEPTIONIST')">Rooms</a>
+    </nav>
+    <nav>
+        <a class="indexButtons" id="adminButton" href="http://localhost:8080/adminpage.html" sec:authorize="hasAuthority('ADMIN')">Admin services</a>
     </nav>
 </div>
 </body>

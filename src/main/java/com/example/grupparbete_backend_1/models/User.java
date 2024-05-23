@@ -1,15 +1,13 @@
 package com.example.grupparbete_backend_1.models;
 
-import com.example.grupparbete_backend_1.securities.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,14 +19,21 @@ import java.util.UUID;
 public class User {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy= GenerationType.UUID)
-    @Column(name="id")
     private UUID id;
 
     private String username;
     private String password;
     private boolean enabled;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private Collection<Role> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> roles;
+
+    public User(String username, String password, boolean enabled, List<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.roles = roles;
+    }
 }
