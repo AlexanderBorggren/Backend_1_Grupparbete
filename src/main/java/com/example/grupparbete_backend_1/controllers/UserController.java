@@ -59,38 +59,23 @@ public class UserController {
         return "redirect:/users/all";
     }
 
-    //CREATE NEW BOOKING
-    @RequestMapping(value = "/addBooking")
-    public String addUser(@RequestParam("mail") String mail,
-                          @RequestParam("group") String group,
-                             RedirectAttributes redirectAttributes) throws URISyntaxException, IOException, InterruptedException {
-
-        String feedbackMessage = userService.addUser(mail, group);
-        redirectAttributes.addFlashAttribute("feedbackMessageCreateBooking", feedbackMessage);
-
-        return "redirect:/user/all";
-    }
-
-
-    /*
     @PostMapping("/update")
-    public String updateCustomer(@Valid Model model, DetailedCustomerDto c, RedirectAttributes redirectAttributes) {
-        String id = String.valueOf(c.getId());
-        if (customerService.doesSsnExistUpdate(c.getSsn(), c.getId())) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Customer with SSN " + c.getSsn() + " already exists.");
-            return "redirect:/customer/editByView/" + id + "/";
+    public String updateUser(@Valid Model model, UserDto userDto, RedirectAttributes redirectAttributes) {
+        String username = String.valueOf(userDto.getEmail());
+        if (userService.doesUserWithUsernameExist(username)) {
+            model.addAttribute("errorMessage", "User with username " + username + " already exists.");
+            return "redirect:/users/editByView/" + username + "/";
         }
-        customerService.addCustomer(c);
-        model.addAttribute("name", "name");
+        userService.addUser(userDto);
+      /*  model.addAttribute("name", "name");
         model.addAttribute("ssn", "ssn");
-        model.addAttribute("email", "email");
+        model.addAttribute("email", "email");*/
 
-        String feedbackMessage = "Customer id " + c.getId() + " with name " + c.getName() + " has been updated.";
+        String feedbackMessage = "User " + userDto.getEmail() + " has been updated.";
         redirectAttributes.addFlashAttribute("updateCustomerFeedbackMessage", feedbackMessage);
 
         return "redirect:/customer/all";
     }
-    */
 
     @RequestMapping("/addUserView")
     public String createUserByForm(Model model) {
@@ -99,7 +84,13 @@ public class UserController {
 
         return "addUserForm";
     }
-
+    @RequestMapping("/editByView/{username}/")
+    public String createByForm(@PathVariable String username, Model model) {
+        UserDto userDto = userService.findUserByUsername(username);
+        //TODO - HANDLE NULL CUSTOMER
+        model.addAttribute("user", userDto);
+        return "updateUserForm";
+    }
 
     @PostMapping("/addUser")
     public String addUser(@Valid @RequestParam String username, @RequestParam String password, @RequestParam List<Role> roles, Model model, RedirectAttributes redirectAttributes) {

@@ -25,4 +25,5 @@ public interface UserService {
     public List<Role> getAllRoles();
     public String deleteUser(String email);
     public boolean doesUserWithUsernameExist(String username);
+    UserDto findUserByUsername(String username);
 }

@@ -96,5 +96,8 @@ public class UserServiceImpl implements UserService {
         return user != null;
     }
 
+   public UserDto findUserByUsername(String username){
 
+        return userToUserDTO(userRepo.getUserByUsername(username));
+   }
 }

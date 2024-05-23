@@ -18,7 +18,7 @@
 <body>
 <h2>Add User</h2>
 
-<form id="customerForm" th:action="@{/users/addUser}" th:object="${userDto}" method="post">
+<form id="customerForm" th:action="@{/users/addUser}" th:object="${user}" method="post">
     <label for="username">Username:</label><br>
     <input type="text" id="username" name="username" required maxlength="50" minlength="1"><br>
     <span id="name-error" class="error-message"></span> <br>
