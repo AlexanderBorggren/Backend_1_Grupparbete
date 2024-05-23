@@ -22,6 +22,7 @@ import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -100,4 +101,17 @@ public class UserServiceImpl implements UserService {
 
         return userToUserDTO(userRepo.getUserByUsername(username));
    }
+
+    @Override
+    public void updateUser(UserDto userDto) {
+        // Convert UserDto to User entity
+        User user = findUserByUsername(userDto.getEmail());
+        if (user != null) {
+            user.setPassword(userDto.getPassword());
+            user.setRoles(userDto.getRoles().stream()
+                    .map(roleName -> roleRepo.findByName(roleName)).orElse(null))
+                    .collect(Collectors.toList()));
+            userRepo.save(user);  // Update existing user
+        }
+    }
 }

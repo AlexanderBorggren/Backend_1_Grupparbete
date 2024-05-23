@@ -26,4 +26,5 @@ public interface UserService {
     public String deleteUser(String email);
     public boolean doesUserWithUsernameExist(String username);
     UserDto findUserByUsername(String username);
+    void updateUser(UserDto userDto);
 }

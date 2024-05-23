@@ -59,22 +59,37 @@ public class UserController {
         return "redirect:/users/all";
     }
 
-    @PostMapping("/update")
-    public String updateUser(@Valid Model model, UserDto userDto, RedirectAttributes redirectAttributes) {
-        String username = String.valueOf(userDto.getEmail());
-        if (userService.doesUserWithUsernameExist(username)) {
-            model.addAttribute("errorMessage", "User with username " + username + " already exists.");
+    @RequestMapping("/editByView/{username}/")
+    public String createByForm(@PathVariable String username, Model model) {
+        UserDto userDto = userService.findUserByUsername(username);
+        List<Role> allRoles = userService.getAllRoles();
+        model.addAttribute("allRoles", allRoles);
+        //TODO - HANDLE NULL CUSTOMER
+        model.addAttribute("user", userDto);
+        model.addAttribute("userRoles", userDto.getRoles());
+        return "updateUserForm";
+    }
+
+    public String updateUser(@Valid UserDto userDto, Model model, RedirectAttributes redirectAttributes) {
+        String username = userDto.getEmail();
+
+        // Fetch existing user
+        UserDto existingUser = userService.findUserByUsername(username);
+        if (existingUser == null) {
+            model.addAttribute("errorMessage", "User with username " + username + " does not exist.");
             return "redirect:/users/editByView/" + username + "/";
         }
-        userService.addUser(userDto);
-      /*  model.addAttribute("name", "name");
-        model.addAttribute("ssn", "ssn");
-        model.addAttribute("email", "email");*/
+
+        // Update existing user's details
+        existingUser.setPassword(userDto.getPassword());
+        existingUser.setRoles(userDto.getRoles().stream().distinct().collect(Collectors.toList()));
+
+        userService.updateUser(existingUser);
 
         String feedbackMessage = "User " + userDto.getEmail() + " has been updated.";
         redirectAttributes.addFlashAttribute("updateCustomerFeedbackMessage", feedbackMessage);
 
-        return "redirect:/customer/all";
+        return "redirect:/users/all";
     }
 
     @RequestMapping("/addUserView")
@@ -83,13 +98,6 @@ public class UserController {
         model.addAttribute("allRoles", allRoles);
 
         return "addUserForm";
-    }
-    @RequestMapping("/editByView/{username}/")
-    public String createByForm(@PathVariable String username, Model model) {
-        UserDto userDto = userService.findUserByUsername(username);
-        //TODO - HANDLE NULL CUSTOMER
-        model.addAttribute("user", userDto);
-        return "updateUserForm";
     }
 
     @PostMapping("/addUser")
