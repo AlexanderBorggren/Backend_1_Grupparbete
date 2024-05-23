@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -104,13 +106,19 @@ public class UserController {
 
         model.addAttribute("username", username);
         model.addAttribute("password", password);
-        //model.addAttribute("roles", roles);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashPassword = encoder.encode(password);
+        model.addAttribute("roles", roles);
 
         if (userService.doesUserWithUsernameExist(username)) {
             model.addAttribute("errorMessage", "User with username " + username + " already exists.");
+            List<Role> allRoles = userService.getAllRoles();
+            model.addAttribute("allRoles", allRoles);
             return "addUserForm";
         } else {
-            userService.addUser(new UserDto(username, password, roles, true));
+            List<Role> uniqueRoles = roles.stream().distinct().toList();
+            userService.addUser(new UserDto(username, hashPassword, uniqueRoles, true));
             String feedbackMessage = "User " + username + " has been added.";
             redirectAttributes.addFlashAttribute("feedbackMessageCreateBooking", feedbackMessage);
 
