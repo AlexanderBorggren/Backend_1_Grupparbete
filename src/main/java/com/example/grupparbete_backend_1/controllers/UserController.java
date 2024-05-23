@@ -100,18 +100,20 @@ public class UserController {
 
 
     @PostMapping("/addUser")
-    public String addUser(@Valid @RequestParam String username, @RequestParam String password/*, @RequestParam List<Role> roles*/, Model model) {
+    public String addUser(@Valid @RequestParam String username, @RequestParam String password, @RequestParam List<Role> roles, Model model, RedirectAttributes redirectAttributes) {
 
         model.addAttribute("username", username);
         model.addAttribute("password", password);
         //model.addAttribute("roles", roles);
-        List<Role> roles = List.of(userService.getAllRoles().get(1));
 
         if (userService.doesUserWithUsernameExist(username)) {
             model.addAttribute("errorMessage", "User with username " + username + " already exists.");
             return "addUserForm";
         } else {
             userService.addUser(new UserDto(username, password, roles, true));
+            String feedbackMessage = "User " + username + " has been added.";
+            redirectAttributes.addFlashAttribute("feedbackMessageCreateBooking", feedbackMessage);
+
             return "redirect:/users/all";
         }
     }

@@ -2,18 +2,23 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Add User</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <style>
         .error-message {
             color: red;
         }
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+        }
     </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
 <h2>Add User</h2>
 
-<form id="customerForm" action="#" th:action="@{/users/addUser}" th:object="${user}" method="post" >
+<form id="customerForm" th:action="@{/users/addUser}" th:object="${user}" method="post">
     <label for="username">Username:</label><br>
     <input type="text" id="username" name="username" required maxlength="50" minlength="1"><br>
     <span id="name-error" class="error-message"></span> <br>
@@ -22,55 +27,52 @@
     <input type="text" id="password" name="password"><br>
     <span id="ssn-error" class="error-message" th:text="${errorMessage}"></span> <br>
 
-    <!--
     <label for="roles">Roles:<br>
-    <select class="form-control" id="roles" name="roles">
-        <option th:each="role : ${allRoles}"
-                th:value="${role.name}"
-                th:text="${role.name}"
-                />
-    </select>
+        <select class="form-control" id="roles" name="roles">
+            <option th:each="role : ${allRoles}"
+                    th:value="${role.id}"
+                    th:data-name="${role.name}"
+                    th:text="${role.name}"></option>
+        </select>
     </label>
-    -->
+    <button type="button" id="addRoleBtn" class="btn btn-primary mt-2">Lägg till</button>
+
+    <h3>Valda roller:</h3>
+    <ul id="selectedRolesList" class="list-group"></ul>
+
+    <!-- Hidden inputs to store selected roles -->
+    <div id="selectedRolesInputs"></div>
 
     <input type="submit" value="Next" id="submit-button">
 </form>
-<!--
+
 <script>
-    window.onload = function() {
-        var name = document.getElementById('name');
-        var ssn = document.getElementById('ssn');
-        var email = document.getElementById('email');
-        var nameError = document.getElementById('name-error');
-        var ssnError = document.getElementById('ssn-error');
-        var emailError = document.getElementById('email-error');
-        var submitButton = document.getElementById('submit-button');
+    $(document).ready(function() {
+        $('#addRoleBtn').click(function() {
+            var selectedRoleId = $('#roles').val();
+            var selectedRoleName = $('#roles option:selected').data('name');
 
-        // Regular expressions for validation
-        var nameRegex = /^.{1,50}$/;
-        var ssnRegex = /^\d{10}$/;
-        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            // Kontrollera om rollen redan finns i listan
+            if ($('#selectedRolesList').find('li[data-role-id="' + selectedRoleId + '"]').length === 0) {
+                $('#selectedRolesList').append('<li class="list-group-item" data-role-id="' + selectedRoleId + '" data-role-name="' + selectedRoleName + '">' + selectedRoleName + '<button type="button" class="btn btn-danger btn-sm ml-2 removeRoleBtn">Remove</button></li>');
 
-        function validateField(input, inputError, regex, errorMessage) {
-            input.addEventListener('input', function() {
-                if (!regex.test(input.value)) {
-                    inputError.textContent = errorMessage;
-                    submitButton.disabled = true;
-                } else {
-                    inputError.textContent = '';
-                    if (nameRegex.test(name.value) && ssnRegex.test(ssn.value) && emailRegex.test(email.value)) {
-                        submitButton.disabled = false;
-                    }
-                }
-            });
-        }
+                // Lägg till dold inputfält för den valda rollen
+                $('#selectedRolesInputs').append('<input type="hidden" name="roles" value="' + selectedRoleId + '" data-role-id="' + selectedRoleId + '"/>');
+            } else {
+                alert('Rollen är redan tillagd.');
+            }
+        });
 
-        validateField(name, nameError, nameRegex, 'Namnet får inte vara tomt eller längre än 50 tecken');
-        validateField(ssn, ssnError, ssnRegex, 'Personnumret måste ha exakt 10 siffror');
-        validateField(email, emailError, emailRegex, 'E-postadressen är ogiltig');
-    }
+        // Ta bort roll från listan
+        $('#selectedRolesList').on('click', '.removeRoleBtn', function() {
+            var roleIdToRemove = $(this).parent().data('role-id');
+            $(this).parent().remove();
+
+            // Ta bort motsvarande dold inputfält för den borttagna rollen
+            $('#selectedRolesInputs').find('input[data-role-id="' + roleIdToRemove + '"]').remove();
+        });
+    });
 </script>
--->
 
 </body>
 </html>
