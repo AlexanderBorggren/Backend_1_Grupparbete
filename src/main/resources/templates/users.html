@@ -23,11 +23,10 @@
         <tbody>
         <tr th:each="user : ${allUsers}">
             <td th:text="${user.email}"></td>
-            <td th:text="${user.roles}"></td>
+            <td th:text="${user.getRoleString()}"></td>
             <td th:text="${user.enabled}"></td>
-            <td><a class="deleteButton" th:href="@{deleteById/{id}/(id=${cust.id})}">Delete</a></td>
-            <td><a class="updateButton" th:href="@{editByView/{id}/(id=${cust.id})}">Update</a></td>
-                <td><a class="bookRoomButton" th:href="@{/booking/bookingByView/{id}/(id=${cust.id})}">Book room</a></td>
+            <td><a class="deleteButton" th:href="@{deleteByEmail/{email}/(email=${user.email})}">Delete</a></td>
+            <td><a class="updateButton" th:href="@{editByView/{email}/(email=${user.email})}">Update</a></td>
         </tr>
 
         </tbody>

@@ -15,7 +15,20 @@ import java.util.List;
 public class UserDto {
 
     private String email;
+    private String password;
     private List<Role> roles;
     private boolean enabled;
+
+    public String getRoleString() {
+        String myString = "";
+        for(Role role : roles)
+        {
+            myString += role.getName();
+            myString += ", ";
+        }
+        ;
+
+        return myString.substring(0, myString.length()-2);
+    }
 
 }

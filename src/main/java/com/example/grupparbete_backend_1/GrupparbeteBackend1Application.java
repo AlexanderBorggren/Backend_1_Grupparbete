@@ -41,6 +41,7 @@ public class GrupparbeteBackend1Application {
 
         }
     }
+
 /*
     @Bean
     public CommandLineRunner addUsersRoles(UserRepo userRepo, RoleRepo roleRepo) {
@@ -54,13 +55,17 @@ public class GrupparbeteBackend1Application {
             String hash = encoder.encode("admin");
             String hash2 = encoder.encode("receptionist");
 
-            List <Role> rolesAdmin = List.of(role, role2);
+            List<Role> rolesAdmin = List.of(role, role2);
             List<Role> roleReceptionist = List.of(role2);
             User user1 = new User("admin@admin.se", hash, true, rolesAdmin);
             User user2 = new User("receptionist@receptionist.se", hash2, true, roleReceptionist);
             userRepo.save(user1);
             userRepo.save(user2);
-        };*/
+        };
+    }
+
+ */
+
 
 /*
     @Bean

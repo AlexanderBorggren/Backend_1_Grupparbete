@@ -2,6 +2,8 @@ package com.example.grupparbete_backend_1.controllers;
 
 
 import com.example.grupparbete_backend_1.dto.*;
+import com.example.grupparbete_backend_1.models.Role;
+import com.example.grupparbete_backend_1.models.User;
 import com.example.grupparbete_backend_1.services.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,12 +43,18 @@ public class UserController {
 
         model.addAttribute("usersTitle", "All Users: ");
         model.addAttribute("email", "Username: ");
-        model.addAttribute("roles", "Customer email: ");
-        model.addAttribute("enabled", "Customer email: ");
-
-        model.addAttribute("", "Start Date: ");
-        model.addAttribute("extraBedsQuantity", "Extra beds: ");
+        model.addAttribute("roles", "Roles: ");
+        model.addAttribute("enabled", "Enabled: ");
         return "users";
+    }
+
+    @RequestMapping(path = "/deleteByEmail/{email}/")
+    public String deleteUser(@PathVariable String email, RedirectAttributes redirectAttributes) {
+        String message = userService.deleteUser(email);
+        redirectAttributes.addFlashAttribute("message", message);
+
+
+        return "redirect:/users/all";
     }
 
     //CREATE NEW BOOKING
@@ -60,4 +68,56 @@ public class UserController {
 
         return "redirect:/user/all";
     }
+
+
+    /*
+    @PostMapping("/update")
+    public String updateCustomer(@Valid Model model, DetailedCustomerDto c, RedirectAttributes redirectAttributes) {
+        String id = String.valueOf(c.getId());
+        if (customerService.doesSsnExistUpdate(c.getSsn(), c.getId())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Customer with SSN " + c.getSsn() + " already exists.");
+            return "redirect:/customer/editByView/" + id + "/";
+        }
+        customerService.addCustomer(c);
+        model.addAttribute("name", "name");
+        model.addAttribute("ssn", "ssn");
+        model.addAttribute("email", "email");
+
+        String feedbackMessage = "Customer id " + c.getId() + " with name " + c.getName() + " has been updated.";
+        redirectAttributes.addFlashAttribute("updateCustomerFeedbackMessage", feedbackMessage);
+
+        return "redirect:/customer/all";
+    }
+    */
+
+    @RequestMapping("/addUserView")
+    public String createUserByForm(Model model) {
+        List<Role> allRoles = userService.getAllRoles();
+        model.addAttribute("allRoles", allRoles);
+
+        return "addUserForm";
+    }
+
+
+    @PostMapping("/addUser")
+    public String addUser(@Valid @RequestParam String username, @RequestParam String password/*, @RequestParam List<Role> roles*/, Model model) {
+
+        model.addAttribute("username", username);
+        model.addAttribute("password", password);
+        //model.addAttribute("roles", roles);
+        List<Role> roles = List.of(userService.getAllRoles().get(1));
+
+        if (userService.doesUserWithUsernameExist(username)) {
+            model.addAttribute("errorMessage", "User with username " + username + " already exists.");
+            return "addUserForm";
+        } else {
+            userService.addUser(new UserDto(username, password, roles, true));
+            return "redirect:/users/all";
+        }
+    }
+
+
+
+
+
 }
