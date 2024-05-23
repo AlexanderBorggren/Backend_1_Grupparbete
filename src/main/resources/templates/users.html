@@ -14,7 +14,7 @@
     <h4 th:text="${updateCustomerFeedbackMessage}"></h4>
 
     <table>
-        <th th:text="${email}"></th>
+        <th th:text="${username}"></th>
         <th th:text="${roles}"></th>
         <th th:text="${enabled}"></th>
         <th></th>
@@ -22,11 +22,11 @@
         <th></th>
         <tbody>
         <tr th:each="user : ${allUsers}">
-            <td th:text="${user.email}"></td>
+            <td th:text="${user.username}"></td>
             <td th:text="${user.getRoleString()}"></td>
             <td th:text="${user.enabled}"></td>
-            <td><a class="deleteButton" th:href="@{deleteByEmail/{email}/(email=${user.email})}">Delete</a></td>
-            <td><a class="updateButton" th:href="@{editByView/{email}/(email=${user.email})}">Update</a></td>
+            <td><a class="deleteButton" th:href="@{deleteByEmail/{id}/(id=${user.id})}">Delete</a></td>
+            <td><a class="updateButton" th:href="@{editByView/{id}/(id=${user.id})}">Update</a></td>
         </tr>
 
         </tbody>

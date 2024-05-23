@@ -19,14 +19,18 @@
 <h4 th:text="${errorMessageUpdateUser}"></h4>
 <h2>Update User</h2>
 
-<form id="customerForm" th:action="@{/users/update/{origUsername}/(origUsername=${originalUsername})}" th:object="${user}" method="post">
+<form id="customerForm" th:action="@{/users/update}" th:object="${user}" method="post">
+    <input type="hidden" th:field="*{id}" />
     <label for="username">Username:</label><br>
-    <input type="text" id="username" th:field="*{email}"><br>
-    <span id="name-error" class="error-message"></span> <br>
+    <input type="text" id="username" th:field="*{username}"><br>
+    <span id="name-error" class="error-message" th:text="${errorMessage}"></span> <br>
 
     <label for="password">Password:</label><br>
     <input type="text" id="password" th:field="*{password}"><br>
-    <span id="ssn-error" class="error-message" th:text="${errorMessage}"></span> <br>
+    <span id="ssn-error" class="error-message"></span> <br>
+
+    <label for="userEnabled">Enabled:</label><br>
+    <input type="text" id="userEnabled" th:field="*{enabled}"><br>
 
     <label for="roles">Roles:<br>
         <select class="form-control" id="roles" name="roles">

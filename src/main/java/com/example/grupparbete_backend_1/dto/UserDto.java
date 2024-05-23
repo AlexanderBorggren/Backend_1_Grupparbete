@@ -14,7 +14,8 @@ import java.util.List;
 @Builder
 public class UserDto {
 
-    private String email;
+    private Long id;
+    private String username;
     private String password;
     private List<Role> roles;
     private boolean enabled;

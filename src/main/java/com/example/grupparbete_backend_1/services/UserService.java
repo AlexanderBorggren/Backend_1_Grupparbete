@@ -26,5 +26,7 @@ public interface UserService {
     public String deleteUser(String email);
     public boolean doesUserWithUsernameExist(String username);
     UserDto findUserByUsername(String username);
-    public void updateUser(User user);
+    public void updateUser(UserDto user);
+    public UserDto getUserByID(Long id);
+    public boolean doesUsernameExistExceptSelf(String username, Long userId);
 }

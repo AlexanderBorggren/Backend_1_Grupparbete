@@ -19,9 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,16 +35,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto userToUserDTO(User user) {
         return UserDto.builder()
+                .id(user.getId())
                 .roles(user.getRoles().stream().toList())
-                .email(user.getUsername())
+                .username(user.getUsername())
                 .enabled(user.isEnabled())
                 .build();
     }
 
     public User userDtoToUser(UserDto user) {
         return User.builder().
+                id(user.getId()).
                 roles(user.getRoles()).
-                username(user.getEmail()).
+                username(user.getUsername()).
                 enabled(user.isEnabled()).
                 password(user.getPassword())
                 .build();
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
    }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(UserDto user) {
         // Convert UserDto to User entity
         UserDto userDB = findUserByUsername(user.getUsername());
         if (userDB != null) {
@@ -114,5 +114,15 @@ public class UserServiceImpl implements UserService {
 
             userRepo.save(userDtoToUser(userDB));  // Update existing user
         }
+    }
+
+    public UserDto getUserByID(Long id) {
+        return userToUserDTO(Objects.requireNonNull(userRepo.findById(id).orElse(null)));
+    }
+
+    public boolean doesUsernameExistExceptSelf(String username, Long userId) {
+        List<UserDto> users = getAllUsers();
+        return users.stream()
+                .anyMatch(user -> user.getUsername().equals(username) && (!user.getId().equals(userId)));
     }
 }

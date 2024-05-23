@@ -59,57 +59,33 @@ public class UserController {
         return "redirect:/users/all";
     }
 
-    @RequestMapping("/editByView/{username}/")
-    public String createByForm(@PathVariable String username, Model model) {
-        UserDto userDto = userService.findUserByUsername(username);
+    @RequestMapping("/editByView/{id}/")
+    public String createByForm(@PathVariable Long id, Model model) {
+        UserDto userDto = userService.getUserByID(id);
         List<Role> allRoles = userService.getAllRoles();
         model.addAttribute("allRoles", allRoles);
         //TODO - HANDLE NULL CUSTOMER
         model.addAttribute("user", userDto);
         model.addAttribute("userRoles", userDto.getRoles());
-        model.addAttribute("originalUsername", username);
         return "updateUserForm";
     }
 
-    @PostMapping("/update/{origUsername}/")
-    public String updateUser(@PathVariable String origUsername, @Valid UserDto userDto, Model model, RedirectAttributes redirectAttributes) throws IOException, URISyntaxException, InterruptedException {
-        String username = userDto.getEmail();
-
-        // Fetch existing user
-        UserDto existingUser = userService.findUserByUsername(username);
-
-
-        if(existingUser != null) {
-            //Update self without changing username
-            if(username.equals(origUsername)) {
-                // Update existing user's details
-                existingUser.setPassword(userDto.getPassword());
-                existingUser.setRoles(userDto.getRoles().stream().distinct().collect(Collectors.toList()));
-
-                userService.updateUser(userService.userDtoToUser(existingUser));
-            }
-            //Update username to another user that has same name already
-            else {
-                redirectAttributes.addFlashAttribute("errorMessageUpdateUser", "User with username " + username + " already exist.");
-                //String originalNameString = model.getAttribute("originalUsername").toString();
-                return "redirect:/editByView/"+origUsername+"/";
-                //return "redirect:/users/all";
-            }
-
+    @PostMapping("/update")
+    public String updateUser(@Valid UserDto userDto, Model model, RedirectAttributes redirectAttributes) throws IOException, URISyntaxException, InterruptedException {
+        if (userService.doesUsernameExistExceptSelf(userDto.getUsername(), userDto.getId())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "User with username" + userDto.getUsername() + " already exists.");
+            return "redirect:/users/editByView/" + userDto.getId() + "/";
         }
 
-        if (existingUser == null) {
-            UserDto userSelf = userService.findUserByUsername(model.getAttribute("originalUsername").toString());
-            // Update existing user's details
-            userSelf.setEmail(username);
-            userSelf.setPassword(userDto.getPassword());
-            userSelf.setRoles(userDto.getRoles().stream().distinct().collect(Collectors.toList()));
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashPassword = encoder.encode(userDto.getPassword());
+        userDto.setPassword(hashPassword);
+        userDto.setRoles(userDto.getRoles().stream().distinct().toList());
 
-            userService.updateUser(userService.userDtoToUser(userSelf));
 
-        }
+        userService.addUser(userDto);
 
-        String feedbackMessage = "User " + userDto.getEmail() + " has been updated.";
+        String feedbackMessage = "User " + userDto.getUsername() + " has been updated.";
         redirectAttributes.addFlashAttribute("errorMessageUpdateUser", feedbackMessage);
 
         return "redirect:/users/all";
@@ -124,7 +100,7 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public String addUser(@Valid @RequestParam String username, @RequestParam String password, @RequestParam List<Role> roles, Model model, RedirectAttributes redirectAttributes) {
+    public String addUser(@Valid @RequestParam String username, @RequestParam String password, @RequestParam List<Role> roles, Model model, RedirectAttributes redirectAttributes) throws IOException, URISyntaxException, InterruptedException {
 
         model.addAttribute("username", username);
         model.addAttribute("password", password);
@@ -140,7 +116,7 @@ public class UserController {
             return "addUserForm";
         } else {
             List<Role> uniqueRoles = roles.stream().distinct().toList();
-            userService.addUser(new UserDto(username, hashPassword, uniqueRoles, true));
+            userService.addUser(userService.userToUserDTO(new User(username, hashPassword, true, uniqueRoles)));
             String feedbackMessage = "User " + username + " has been added.";
             redirectAttributes.addFlashAttribute("feedbackMessageCreateBooking", feedbackMessage);
 
