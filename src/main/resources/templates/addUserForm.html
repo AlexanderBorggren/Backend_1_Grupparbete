@@ -28,7 +28,7 @@
     <span id="ssn-error" class="error-message" th:text="${errorMessage}"></span> <br>
 
     <label for="roles">Roles:<br>
-        <select class="form-control" id="roles" name="roles">
+        <select class="form-control" id="roles">
             <option th:each="role : ${allRoles}"
                     th:value="${role.id}"
                     th:data-name="${role.name}"

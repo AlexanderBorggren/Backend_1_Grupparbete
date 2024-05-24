@@ -23,7 +23,7 @@ public interface UserService {
     public void addRole(String name) throws IOException, InterruptedException, URISyntaxException;
     public List<UserDto> getAllUsers() throws IOException, InterruptedException, URISyntaxException;
     public List<Role> getAllRoles();
-    public String deleteUser(String email);
+    public String deleteUser(Long id);
     public boolean doesUserWithUsernameExist(String username);
     UserDto findUserByUsername(String username);
     public void updateUser(UserDto user);

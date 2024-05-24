@@ -50,9 +50,9 @@ public class UserController {
         return "users";
     }
 
-    @RequestMapping(path = "/deleteByEmail/{email}/")
-    public String deleteUser(@PathVariable String email, RedirectAttributes redirectAttributes) {
-        String message = userService.deleteUser(email);
+    @RequestMapping(path = "/deleteById/{id}/")
+    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        String message = userService.deleteUser(id);
         redirectAttributes.addFlashAttribute("message", message);
 
 

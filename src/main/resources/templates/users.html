@@ -25,7 +25,7 @@
             <td th:text="${user.username}"></td>
             <td th:text="${user.getRoleString()}"></td>
             <td th:text="${user.enabled}"></td>
-            <td><a class="deleteButton" th:href="@{deleteByEmail/{id}/(id=${user.id})}">Delete</a></td>
+            <td><a class="deleteButton" th:href="@{deleteById/{id}/(id=${user.id})}">Delete</a></td>
             <td><a class="updateButton" th:href="@{editByView/{id}/(id=${user.id})}">Update</a></td>
         </tr>
 
