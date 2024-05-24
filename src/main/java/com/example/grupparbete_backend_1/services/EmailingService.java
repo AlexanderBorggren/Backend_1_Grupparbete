@@ -19,8 +19,8 @@ public class EmailingService {
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
 
-    @Value("${spring.mail.username}")
-    private String fromMail;
+    /*@Value("${spring.mail.username}")
+    private String fromMail;*/
 
 
     @Async
@@ -29,7 +29,7 @@ public class EmailingService {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
 
-        mimeMessageHelper.setFrom(fromMail);
+        mimeMessageHelper.setFrom(request.getFromEmail());
         mimeMessageHelper.setTo(request.getToEmail());
         mimeMessageHelper.setSubject(request.getSubject());
 
@@ -43,6 +43,7 @@ public class EmailingService {
         }
         else{
             mimeMessageHelper.setText(request.getBody(), false);
+
         }
 
         mailSender.send(mimeMessage);
