@@ -80,8 +80,9 @@ public class UserServiceImpl implements UserService {
         return roleRepo.findAll().stream().toList();
     }
 
-    public String deleteUser(String email) {
-        User user = userRepo.getUserByUsername(email);
+    @Transactional
+    public String deleteUser(Long id) {
+        User user = userRepo.findById(id).orElse(null);
 
         UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(!userDetails.getUsername().equals(user.getUsername())) {
@@ -91,15 +92,16 @@ public class UserServiceImpl implements UserService {
         return "You cannot remove the logged in user.";
     }
 
+    @Transactional
     public boolean doesUserWithUsernameExist(String username)
     {
-        User user = userRepo.getUserByUsername(username);
+        User user = userRepo.findByUsername(username);
         return user != null;
     }
 
    public UserDto findUserByUsername(String username){
 
-        return userToUserDTO(userRepo.getUserByUsername(username));
+        return userToUserDTO(userRepo.findByUsername(username));
    }
 
     @Override
