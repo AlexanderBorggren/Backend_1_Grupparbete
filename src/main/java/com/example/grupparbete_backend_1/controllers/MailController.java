@@ -1,15 +1,19 @@
 package com.example.grupparbete_backend_1.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.grupparbete_backend_1.dto.MailRequestDto;
+import com.example.grupparbete_backend_1.services.EmailingService;
+import jakarta.mail.MessagingException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
+
+@RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/v1/mail")
 public class MailController {
 
-    @Autowired
+    /*@Autowired
     JavaMailSender mailSender;
 
     @GetMapping("/send-email")
@@ -25,5 +29,15 @@ public class MailController {
         return "Grupparbete";
 
 
+    }*/
+
+    private final EmailingService emailingService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void SendMail(@RequestBody MailRequestDto mailRequestDto) throws MessagingException {
+        emailingService.sendEmail(mailRequestDto);
+
     }
+
 }
