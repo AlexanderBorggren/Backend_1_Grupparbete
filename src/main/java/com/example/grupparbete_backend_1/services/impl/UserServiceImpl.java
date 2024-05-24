@@ -125,4 +125,5 @@ public class UserServiceImpl implements UserService {
         return users.stream()
                 .anyMatch(user -> user.getUsername().equals(username) && (!user.getId().equals(userId)));
     }
+
 }
