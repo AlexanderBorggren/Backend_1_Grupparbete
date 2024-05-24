@@ -8,9 +8,11 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import static org.mockito.Mockito.mock;
+
 public class BlacklistServiceUnitTests {
 
-    BlacklistServiceImpl ServiceImplTest;
+    BlacklistServiceImpl ServiceImplTest = mock(BlacklistServiceImpl.class);
 
     @BeforeEach
     void setUp(){

@@ -13,7 +13,7 @@ import java.nio.channels.ScatteringByteChannel;
 public class HttpClientProvider {
 
 
-    public HttpResponse<String> getHttpClient(String uri, String method, String jsonInputString) {
+    public HttpResponse<String> sendHttpRequest(String uri, String method, String jsonInputString) {
         try {
             HttpResponse<String> response;
             try (HttpClient client = HttpClient.newHttpClient()) {
@@ -30,13 +30,7 @@ public class HttpClientProvider {
                 HttpRequest request = requestBuilder.build();
                 response = client.send(request, HttpResponse.BodyHandlers.ofString());
             }
-
-            if (response.statusCode() == 200) {
-                return response;
-            } else {
-                System.out.println("Ett fel uppstod: " + response.statusCode());
-                return null;
-            }
+            return response;
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -29,12 +29,14 @@ public class BookingServiceImpl implements BookingService {
     private final CustomerRepo customerRepo;
     private final RoomRepo roomRepo;
     private final RoomTypeRepo roomTypeRepo;
+    //private final BlacklistService blacklistService;
 
     public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, RoomTypeRepo roomTypeRepo) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
         this.roomTypeRepo = roomTypeRepo;
+        //this.blacklistService = blacklistService;
     }
 
     @Override
@@ -89,7 +91,8 @@ public class BookingServiceImpl implements BookingService {
         Customer customer = customerRepo.findById(booking.getCustomer().getId()).get();
 
         Room room = roomRepo.findById(booking.getRoom().getId()).get();
-        BlacklistService blacklistService = new BlacklistServiceImpl();
+        BlacklistServiceImpl blacklistService = new BlacklistServiceImpl();
+
         if (blacklistService.isBlacklistOk(customer.getEmail())) {
             bookingRepo.save(detailedBookingDtoToBooking(booking, customer, room));
             return "You have created a new booking for customer " + customer.getName() + ". Booked a " + room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " + booking.getGuestQuantity() + " extra beds. Date booked is " + booking.getStartDate() + " to " + booking.getEndDate();
@@ -98,8 +101,9 @@ public class BookingServiceImpl implements BookingService {
     }
     public String updateBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException {
         Customer customer = customerRepo.findById(booking.getCustomer().getId()).get();
-        BlacklistService blacklistService = new BlacklistServiceImpl();
+
         Room room = roomRepo.findById(booking.getRoom().getId()).get();
+        BlacklistServiceImpl blacklistService = new BlacklistServiceImpl();
 
         if (blacklistService.isBlacklistOk(customer.getEmail())) {
             bookingRepo.save(detailedBookingDtoToBooking(booking, customer, room));

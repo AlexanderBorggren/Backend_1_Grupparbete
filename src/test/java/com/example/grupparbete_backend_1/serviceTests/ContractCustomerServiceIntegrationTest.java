@@ -10,10 +10,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.IOException;
 import java.util.Scanner;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class ContractCustomerServiceTestsIT {
+public class ContractCustomerServiceIntegrationTest {
 
     @Autowired
     XmlStreamProvider xmlStreamProvider;
@@ -24,7 +27,7 @@ public class ContractCustomerServiceTestsIT {
     ContractCustomerServiceImpl sut;
 
     @Test
-    void getContractCustomer() throws IOException {
+    void getContractCustomerAndCheckProperties() throws IOException {
 
         sut = new ContractCustomerServiceImpl(contractCustomerRepo, xmlStreamProvider);
         Scanner s = new Scanner(sut.xmlStreamProvider.getDataStream()).useDelimiter("\\A");
@@ -51,6 +54,28 @@ public class ContractCustomerServiceTestsIT {
         assertTrue(result.contains("</phone>"));
         assertTrue(result.contains("<fax>"));
         assertTrue(result.contains("</fax>"));
+
+
+    }
+
+    @Test
+    void getContractCustomerAndSaveToDatabase() throws IOException {
+
+        XmlStreamProvider xmlStreamProvider = mock(XmlStreamProvider.class);
+
+        when(xmlStreamProvider.getDataStream()).thenReturn(getClass().getClassLoader().getResourceAsStream("ContractCustomers.xml"));
+
+        sut = new ContractCustomerServiceImpl(contractCustomerRepo, xmlStreamProvider);
+
+        //Arrange
+        contractCustomerRepo.deleteAll();
+
+
+        //Act
+        sut.fetchContractCustomers();
+
+        assertEquals(3, contractCustomerRepo.count());
+
 
 
     }

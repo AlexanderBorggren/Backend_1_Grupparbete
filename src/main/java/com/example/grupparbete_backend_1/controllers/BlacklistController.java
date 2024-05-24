@@ -98,6 +98,7 @@ public class BlacklistController {
             }
         } catch (Exception e) {
             System.out.println("här gick det fel");
+            System.out.println(e.getMessage());
 
             return new RedirectView("/blacklist/adminBlacklistView");
 

@@ -28,7 +28,7 @@ import java.util.Optional;
 public class BlacklistServiceImpl implements BlacklistService {
 
 
-    private CustomerService customerService;
+    CustomerService customerService;
 
 
     @Autowired
@@ -38,20 +38,17 @@ public class BlacklistServiceImpl implements BlacklistService {
 
     public BlacklistServiceImpl(){}
 
+
+
    @Override
-    public boolean isBlacklistOk(String email) throws IOException, InterruptedException, URISyntaxException {
+    public boolean isBlacklistOk(String email){
+
+       HttpClientProvider httpClientProvider = new HttpClientProvider();
+
+       HttpResponse<String> response = httpClientProvider.sendHttpRequest("https://javabl.systementor.se/api/rosa/blacklistcheck/" + email,"GET", null);
 
 
-       HttpClient client = HttpClient.newHttpClient();
-
-       HttpRequest request = HttpRequest.newBuilder()
-               .uri(new URI("https://javabl.systementor.se/api/rosa/blacklist"))
-               .build();
-
-       HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-
-       if (response.statusCode() == 200) {
+       if (response != null && response.statusCode() == 200) {
             // Begäran var framgångsrik
             Gson gson = new Gson();
             BlacklistCheckResponse blacklistCheckResponse = gson.fromJson(response.body(), BlacklistCheckResponse.class);
@@ -66,18 +63,14 @@ public class BlacklistServiceImpl implements BlacklistService {
         }
 
     @Override
-    public List<BlacklistedCustomerDto> getBlacklistedCustomers() throws IOException, InterruptedException, URISyntaxException {
+    public List<BlacklistedCustomerDto> getBlacklistedCustomers() throws IOException{
 
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClientProvider httpClientProvider = new HttpClientProvider();
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("https://javabl.systementor.se/api/rosa/blacklist"))
-                    .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClientProvider.sendHttpRequest("https://javabl.systementor.se/api/rosa/blacklist", "GET", null);
 
 
-        if (response.statusCode() == 200) {
+        if (response != null && response.statusCode() == 200) {
 
            // Parse the JSON response into a List of BlacklistedCustomerDto objects
            ObjectMapper objectMapper = new ObjectMapper();
@@ -98,6 +91,7 @@ public class BlacklistServiceImpl implements BlacklistService {
 
     @Override
     public BlacklistedCustomerDto addCustomerFromList(Long id) throws IOException, InterruptedException, URISyntaxException {
+
 
         List<BlacklistedCustomerDto> blacklistedCustomers = getBlacklistedCustomers();
         DetailedCustomerDto customer = customerService.findById(id);
@@ -125,18 +119,20 @@ public class BlacklistServiceImpl implements BlacklistService {
                 String jsonInputString = objectMapper.writeValueAsString(user);
 
                 // Create HttpRequest
-                HttpRequest request = HttpRequest.newBuilder()
+               /* HttpRequest request = HttpRequest.newBuilder()
                         .uri(new URI("https://javabl.systementor.se/api/rosa/blacklist")) // Replace with your actual API endpoint
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
                         .build();
 
                 // Send HttpRequest and get HttpResponse
-                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());*/
+                HttpClientProvider httpClientProvider = new HttpClientProvider();
+                HttpResponse<String> response = httpClientProvider.sendHttpRequest("https://javabl.systementor.se/api/rosa/blacklist", "POST", jsonInputString);
 
 
             // Check the response status code
-            if (response.statusCode() == 200) {
+            if (response != null && response.statusCode() == 200) {
                 // The user was successfully added to the blacklist
                 return user;
             } else {

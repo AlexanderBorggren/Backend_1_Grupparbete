@@ -9,6 +9,7 @@ import com.example.grupparbete_backend_1.repositories.BookingRepo;
 import com.example.grupparbete_backend_1.repositories.CustomerRepo;
 import com.example.grupparbete_backend_1.repositories.RoomRepo;
 import com.example.grupparbete_backend_1.repositories.RoomTypeRepo;
+import com.example.grupparbete_backend_1.services.impl.BlacklistServiceImpl;
 import com.example.grupparbete_backend_1.services.impl.BookingServiceImpl;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;

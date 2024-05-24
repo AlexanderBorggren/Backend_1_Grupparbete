@@ -47,6 +47,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation ("org.junit.jupiter:junit-jupiter:5.7.2")
+    testImplementation("com.h2database:h2")
 
 
 
@@ -59,7 +60,7 @@ tasks.withType<Test> {
 val integrationTestTask = tasks.register<Test>("integrationTest") {
     group = "verification"
     filter {
-        includeTestsMatching("*IT")
+        includeTestsMatching("*IntegrationTest")
     }
 }
 
