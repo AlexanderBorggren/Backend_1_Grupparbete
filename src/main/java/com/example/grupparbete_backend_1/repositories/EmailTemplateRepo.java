@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EmailTemplateRepo extends JpaRepository<EmailingTemplates, Long> {
     EmailingTemplates findByTemplateName(String templateName);
+
 }

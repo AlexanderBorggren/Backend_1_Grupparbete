@@ -42,8 +42,8 @@ public class GrupparbeteBackend1Application {
         }
     }
 
-/*
-    @Bean
+
+    /*@Bean
     public CommandLineRunner addUsersRoles(UserRepo userRepo, RoleRepo roleRepo) {
         return (args) -> {
 
@@ -62,9 +62,9 @@ public class GrupparbeteBackend1Application {
             userRepo.save(user1);
             userRepo.save(user2);
         };
-    }
+    }*/
 
- /*
+
 
 
 /*

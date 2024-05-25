@@ -5,6 +5,7 @@ import com.example.grupparbete_backend_1.models.BlacklistCheckResponse;
 import com.example.grupparbete_backend_1.models.Room;
 import com.example.grupparbete_backend_1.services.*;
 import com.google.gson.Gson;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,13 +35,15 @@ public class BookingControllerTH {
     CustomerService customerService;
     RoomTypeService roomTypeService;
     BlacklistService blacklistService;
+    EmailingService emailingService;
 
-    public BookingControllerTH(BookingService bookingService, RoomService roomService, CustomerService customerService, RoomTypeService roomTypeService, BlacklistService blacklistService) {
+    public BookingControllerTH(BookingService bookingService, RoomService roomService, CustomerService customerService, RoomTypeService roomTypeService, BlacklistService blacklistService, EmailingService emailingService) {
         this.bookingService = bookingService;
         this.roomService = roomService;
         this.customerService = customerService;
         this.roomTypeService = roomTypeService;
         this.blacklistService = blacklistService;
+        this.emailingService = emailingService;
     }
 
     @RequestMapping("/all")
@@ -172,13 +175,33 @@ public class BookingControllerTH {
                              @PathVariable("customerId") Long customerId,
                              @PathVariable("roomId") Long roomId,
                              Model model,
-                             RedirectAttributes redirectAttributes) throws URISyntaxException, IOException, InterruptedException {
+                             RedirectAttributes redirectAttributes) throws URISyntaxException, IOException, InterruptedException, MessagingException {
 
             DetailedBookingDto bookingDto = new DetailedBookingDto(LocalDate.parse(startDate), LocalDate.parse(endDate), guestQuantity, extraBedsQuantity, customerService.detailedCustomerDtoToCustomerDto(customerService.findById(customerId)), roomService.findById(roomId));
             blacklistService.getBlacklistedCustomers();
 
+            DetailedCustomerDto customer = customerService.findById(customerId);
 
-            String feedbackMessage = bookingService.addBooking(bookingDto);
+        MailRequestDto mailRequestDto = new MailRequestDto();
+        mailRequestDto.setTemplateName("BookingConfirmation");
+        mailRequestDto.setFromEmail("autoreply@booking.pensionatet.com");
+        mailRequestDto.setToEmail(customer.getEmail());
+        mailRequestDto.setHTML(true);
+
+
+        emailingService.sendEmail(
+                mailRequestDto,
+                customer.getName(),
+                roomId,
+                "Double",
+                startDate,
+                endDate,
+                guestQuantity,
+                extraBedsQuantity);
+
+
+
+        String feedbackMessage = bookingService.addBooking(bookingDto);
             redirectAttributes.addFlashAttribute("feedbackMessageCreateBooking", feedbackMessage);
 
 

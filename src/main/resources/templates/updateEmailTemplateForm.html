@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<form action="#" th:action="@{/emailView/updateTemplate}" th:object="${emailTemplate}"  method="post" >
+
+    <div>
+        <label for="templateName">Template name:</label><br>
+        <input type="text" id="templateName" th:field="*{templateName}"><br>
+        <span id="templateName-error" class="error-message"></span> <br>
+    </div>
+
+    <div>
+        <label for="templateDescription">Template Description:</label><br>
+        <input type="text" id="templateDescription"  th:field="*{templateDescription}"><br>
+        <span id="templateDescription-error" class="error-message" th:text="${errorMessage}"></span> <br>
+    </div>
+
+    <div>
+        <label for="subject">Subject:</label><br>
+        <input type="text" id="subject" th:field="*{subject}"><br>
+        <span id="subject-error" class="error-message"></span> <br>
+    </div>
+
+    <div>
+        <label for="body">Body:</label><br>
+        <textarea  id="body" th:field="*{body}"></textarea><br>
+        <span id="body-error" class="error-message"></span> <br>
+
+    </div>
+
+    <input type="hidden" th:field="*{id}" />
+    <input type="submit" value="Update" id="submit-button">
+
+</form>
+<!--
+
+<script>
+    window.onload = function() {
+        var name = document.getElementById('name');
+        var ssn = document.getElementById('ssn');
+        var email = document.getElementById('email');
+        var nameError = document.getElementById('name-error');
+        var ssnError = document.getElementById('ssn-error');
+        var emailError = document.getElementById('email-error');
+        var submitButton = document.getElementById('submit-button');
+
+        // Regular expressions for validation
+        var nameRegex = /^.{1,50}$/;
+        var ssnRegex = /^\d{10}$/;
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        function validateField(input, inputError, regex, errorMessage) {
+            input.addEventListener('input', function() {
+                if (!regex.test(input.value)) {
+                    inputError.textContent = errorMessage;
+                    submitButton.disabled = true;
+                } else {
+                    inputError.textContent = '';
+                    if (nameRegex.test(name.value) && ssnRegex.test(ssn.value) && emailRegex.test(email.value)) {
+                        submitButton.disabled = false;
+                    }
+                }
+            });
+        }
+
+        validateField(name, nameError, nameRegex, 'Namnet får inte vara tomt eller längre än 50 tecken');
+        validateField(ssn, ssnError, ssnRegex, 'Personnumret måste ha exakt 10 siffror');
+        validateField(email, emailError, emailRegex, 'E-postadressen är ogiltig');
+
+        // Check if all fields are valid on page load
+        if (nameRegex.test(name.value) && ssnRegex.test(ssn.value) && emailRegex.test(email.value)) {
+            submitButton.disabled = false;
+        }
+    }
+</script>
+-->
+
+</body>
+</html>
