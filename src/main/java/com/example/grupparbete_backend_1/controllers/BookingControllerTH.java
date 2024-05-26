@@ -181,6 +181,7 @@ public class BookingControllerTH {
             blacklistService.getBlacklistedCustomers();
 
             DetailedCustomerDto customer = customerService.findById(customerId);
+            String roomType = bookingDto.getRoom().getRoomType().getRoomSize();
 
         MailRequestDto mailRequestDto = new MailRequestDto();
         mailRequestDto.setTemplateName("BookingConfirmation");
@@ -193,7 +194,7 @@ public class BookingControllerTH {
                 mailRequestDto,
                 customer.getName(),
                 roomId,
-                "Double",
+                roomType,
                 startDate,
                 endDate,
                 guestQuantity,
@@ -290,6 +291,10 @@ public class BookingControllerTH {
             bookingDto.setRoom(roomService.findById(roomId));
 
             String feedbackMessage = bookingService.updateBooking(bookingDto);
+
+
+
+
 
             redirectAttributes.addFlashAttribute("feedbackMessageUpdateBooking", feedbackMessage);
             return "redirect:/booking/all";

@@ -35,15 +35,19 @@ public class EmailingServiceImpl implements EmailingService {
     /*@Value("${spring.mail.username}")
     private String fromMail;*/
 
+
     public ITemplateResolver stringTemplateResolver() {
         final StringTemplateResolver templateResolver = new StringTemplateResolver();
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setCacheable(false);
         return templateResolver;
     }
+
+
     public SpringTemplateEngine stringTemplateEngine() {
         SpringTemplateEngine engine = new SpringTemplateEngine();
-        engine.setTemplateResolver(stringTemplateResolver()); // Use the StringTemplateResolver
+        engine.setTemplateResolver(stringTemplateResolver());
+        // Use the StringTemplateResolver
         return engine;
     }
 
@@ -109,8 +113,9 @@ public class EmailingServiceImpl implements EmailingService {
         if(request.isHTML()){
 
             EmailingTemplates template = getTemplateWithTemplateName(request.getTemplateName());
+            //System.out.println(template.getBody());
 
-            System.out.println("inne i metoden med template id:" + template.getId() + customerName + room + roomType + startDate + endDate + guestQuantity + extraBedsQuantity);
+            //System.out.println("inne i metoden med template id:" + template.getId() +" "+ customerName +" "+ room + roomType +" "+ startDate+" " + endDate+" " + guestQuantity +" "+ extraBedsQuantity);
 
             Context context = new Context();
 
@@ -123,6 +128,7 @@ public class EmailingServiceImpl implements EmailingService {
             context.setVariable("extraBedsQuantity", extraBedsQuantity);
 
             String processedString = stringTemplateEngine().process(template.getBody(), context);
+            //System.out.println(processedString);
             mimeMessageHelper.setSubject(template.getSubject());
             mimeMessageHelper.setText(processedString, true);
         } else {
