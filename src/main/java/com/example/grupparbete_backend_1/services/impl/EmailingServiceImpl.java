@@ -9,6 +9,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ITemplateResolver;
+import org.thymeleaf.templateresolver.StringTemplateResolver;
 
 import java.util.List;
 
@@ -26,13 +30,22 @@ public class EmailingServiceImpl implements EmailingService {
 
     private final JavaMailSender mailSender;
 
-    private final SpringTemplateEngine stringTemplateEngine;
-
     private final EmailTemplateRepo emailTemplateRepo;
 
     /*@Value("${spring.mail.username}")
     private String fromMail;*/
 
+    public ITemplateResolver stringTemplateResolver() {
+        final StringTemplateResolver templateResolver = new StringTemplateResolver();
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setCacheable(false);
+        return templateResolver;
+    }
+    public SpringTemplateEngine stringTemplateEngine() {
+        SpringTemplateEngine engine = new SpringTemplateEngine();
+        engine.setTemplateResolver(stringTemplateResolver()); // Use the StringTemplateResolver
+        return engine;
+    }
 
     @Override
     public EmailingTemplates getTemplateWithTemplateName(String templateName){
@@ -109,7 +122,7 @@ public class EmailingServiceImpl implements EmailingService {
             context.setVariable("guestQuantity", guestQuantity);
             context.setVariable("extraBedsQuantity", extraBedsQuantity);
 
-            String processedString = stringTemplateEngine.process(template.getBody(), context);
+            String processedString = stringTemplateEngine().process(template.getBody(), context);
             mimeMessageHelper.setSubject(template.getSubject());
             mimeMessageHelper.setText(processedString, true);
         } else {
@@ -137,7 +150,7 @@ public class EmailingServiceImpl implements EmailingService {
             Context context = new Context();
 
             context.setVariable("content", request.getBody());
-            String processedString = stringTemplateEngine.process("BookingEmailConfirmationTemplate", context);
+            String processedString = stringTemplateEngine().process("BookingEmailConfirmationTemplate", context);
 
             mimeMessageHelper.setText(processedString, true);
         }
@@ -167,7 +180,7 @@ public class EmailingServiceImpl implements EmailingService {
             Context context = new Context();
 
             context.setVariable("content", request.getBody());
-            String processedString = stringTemplateEngine.process("BookingEmailConfirmationTemplate", context);
+            String processedString = stringTemplateEngine().process("BookingEmailConfirmationTemplate", context);
 
             mimeMessageHelper.setText(processedString, true);
         }
