@@ -1,7 +1,6 @@
 package com.example.grupparbete_backend_1.controllerTests;
 
 import ch.qos.logback.core.model.Model;
-import com.example.grupparbete_backend_1.controllers.BookingController;
 import com.example.grupparbete_backend_1.controllers.BookingControllerTH;
 import com.example.grupparbete_backend_1.dto.*;
 import com.example.grupparbete_backend_1.services.BookingService;
@@ -18,19 +17,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collections;
-
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/*
+
+
 @AutoConfigureMockMvc
 @SpringBootTest
 public class BookingControllerTHTest {
@@ -78,7 +72,6 @@ public class BookingControllerTHTest {
         DetailedBookingDto b3 = new DetailedBookingDto(LocalDate.parse("2026-08-09"), LocalDate.parse("2026-08-12"),4,2,d3, r3);
 
         // Mock behavior for the findById and getAllCustomer methods of the CustomerService
-        // These mocks return the sample DetailedCustomerDto objects when called with specific IDs
         when(bookingService.findById(1L)).thenReturn(b1);
         when(bookingService.findById(2L)).thenReturn(b2);
         when(bookingService.findById(3L)).thenReturn(b3);
@@ -121,7 +114,7 @@ public class BookingControllerTHTest {
 /**Performs a GET request to the URL /booking/deleteById/1/.
  * It expects that the HTTP response status is a 3xx Redirection (indicating a successful redirect).
  * It expects that the URL to which the request is redirected is /booking/all.
- *//*
+ */
 @Test
 void deleteBooking() throws Exception {
     Long id = 1L;
@@ -151,4 +144,3 @@ void deleteBooking() throws Exception {
     }
 
 }
-*/

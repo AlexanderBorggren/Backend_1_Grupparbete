@@ -5,11 +5,10 @@ import com.example.grupparbete_backend_1.models.Booking;
 import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.models.Room;
 import com.example.grupparbete_backend_1.models.RoomType;
-import com.example.grupparbete_backend_1.repositories.BookingRepo;
-import com.example.grupparbete_backend_1.repositories.CustomerRepo;
-import com.example.grupparbete_backend_1.repositories.RoomRepo;
-import com.example.grupparbete_backend_1.repositories.RoomTypeRepo;
+import com.example.grupparbete_backend_1.repositories.*;
+import com.example.grupparbete_backend_1.services.DiscountService;
 import com.example.grupparbete_backend_1.services.impl.BookingServiceImpl;
+import com.example.grupparbete_backend_1.services.impl.DiscountServiceImpl;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,12 +18,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +34,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-/*
+
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class BookingServiceImplTest {
@@ -49,9 +50,13 @@ public class BookingServiceImplTest {
 
     @Mock
     private RoomTypeRepo roomTypeRepo;
+    @Mock
+    private DiscountRepo discountRepo;
+    @InjectMocks
+    private DiscountServiceImpl discountService;
 
     @InjectMocks
-    private BookingServiceImpl service;
+    private BookingServiceImpl bookingService;
 
 
     RoomType roomType = new RoomType(1L, "Single", 0, 300, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
@@ -61,8 +66,7 @@ public class BookingServiceImplTest {
     Customer customer = new Customer(1L, "Bert", "9708045566", "bert@gmail.com",Collections.emptyList(),Timestamp.from(Instant.now()),Timestamp.from(Instant.now()));
 
     Booking booking = new Booking(1L,LocalDate.parse("2024-06-06"),
-            LocalDate.parse("2024-06-07"),2,0,customer,room,300.0,
-            Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            LocalDate.parse("2024-06-08"),2,0,customer,room,600.0);
 
     BookingDto bookingDto = new BookingDto(1L,LocalDate.parse("2024-05-06"),LocalDate.parse("2024-05-10"));
 
@@ -79,12 +83,13 @@ public class BookingServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        service = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo, roomTypeRepo);
+        MockitoAnnotations.openMocks(this);
+        bookingService = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo, roomTypeRepo, discountService, discountRepo);
     }
 
     @Test
     void bookingToDetailedBookingDto() {
-        DetailedBookingDto actual = service.bookingToDetailedBookingDto(booking);
+        DetailedBookingDto actual = bookingService.bookingToDetailedBookingDto(booking);
 
         assertEquals(detailedBookingDto.getId(), actual.getId());
         assertEquals(detailedBookingDto.getStartDate(), actual.getStartDate());
@@ -94,7 +99,7 @@ public class BookingServiceImplTest {
     }
     @Test
     void detailedBookingDtoToBooking() {
-        Booking actual = service.detailedBookingDtoToBooking(detailedBookingDto, customer, room);
+        Booking actual = bookingService.detailedBookingDtoToBooking(detailedBookingDto, customer, room);
 
 
         assertEquals(booking.getId(), actual.getId());
@@ -110,7 +115,7 @@ public class BookingServiceImplTest {
     }
     @Test
     void bookingToBookingDto() {
-        BookingDto actual = service.bookingToBookingDto(booking);
+        BookingDto actual = bookingService.bookingToBookingDto(booking);
 
         assertEquals(booking.getId(), actual.getId());
         assertEquals(booking.getStartDate(), actual.getStartDate());
@@ -120,7 +125,7 @@ public class BookingServiceImplTest {
     @Test
     void bookingDtoToBooking() {
 
-        Booking actual = service.bookingDtoToBooking(bookingDto, customer, room);
+        Booking actual = bookingService.bookingDtoToBooking(bookingDto, customer, room);
 
         assertEquals(bookingDto.getId(), actual.getId());
         assertEquals(bookingDto.getStartDate(), actual.getStartDate());
@@ -130,20 +135,47 @@ public class BookingServiceImplTest {
 
     }
 
+    @Test
+    public void testGetTotalPriceForBooking() {
+        Long bookingId = 1L;
+        Double expectedPrice = 200.0;
+
+        when(bookingRepo.getTotalPriceForBooking(bookingId)).thenReturn(expectedPrice);
+
+        Double actualPrice = bookingService.getTotalPriceForBooking(bookingId);
+
+        assertEquals(expectedPrice, actualPrice);
+        verify(bookingRepo, times(1)).getTotalPriceForBooking(bookingId);
+    }
 
     @Test
-    void calculateTotalPriceWithDiscounts() {
+    public void testGetTotalBookedNightsLastYear() {
+        Long customerId = 1L;
+        LocalDate now = LocalDate.now();
+        LocalDate oneYearAgo = now.minusDays(365);
 
-        Long bookingId = 1L;
-        Double totalPriceWithDiscounts = 90.0; // Mocked total price with discounts
+        Booking booking1 = new Booking();
+        booking1.setStartDate(now.minusDays(30));
+        booking1.setEndDate(now.minusDays(20));
 
-        when(bookingRepo.calculateTotalPriceWithDiscounts(bookingId)).thenReturn(totalPriceWithDiscounts);
-        Double result = service.calculateTotalPriceWithDiscounts(bookingId);
+        Booking booking2 = new Booking();
+        booking2.setStartDate(now.minusDays(10));
+        booking2.setEndDate(now.minusDays(5));
 
-        assertEquals(totalPriceWithDiscounts, result, 0.01); // Use delta for double comparison
+        List<Booking> bookings = Arrays.asList(booking1, booking2);
+
+        when(bookingRepo.findBookingsByCustomerIdAndStartDateAfter(customerId, oneYearAgo)).thenReturn(bookings);
+
+        int totalNights = bookingService.getTotalBookedNightsLastYear(customerId);
+
+        int expectedNights = (int) ChronoUnit.DAYS.between(booking1.getStartDate(), booking1.getEndDate()) +
+                (int) ChronoUnit.DAYS.between(booking2.getStartDate(), booking2.getEndDate());
+
+        assertEquals(expectedNights, totalNights);
+        verify(bookingRepo, times(1)).findBookingsByCustomerIdAndStartDateAfter(customerId, oneYearAgo);
     }
 
 
 
 
-}*/
+}

@@ -20,19 +20,19 @@
     <table>
         <th>
             <span th:text="${companyName}"></span>
-            <a th:href="@{'/contractcustomers/?pageNo=1&pageSize=10&sortCol=companyName' + '&sortOrder=' + ${sortOrder} + '&q=' + ${q}}">
+            <a th:href="@{'/contractcustomers/?pageNo=1&pageSize=50&sortCol=companyName' + '&sortOrder=' + ${sortOrder} + '&q=' + ${q}}">
                 <img th:src="@{/assets/arrowsAscDesc.png}" alt="Asc/Desc">
             </a>
         </th>
         <th>
             <span th:text="${contactName}"></span>
-            <a th:href="@{'/contractcustomers/?pageNo=1&pageSize=10&sortCol=contactName' + '&sortOrder=' + ${sortOrder} + '&q=' + ${q}}">
+            <a th:href="@{'/contractcustomers/?pageNo=1&pageSize=50&sortCol=contactName' + '&sortOrder=' + ${sortOrder} + '&q=' + ${q}}">
                 <img th:src="@{/assets/arrowsAscDesc.png}" alt="Asc/Desc">
             </a>
         </th>
         <th>
             <span th:text="${contactTitle}"></span>
-            <a th:href="@{'/contractcustomers/?pageNo=1&pageSize=10&sortCol=contactTitle' + '&sortOrder=' + ${sortOrder} + '&q=' + ${q}}">
+            <a th:href="@{'/contractcustomers/?pageNo=1&pageSize=50&sortCol=contactTitle' + '&sortOrder=' + ${sortOrder} + '&q=' + ${q}}">
                 <img th:src="@{/assets/arrowsAscDesc.png}" alt="Asc/Desc">
             </a>
         </th>

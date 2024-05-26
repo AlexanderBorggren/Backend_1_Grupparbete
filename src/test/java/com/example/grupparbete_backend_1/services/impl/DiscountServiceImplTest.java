@@ -30,13 +30,6 @@ class DiscountServiceImplTest {
     @InjectMocks
     private DiscountServiceImpl discountService;
 
-    LocalDate startDate = LocalDate.of(2024, 5, 19); // Sunday
-    LocalDate endDate = LocalDate.of(2024, 5, 20); // Monday
-    RoomType roomType = new RoomType("Single",0, 300.0);
-    Room room = new Room(roomType);
-    Customer customer = new Customer("Korv","9909091919","korv@gmail.com");
-    Booking booking = new Booking(1L,startDate, endDate,1,0,customer, room);
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -50,7 +43,7 @@ class DiscountServiceImplTest {
         RoomType roomType = new RoomType("Single",0, 300.0);
         Room room = new Room(roomType);
         Customer customer = new Customer("Korv","9909091919","korv@gmail.com");
-        Booking booking = new Booking(1L,startDate, endDate,1,0,customer, room);
+        Booking booking = new Booking(1L,startDate, endDate,1,0,customer, room, 300.0);
 
         when(bookingRepo.findById(anyLong())).thenReturn(Optional.of(booking));
         Discount discount = discountService.calculateDiscountSunToMon(1L);

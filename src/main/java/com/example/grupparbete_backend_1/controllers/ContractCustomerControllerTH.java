@@ -80,7 +80,7 @@ public class ContractCustomerControllerTH {
         model.addAttribute("contactTitle", "Title ");
 
         if(!q.isEmpty()){
-            List<ContractCustomer> page = contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContains(q,q,sort);
+            Page<ContractCustomer> page = contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContains(q,q,pageable);
           /*  if(sortCol.equals("companyName")) {
                 model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByCompanyNameContains(q,sort));
             } else if (sortCol.equals("contactName")){
@@ -89,14 +89,15 @@ public class ContractCustomerControllerTH {
                 model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByContactTitleContains(q,sort));
             }*/
             model.addAttribute("allContractCustomers", page);
-            model.addAttribute("totalPages",1);
-            model.addAttribute("pageNo",1);
+            model.addAttribute("totalPages",page.getTotalPages());
+            model.addAttribute("pageNo",pageNo);
             model.addAttribute("sortOrder", sortOrder.equals("asc") ? "desc" : "asc");
 
         }else{
             model.addAttribute("sortOrder", sortOrder.equals("asc") ? "desc" : "asc");
-            List<ContractCustomer> page = contractCustomerRepo.findAll(sort);
+            Page<ContractCustomer> page = contractCustomerRepo.findAll(pageable);
             model.addAttribute("pageNo", pageNo);
+            model.addAttribute("totalPages",page.getTotalPages());
             model.addAttribute("allContractCustomers", page);
         }
         return "contractCustomers";

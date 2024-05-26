@@ -75,6 +75,16 @@ public class Booking {
         this.totalPrice = totalPrice;
     }
 
+    public Booking (Long id,LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, Customer customer, Room room, Double totalPrice) {
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.guestQuantity = guestQuantity;
+        this.extraBedsQuantity = extraBedsQuantity;
+        this.customer = customer;
+        this.room = room;
+        this.totalPrice = totalPrice;
+    }
     public Booking (Long id,LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, Customer customer, Room room) {
         this.id = id;
         this.startDate = startDate;
