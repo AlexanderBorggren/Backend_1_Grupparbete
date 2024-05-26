@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email template services</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<nav><a class="indexButtons" href="http://localhost:8080">Home</a> <a class="indexButtons" th:href="@{addTemplateView}">Add new template</a></nav>
+<h2 th:text="${emailTemplateTitle}"></h2>
+<div class="allCustomers" >
+
+    <h4 th:text="${deleteTemplateFeedbackMessage}"></h4>
+    <h4 th:text="${updateTemplateFeedbackMessage}"></h4>
+
+    <table>
+        <th th:text="${id}"></th>
+        <th th:text="${templateName}"></th>
+        <th th:text="${templateDescription}"></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <tbody>
+        <tr th:each="template : ${allTemplates}">
+            <td th:text="${template.id}"></td>
+            <td th:text="${template.templateName}"></td>
+            <td th:text="${template.templateDescription}"></td>
+
+            <td><a class="deleteButton" th:href="@{deleteById/{id}/(id=${template.id})}">Delete</a></td>
+            <td><a class="updateButton" th:href="@{editByView/{id}/(id=${template.id})}">Update</a></td>
+
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<p>
+
+</p>
+
+
+</body>
+</html>

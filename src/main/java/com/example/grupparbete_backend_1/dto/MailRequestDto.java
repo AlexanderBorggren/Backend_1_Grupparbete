@@ -26,5 +26,6 @@ public class MailRequestDto {
     @JsonAlias(value="html")
     private boolean isHTML;
 
+    private String templateName;
 
 }
