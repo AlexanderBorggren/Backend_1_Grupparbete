@@ -35,7 +35,7 @@ public class RoomType {
     @UpdateTimestamp
     private Timestamp updatedate;
 
-    public RoomType(String roomSize, int maxExtraBeds, double pricePerNight, Timestamp regdate, Timestamp updatedate) {
+    public RoomType(String roomSize, int maxExtraBeds, double pricePerNight) {
         this.roomSize = roomSize;
         this.maxExtraBeds = maxExtraBeds;
         this.pricePerNight=pricePerNight;

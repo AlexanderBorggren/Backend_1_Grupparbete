@@ -181,3 +181,23 @@ td .linkedText {
     font-weight: bold;
     color: #333;
 }
+
+.pagination {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+}
+
+.pagination .page-item {
+    margin: 0 5px;
+}
+
+.pagination .page-link {
+    text-decoration: none;
+    color: #000;
+}
+
+.pagination .page-item.active .page-link {
+    font-weight: bold;
+    color: #007bff;
+}

@@ -152,7 +152,7 @@ public class BookingServiceImpl implements BookingService {
             discountValue += additionalDiscount;
 
             Discount discount10Nights = Discount.builder()
-                    .discount(additionalDiscount)
+                    .discountValue(additionalDiscount)
                     .booking(savedBooking)
                     .build();
             discountRepo.save(discount10Nights);

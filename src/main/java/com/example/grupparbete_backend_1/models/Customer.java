@@ -53,9 +53,10 @@ public class Customer {
     private Timestamp updatedate;
 
 
-    public Customer(String name, String ssn, String email, Timestamp regdate, Timestamp updatedate){
+    public Customer(String name, String ssn, String email){
         this.name = name;
         this.ssn = ssn;
         this.email = email;
     }
+
 }

@@ -65,7 +65,7 @@ public class Booking {
     @UpdateTimestamp
     private Timestamp updatedate;
 
-    public Booking (LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, Customer customer, Room room, Double totalPrice, Timestamp regdate, Timestamp updatedate) {
+    public Booking (LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, Customer customer, Room room, Double totalPrice) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.guestQuantity = guestQuantity;
@@ -73,6 +73,16 @@ public class Booking {
         this.customer = customer;
         this.room = room;
         this.totalPrice = totalPrice;
+    }
+
+    public Booking (Long id,LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, Customer customer, Room room) {
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.guestQuantity = guestQuantity;
+        this.extraBedsQuantity = extraBedsQuantity;
+        this.customer = customer;
+        this.room = room;
     }
 }
 

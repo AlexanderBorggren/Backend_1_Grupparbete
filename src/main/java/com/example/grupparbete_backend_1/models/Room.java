@@ -38,4 +38,7 @@ public class Room {
         this.regdate = regdate;
         this.updatedate = updatedate;
     }
+    public Room(RoomType roomType) {
+        this.roomType = roomType;
+    }
 }

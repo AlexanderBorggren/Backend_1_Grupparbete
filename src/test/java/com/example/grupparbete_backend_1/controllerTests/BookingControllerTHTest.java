@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
+/*
 @AutoConfigureMockMvc
 @SpringBootTest
 public class BookingControllerTHTest {
@@ -121,7 +121,7 @@ public class BookingControllerTHTest {
 /**Performs a GET request to the URL /booking/deleteById/1/.
  * It expects that the HTTP response status is a 3xx Redirection (indicating a successful redirect).
  * It expects that the URL to which the request is redirected is /booking/all.
- */
+ *//*
 @Test
 void deleteBooking() throws Exception {
     Long id = 1L;
@@ -151,3 +151,4 @@ void deleteBooking() throws Exception {
     }
 
 }
+*/

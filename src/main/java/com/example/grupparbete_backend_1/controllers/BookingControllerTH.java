@@ -34,13 +34,15 @@ public class BookingControllerTH {
     CustomerService customerService;
     RoomTypeService roomTypeService;
     BlacklistService blacklistService;
+    DiscountService discountService;
 
-    public BookingControllerTH(BookingService bookingService, RoomService roomService, CustomerService customerService, RoomTypeService roomTypeService, BlacklistService blacklistService) {
+    public BookingControllerTH(BookingService bookingService, RoomService roomService, CustomerService customerService, RoomTypeService roomTypeService, BlacklistService blacklistService, DiscountService discountService) {
         this.bookingService = bookingService;
         this.roomService = roomService;
         this.customerService = customerService;
         this.roomTypeService = roomTypeService;
         this.blacklistService = blacklistService;
+        this.discountService = discountService;
     }
 
     @RequestMapping("/all")
@@ -60,6 +62,7 @@ public class BookingControllerTH {
         model.addAttribute("roomId", "Room number: ");
         model.addAttribute("roomSize", "Room Size: ");
         model.addAttribute("extraBedsQuantity", "Extra beds: ");
+        model.addAttribute("totalPrice", "Total price: ");
         return "bookings";
     }
 
@@ -207,6 +210,7 @@ public class BookingControllerTH {
             model.addAttribute("guestQuantityField", thisBooking.getGuestQuantity());
             model.addAttribute("maxExtraBedsField", thisBooking.getExtraBedsQuantity());
             model.addAttribute("roomTypeIdField", thisBooking.getRoom().getRoomType().getId());
+
 
             return "searchRoomsUpdateBooking";
         }

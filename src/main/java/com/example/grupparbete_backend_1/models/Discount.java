@@ -25,12 +25,12 @@ public class Discount {
     @GeneratedValue
     private Long id;
 
-    private Double discount;
+    private Double discountValue;
     @ManyToOne
     private Booking booking;
 
-    public Discount(Double discount, Booking booking){
-        this.discount=discount;
+    public Discount(Double discountValue, Booking booking){
+        this.discountValue=discountValue;
         this.booking=booking;
     }
 

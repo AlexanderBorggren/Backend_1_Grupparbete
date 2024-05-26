@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DiscountRepo extends JpaRepository<Discount, Long> {
     List<Discount> findByBookingId(Long bookingId);
-    @Query("SELECT SUM(d.discount) FROM Discount d WHERE d.booking.id = :bookingId")
+    @Query("SELECT SUM(d.discountValue) FROM Discount d WHERE d.booking.id = :bookingId")
     Double findTotalDiscountByBookingId(@Param("bookingId") Long bookingId);
 
 }
