@@ -7,5 +7,6 @@ import java.util.Optional;
 public interface PasswordResetTokenService {
     public String generateToken();
     public PasswordResetToken createPasswordResetTokenForUser(String username);
-    public Optional<PasswordResetToken> getToken(String token);
+    public PasswordResetToken getToken(String token);
+    public boolean isTokenValid(String validToken);
 }

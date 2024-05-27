@@ -66,18 +66,18 @@ public class LoginController {
     }
 
     @RequestMapping("/login/newpassword/{token}")
-    public String updateUserForm(@PathVariable String token, Model model) throws IOException, URISyntaxException, InterruptedException {
-
+    public String updateUserFormView(@PathVariable String token, Model model) throws IOException, URISyntaxException, InterruptedException {
+        System.out.println("Update user form");
         if (!passwordResetTokenService.isTokenValid(token)) {
             model.addAttribute("message", "Invalid token");
             return "invalidtoken";
         }
 
-        User user = passwordResetTokenService.getToken(token).get().getUser();
-        userService.userToUserDTO(user);
+        User user = passwordResetTokenService.getToken(token).getUser();
+        UserDto userDto = userService.userToUserDTO(user);
 
-        model.addAttribute( "User", user);
-        return "resetPasswordForm";
+        model.addAttribute( "user", userDto);
+        return "passwordResetForm";
     }
 
 }
