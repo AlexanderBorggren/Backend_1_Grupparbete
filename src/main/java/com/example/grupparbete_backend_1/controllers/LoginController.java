@@ -91,7 +91,7 @@ public class LoginController {
 
         if (userService.doesUsernameExistExceptSelf(userDtoFromDB.getUsername(), userDtoFromDB.getId())) {
             redirectAttributes.addFlashAttribute("feedbackMessage", "User with username" + userDtoFromDB.getUsername() + " already exists.");
-            return "login";
+            return "failedResetPassword";
         }
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -103,7 +103,7 @@ public class LoginController {
 
         redirectAttributes.addFlashAttribute("feedbackMessage", "User " + userDtoFromDB.getUsername() + " has been updated.");
 
-        return "login";
+        return "hasResetPassword";
     }
 
 }
