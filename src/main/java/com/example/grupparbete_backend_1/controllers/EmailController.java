@@ -1,6 +1,5 @@
 package com.example.grupparbete_backend_1.controllers;
 
-import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.dto.MailRequestDto;
 import com.example.grupparbete_backend_1.models.EmailingTemplates;
 import com.example.grupparbete_backend_1.services.EmailingService;
@@ -59,7 +58,7 @@ public class EmailController {
         mailRequestDto.setHTML(true);
         // or "PasswordReset", etc.
 
-        emailingService.sendEmail(mailRequestDto, customerName, room, roomType, startDate, endDate, extraBedsQuantity,guestQuantity);
+        emailingService.sendBookingConfirmationEmail(mailRequestDto, customerName, room, roomType, startDate, endDate, extraBedsQuantity,guestQuantity);
     }
 
 
@@ -104,7 +103,7 @@ public class EmailController {
     public String updateTemplate(Model model, @ModelAttribute EmailingTemplates newTemplate, RedirectAttributes redirectAttributes) {
         try {
 
-            emailingService.updateTemplate(newTemplate.getId(), newTemplate.getTemplateName(), newTemplate.getTemplateDescription(), newTemplate.getSubject(), newTemplate.getBody());
+            emailingService.updateTemplate(newTemplate.getId(), newTemplate.getTemplateName(), newTemplate.getTemplateDescription(), newTemplate.getSubject(), newTemplate.getBody(), newTemplate.getFromEmail());
 
             model.addAttribute("emailTemplate", newTemplate);
             model.addAttribute("emailTemplateTitle", "Email Template");
@@ -136,7 +135,8 @@ public class EmailController {
         model.addAttribute("templateName", "Template name");
         model.addAttribute("templateDescription", "Template description");
 
-        emailingService.createTemplate(newTemplate.getTemplateName(), newTemplate.getTemplateDescription(), newTemplate.getSubject(), newTemplate.getBody());
+
+        emailingService.createTemplate(newTemplate.getTemplateName(), newTemplate.getTemplateDescription(), newTemplate.getSubject(), newTemplate.getBody(),newTemplate.getFromEmail());
 
         redirectAttributes.addFlashAttribute("addTemplateFeedbackMessage", "Template added successfully");
 

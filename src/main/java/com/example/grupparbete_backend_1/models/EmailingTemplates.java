@@ -20,6 +20,8 @@ public class EmailingTemplates {
 
     private String subject;
 
+    private String fromEmail;
+
     @Lob
     @Column(length = 100000) // or whatever size is appropriate
     private String body;

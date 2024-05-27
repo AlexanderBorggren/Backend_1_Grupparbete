@@ -16,19 +16,21 @@ public interface EmailingService {
 
     List<EmailingTemplates> getAllTemplates();
 
-    EmailingTemplates createTemplate(String templateName,String description, String subject, String body);
+    EmailingTemplates createTemplate(String templateName,String description, String subject, String body,String fromEmail);
 
-    EmailingTemplates updateTemplate(Long id, String newTemplateName, String newTemplateDescription, String newSubject, String newBody);
+    EmailingTemplates updateTemplate(Long id, String newTemplateName, String newTemplateDescription, String newSubject, String newBody, String newFromEmail);
 
-
-    @Async
-    void sendEmail(MailRequestDto request, String customerName, Long room, String roomType, String startDate, String endDate, int guestQuantity, int extraBedsQuantity) throws MessagingException;
 
     @Async
-    void sendEmail(MailRequestDto request, String userName) throws MessagingException;
+    void sendBookingConfirmationEmail(MailRequestDto request, String customerName, Long room, String roomType, String startDate, String endDate, int guestQuantity, int extraBedsQuantity) throws MessagingException;
+
+
+
+   /* @Async
+    void sendPasswordRecoveryEmail(MailRequestDto request) throws MessagingException;*/
 
     @Async
-    void sendConfirmationEmail(MailRequestDto request) throws MessagingException;
+    void sendPasswordRecoveryEmail(MailRequestDto request, String userName) throws MessagingException;
 
     String deleteTemplate(Long templateId);
 }

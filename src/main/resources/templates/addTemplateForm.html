@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-<h2>Add Customer</h2>
+<h2>Add email template</h2>
 
 <form id="customerForm" action="#" th:action="@{/emailView/addTemplate}" th:object="${emailTemplate}" method="post" >
     <label for="templateName">Template name:</label><br>
@@ -19,8 +19,12 @@
     <span id="templateName-error" class="error-message"></span> <br>
 
     <label for="templateDescription">Template description:</label><br>
-    <input type="text" id="templateDescription" name="templateDescription" required maxlength="50" minlength="1"><br>
+    <input type="text" id="templateDescription" name="templateDescription" required maxlength="100" minlength="1"><br>
     <span id="templateDescription-error" class="error-message"></span> <br>
+
+    <label for="fromEmail">From:</label><br>
+    <input type="email" id="fromEmail" name="fromEmail" required maxlength="50" minlength="1"><br>
+    <span id="fromEmail-error" class="error-message"></span> <br>
 
     <label for="subject">Subject:</label><br>
     <input type="text" id="subject" name="subject" required maxlength="50" minlength="1"><br>

@@ -7,14 +7,10 @@ import com.example.grupparbete_backend_1.services.EmailingService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -72,24 +68,26 @@ public class EmailingServiceImpl implements EmailingService {
 
 
     @Override
-    public EmailingTemplates createTemplate(String templateName, String description, String subject, String body){
+    public EmailingTemplates createTemplate(String templateName, String description, String subject, String body, String fromEmail){
                 EmailingTemplates newTemplate = new EmailingTemplates();
 
                 newTemplate.setTemplateName(templateName);
                 newTemplate.setTemplateDescription(description);
                 newTemplate.setSubject(subject);
                 newTemplate.setBody(body);
+                newTemplate.setFromEmail(fromEmail);
 
                 return emailTemplateRepo.save(newTemplate);
     }
 
     @Override
-    public EmailingTemplates updateTemplate(Long id, String newTemplateName, String newTemplateDescription, String newSubject, String newBody){
+    public EmailingTemplates updateTemplate(Long id, String newTemplateName, String newTemplateDescription, String newSubject, String newBody, String newFromEmail){
         return emailTemplateRepo.findById(id).map(emailTemplate -> {
             emailTemplate.setTemplateName(newTemplateName);
             emailTemplate.setTemplateDescription(newTemplateDescription);
             emailTemplate.setSubject(newSubject);
             emailTemplate.setBody(newBody);
+            emailTemplate.setFromEmail(newFromEmail);
 
             return emailTemplateRepo.save(emailTemplate);
         }).orElseThrow(() -> new IllegalArgumentException("Invalid template Id:" + id));
@@ -100,12 +98,12 @@ public class EmailingServiceImpl implements EmailingService {
 
     @Override
     @Async
-    public void sendEmail(MailRequestDto request, String customerName, Long room,String roomType, String startDate, String endDate, int guestQuantity, int extraBedsQuantity) throws MessagingException {
+    public void sendBookingConfirmationEmail(MailRequestDto request, String customerName, Long room, String roomType, String startDate, String endDate, int guestQuantity, int extraBedsQuantity) throws MessagingException {
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
 
-        mimeMessageHelper.setFrom(request.getFromEmail());
+
         mimeMessageHelper.setTo(request.getToEmail());
 
 
@@ -130,6 +128,7 @@ public class EmailingServiceImpl implements EmailingService {
             String processedString = stringTemplateEngine().process(template.getBody(), context);
             //System.out.println(processedString);
             mimeMessageHelper.setSubject(template.getSubject());
+            mimeMessageHelper.setFrom(template.getFromEmail());
             mimeMessageHelper.setText(processedString, true);
         } else {
             System.out.println("FASTNADE HÄR");
@@ -143,7 +142,7 @@ public class EmailingServiceImpl implements EmailingService {
 
     @Override
     @Async
-    public void sendEmail(MailRequestDto request, String userName) throws MessagingException {
+    public void sendPasswordRecoveryEmail(MailRequestDto request, String userName) throws MessagingException {
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
@@ -170,7 +169,7 @@ public class EmailingServiceImpl implements EmailingService {
     }
 
 
-
+/*
     @Override
     @Async
     public void sendConfirmationEmail(MailRequestDto request) throws MessagingException {
@@ -197,7 +196,7 @@ public class EmailingServiceImpl implements EmailingService {
 
         mailSender.send(mimeMessage);
 
-    }
+    }*/
 
     @Override
     public String deleteTemplate(Long templateId){

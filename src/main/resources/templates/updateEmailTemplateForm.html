@@ -11,6 +11,7 @@
     </style>
 </head>
 <body>
+<h2>Update email template</h2>
 
 <form action="#" th:action="@{/emailView/updateTemplate}" th:object="${emailTemplate}"  method="post" >
 
@@ -25,7 +26,11 @@
         <input type="text" id="templateDescription"  th:field="*{templateDescription}"><br>
         <span id="templateDescription-error" class="error-message" th:text="${errorMessage}"></span> <br>
     </div>
-
+    <div>
+        <label for="fromEmail">From:</label><br>
+        <input type="email" id="fromEmail" th:field="*{fromEmail}"><br>
+        <span id="fromEmail-error" class="error-message"></span> <br>
+    </div>
     <div>
         <label for="subject">Subject:</label><br>
         <input type="text" id="subject" th:field="*{subject}"><br>

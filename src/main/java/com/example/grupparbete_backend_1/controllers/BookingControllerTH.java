@@ -1,10 +1,8 @@
 package com.example.grupparbete_backend_1.controllers;
 
 import com.example.grupparbete_backend_1.dto.*;
-import com.example.grupparbete_backend_1.models.BlacklistCheckResponse;
 import com.example.grupparbete_backend_1.models.Room;
 import com.example.grupparbete_backend_1.services.*;
-import com.google.gson.Gson;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -17,11 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -183,22 +177,21 @@ public class BookingControllerTH {
             DetailedCustomerDto customer = customerService.findById(customerId);
             String roomType = bookingDto.getRoom().getRoomType().getRoomSize();
 
-        MailRequestDto mailRequestDto = new MailRequestDto();
-        mailRequestDto.setTemplateName("BookingConfirmation");
-        mailRequestDto.setFromEmail("autoreply@booking.pensionatet.com");
-        mailRequestDto.setToEmail(customer.getEmail());
-        mailRequestDto.setHTML(true);
+            MailRequestDto mailRequestDto = new MailRequestDto();
+            mailRequestDto.setTemplateName("BookingConfirmation");
+            mailRequestDto.setToEmail(customer.getEmail());
+            mailRequestDto.setHTML(true);
 
 
-        emailingService.sendEmail(
-                mailRequestDto,
-                customer.getName(),
-                roomId,
-                roomType,
-                startDate,
-                endDate,
-                guestQuantity,
-                extraBedsQuantity);
+            emailingService.sendBookingConfirmationEmail(
+                    mailRequestDto,
+                    customer.getName(),
+                    roomId,
+                    roomType,
+                    startDate,
+                    endDate,
+                    guestQuantity,
+                    extraBedsQuantity);
 
 
 

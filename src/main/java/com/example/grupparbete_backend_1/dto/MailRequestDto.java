@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MailRequestDto {
 
-    @JsonAlias(value="from_email")
+    //@JsonAlias(value="from_email")
     private String fromEmail;
 
     @JsonAlias(value="to_email")

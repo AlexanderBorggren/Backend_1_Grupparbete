@@ -41,6 +41,69 @@ public class GrupparbeteBackend1Application {
 
         }
     }
+/*
+    //BEAN for adding default emailTemplates
+    @Bean
+    public CommandLineRunner addDefaultEmailTemplates(EmailTemplateRepo emailTemplateRepo) {
+
+        return (args) -> {
+
+            EmailingTemplates emailingTemplate1 = new EmailingTemplates();
+            EmailingTemplates emailingTemplate2 = new EmailingTemplates();
+
+
+            emailingTemplate1.setTemplateName("BookingConfirmation");
+            emailingTemplate1.setTemplateDescription("Booking confirmation template used for when a booking has been completed ");
+            emailingTemplate1.setFromEmail("autoreply@booking.pensionatet.com");
+            emailingTemplate1.setSubject("Booking confirmation!");
+            emailingTemplate1.setBody("<!DOCTYPE html>\n" +
+                    "<html>\n" +
+                    "<head>\n" +
+                    "    <title>Booking Confirmation</title>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "\n" +
+                    "    <p>Dear [[${customerName}]],</p>\n" +
+                    "    <p>Thank you for your booking! We are pleased to confirm your reservation as follows:</p>\n" +
+                    "    <ul>\n" +
+                    "        <li>Guests: [[${guestQuantity}]]</li>\n" +
+                    "        <li>Room: [[${room}]]</li>\n" +
+                    "        <li>Room Type: [[${roomType}]]</li>\n" +
+                    "        <li>Extra beds: [[${extraBedsQuantity}]]</li>\n" +
+                    "        <li>Check-in Date: [[${startDate}]]</li>\n" +
+                    "        <li>Check-out Date: [[${endDate}]]</li>\n" +
+                    "    </ul>\n" +
+                    "    <p>We look forward to welcoming you soon. If you have any questions or need to make changes to your reservation, please do not hesitate to contact us.</p>\n" +
+                    "    <p>Best Regards,</p>\n" +
+                    "    <p>Pensionatet</p>\n" +
+                    "</body>\n" +
+                    "</html>");
+
+            emailingTemplate2.setTemplateName("PasswordRecovery");
+            emailingTemplate2.setTemplateDescription("Template used for reseting password for login to hotelbooking site");
+            emailingTemplate2.setFromEmail("autoreply@passwordrecovery.pensionatet.com");
+            emailingTemplate2.setSubject("Password recovery email");
+            emailingTemplate2.setBody("<!DOCTYPE html>\n" +
+                    "<html>\n" +
+                    "<head>\n" +
+                    "    <title>Password recovery email</title>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "\n" +
+                    "    <p>Hi [[${userName}]],</p>\n" +
+                    "    <p>There was a request to change your password!</p>\n" +
+                    "\t<p>If you did not make this request then please ignore this email.</p>\n" +
+                    "\t<p>Otherwise, please click this link to change your password: <a href=\"[[${link}]]\">password reset</a></p>\n" +
+                    "  \n" +
+                    "\n" +
+                    "</body>\n" +
+                    "</html>");
+
+            emailTemplateRepo.save(emailingTemplate1);
+            emailTemplateRepo.save(emailingTemplate2);
+
+        };
+    }*/
 
 
     /*@Bean
@@ -63,6 +126,8 @@ public class GrupparbeteBackend1Application {
             userRepo.save(user2);
         };
     }*/
+
+
 
 
 
