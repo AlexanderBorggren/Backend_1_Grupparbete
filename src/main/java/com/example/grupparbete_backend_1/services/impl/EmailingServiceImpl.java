@@ -59,13 +59,10 @@ public class EmailingServiceImpl implements EmailingService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid template Id:" + id));
     }
 
-
     @Override
     public List<EmailingTemplates> getAllTemplates(){
         return emailTemplateRepo.findAll();
     }
-
-
 
     @Override
     public EmailingTemplates createTemplate(String templateName, String description, String subject, String body, String fromEmail){
@@ -92,9 +89,6 @@ public class EmailingServiceImpl implements EmailingService {
             return emailTemplateRepo.save(emailTemplate);
         }).orElseThrow(() -> new IllegalArgumentException("Invalid template Id:" + id));
     }
-
-
-
 
     @Override
     @Async

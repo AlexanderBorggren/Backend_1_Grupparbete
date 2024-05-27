@@ -58,7 +58,7 @@ public class WebSecurityConfig {
 
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login/**").anonymous() //allows if not logged in
+                        .requestMatchers("/login/**").permitAll() //allows if not logged in
                         .requestMatchers("/", "/js/**", "/css/**", "/images/**", "/logout", "/queues/**").authenticated()// allows if logged in
                         .requestMatchers("adminpage.html", "/users/**", "/blacklist/**").hasAuthority("ADMIN") //set auth for admin
                         .anyRequest().authenticated()

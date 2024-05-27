@@ -52,6 +52,7 @@ public class UserController {
 
     @RequestMapping(path = "/deleteById/{id}/")
     public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+
         String message = userService.deleteUser(id);
         redirectAttributes.addFlashAttribute("message", message);
 
@@ -72,6 +73,7 @@ public class UserController {
 
     @PostMapping("/update")
     public String updateUser(@Valid UserDto userDto, Model model, RedirectAttributes redirectAttributes) throws IOException, URISyntaxException, InterruptedException {
+
         if (userService.doesUsernameExistExceptSelf(userDto.getUsername(), userDto.getId())) {
             redirectAttributes.addFlashAttribute("errorMessage", "User with username" + userDto.getUsername() + " already exists.");
             return "redirect:/users/editByView/" + userDto.getId() + "/";
