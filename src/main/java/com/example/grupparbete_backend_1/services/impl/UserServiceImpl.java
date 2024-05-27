@@ -3,6 +3,7 @@ package com.example.grupparbete_backend_1.services.impl;
 import com.example.grupparbete_backend_1.dto.*;
 import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.models.User;
+import com.example.grupparbete_backend_1.repositories.PasswordResetTokenRepo;
 import com.example.grupparbete_backend_1.repositories.RoleRepo;
 import com.example.grupparbete_backend_1.repositories.ShippersRepo;
 import com.example.grupparbete_backend_1.repositories.UserRepo;
@@ -27,7 +28,9 @@ public class UserServiceImpl implements UserService {
 
     private final RoleRepo roleRepo;
     private final UserRepo userRepo;
-    public UserServiceImpl(RoleRepo roleRepo, UserRepo userRepo) {
+    private final PasswordResetTokenRepo passwordResetTokenRepo;
+    public UserServiceImpl(RoleRepo roleRepo, UserRepo userRepo, PasswordResetTokenRepo passwordResetTokenRepo) {
+        this.passwordResetTokenRepo = passwordResetTokenRepo;
         this.roleRepo = roleRepo;
         this.userRepo = userRepo;
     }
@@ -85,6 +88,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public String deleteUser(Long id) {
         User user = userRepo.findById(id).orElse(null);
+            passwordResetTokenRepo.deleteByUser(user);
 
         UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(!userDetails.getUsername().equals(user.getUsername())) {

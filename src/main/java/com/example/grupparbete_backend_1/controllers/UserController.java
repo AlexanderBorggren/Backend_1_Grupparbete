@@ -52,6 +52,7 @@ public class UserController {
 
     @RequestMapping(path = "/deleteById/{id}/")
     public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+
         String message = userService.deleteUser(id);
         redirectAttributes.addFlashAttribute("message", message);
 
