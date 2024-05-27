@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PasswordResetToken {
-    private final int EXPIRATION = 60 * 24; // Giltighetstid i minuter
+    private final int EXPIRATION = 1; // Giltighetstid i minuter
 
     @Id
     @GeneratedValue
