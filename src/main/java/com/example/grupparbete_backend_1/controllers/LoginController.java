@@ -83,24 +83,25 @@ public class LoginController {
     }
 
     @PostMapping("/login/update")
-    public String updateUser(@Valid UserDto userDto, Model model, RedirectAttributes redirectAttributes) throws IOException, URISyntaxException, InterruptedException {
+    public String updateUser(UserDto userDto, Model model, RedirectAttributes redirectAttributes) throws IOException, URISyntaxException, InterruptedException {
 
         System.out.println("Update user form");
 
-        if (userService.doesUsernameExistExceptSelf(userDto.getUsername(), userDto.getId())) {
-            redirectAttributes.addFlashAttribute("feedbackMessage", "User with username" + userDto.getUsername() + " already exists.");
+        UserDto userDtoFromDB = userService.getUserByID(userDto.getId());
+
+        if (userService.doesUsernameExistExceptSelf(userDtoFromDB.getUsername(), userDtoFromDB.getId())) {
+            redirectAttributes.addFlashAttribute("feedbackMessage", "User with username" + userDtoFromDB.getUsername() + " already exists.");
             return "login";
         }
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String hashPassword = encoder.encode(userDto.getPassword());
-        userDto.setPassword(hashPassword);
-        userDto.setRoles(userDto.getRoles().stream().distinct().toList());
+        userDtoFromDB.setPassword(hashPassword);
 
 
-        userService.addUser(userDto);
+        userService.addUser(userDtoFromDB);
 
-        redirectAttributes.addFlashAttribute("feedbackMessage", "User " + userDto.getUsername() + " has been updated.");
+        redirectAttributes.addFlashAttribute("feedbackMessage", "User " + userDtoFromDB.getUsername() + " has been updated.");
 
         return "login";
     }
