@@ -69,10 +69,9 @@ public class LoginController {
 
     @RequestMapping("/login/newpassword/{token}")
     public String updateUserFormView(@PathVariable String token, Model model) throws IOException, URISyntaxException, InterruptedException {
-        System.out.println("reset password form");
+
         if (!passwordResetTokenService.isTokenValid(token)) {
-            model.addAttribute("message", "Invalid token");
-            return "invalidtoken";
+            return "invalidToken";
         }
 
         User user = passwordResetTokenService.getToken(token).getUser();
@@ -85,7 +84,6 @@ public class LoginController {
     @PostMapping("/login/update")
     public String updateUser(UserDto userDto, Model model, RedirectAttributes redirectAttributes) throws IOException, URISyntaxException, InterruptedException {
 
-        System.out.println("Update user form");
 
         UserDto userDtoFromDB = userService.getUserByID(userDto.getId());
 
