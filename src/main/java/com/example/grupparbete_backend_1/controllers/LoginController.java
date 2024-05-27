@@ -6,12 +6,14 @@ import com.example.grupparbete_backend_1.models.PasswordResetToken;
 import com.example.grupparbete_backend_1.models.User;
 import com.example.grupparbete_backend_1.services.*;
 import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -67,7 +69,7 @@ public class LoginController {
 
     @RequestMapping("/login/newpassword/{token}")
     public String updateUserFormView(@PathVariable String token, Model model) throws IOException, URISyntaxException, InterruptedException {
-        System.out.println("Update user form");
+        System.out.println("reset password form");
         if (!passwordResetTokenService.isTokenValid(token)) {
             model.addAttribute("message", "Invalid token");
             return "invalidtoken";
@@ -78,6 +80,29 @@ public class LoginController {
 
         model.addAttribute( "user", userDto);
         return "passwordResetForm";
+    }
+
+    @PostMapping("/login/update")
+    public String updateUser(@Valid UserDto userDto, Model model, RedirectAttributes redirectAttributes) throws IOException, URISyntaxException, InterruptedException {
+
+        System.out.println("Update user form");
+
+        if (userService.doesUsernameExistExceptSelf(userDto.getUsername(), userDto.getId())) {
+            redirectAttributes.addFlashAttribute("feedbackMessage", "User with username" + userDto.getUsername() + " already exists.");
+            return "login";
+        }
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashPassword = encoder.encode(userDto.getPassword());
+        userDto.setPassword(hashPassword);
+        userDto.setRoles(userDto.getRoles().stream().distinct().toList());
+
+
+        userService.addUser(userDto);
+
+        redirectAttributes.addFlashAttribute("feedbackMessage", "User " + userDto.getUsername() + " has been updated.");
+
+        return "login";
     }
 
 }

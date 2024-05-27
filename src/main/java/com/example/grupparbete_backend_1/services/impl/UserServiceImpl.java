@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
                 .id(user.getId())
                 .roles(user.getRoles().stream().toList())
                 .username(user.getUsername())
+                .password(user.getPassword())
                 .enabled(user.isEnabled())
                 .build();
     }
@@ -72,6 +73,7 @@ public class UserServiceImpl implements UserService {
     public void addUser(UserDto user) {
         userRepo.save(userDtoToUser(user));
     }
+
     public List<UserDto> getAllUsers() {
         return userRepo.findAll().stream().map(k -> userToUserDTO(k)).toList();
     }
