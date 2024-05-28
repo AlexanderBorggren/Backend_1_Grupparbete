@@ -3,7 +3,6 @@ package com.example.grupparbete_backend_1.controllers;
 
 import com.example.grupparbete_backend_1.dto.BlacklistedCustomerDto;
 import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
-import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.services.BlacklistService;
 import com.example.grupparbete_backend_1.services.CustomerService;
 import jakarta.validation.Valid;
@@ -98,6 +97,7 @@ public class BlacklistController {
             }
         } catch (Exception e) {
             System.out.println("här gick det fel");
+            System.out.println(e.getMessage());
 
             return new RedirectView("/blacklist/adminBlacklistView");
 

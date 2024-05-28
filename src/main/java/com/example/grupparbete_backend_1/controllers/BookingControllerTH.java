@@ -172,7 +172,7 @@ public class BookingControllerTH {
                              RedirectAttributes redirectAttributes) throws URISyntaxException, IOException, InterruptedException, MessagingException {
 
             DetailedBookingDto bookingDto = new DetailedBookingDto(LocalDate.parse(startDate), LocalDate.parse(endDate), guestQuantity, extraBedsQuantity, customerService.detailedCustomerDtoToCustomerDto(customerService.findById(customerId)), roomService.findById(roomId));
-            blacklistService.getBlacklistedCustomers();
+            //blacklistService.getBlacklistedCustomers();
 
             DetailedCustomerDto customer = customerService.findById(customerId);
             String roomType = bookingDto.getRoom().getRoomType().getRoomSize();

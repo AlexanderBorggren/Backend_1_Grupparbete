@@ -4,21 +4,57 @@ import com.example.grupparbete_backend_1.dto.ShippersDto;
 import com.example.grupparbete_backend_1.models.Shippers;
 import com.example.grupparbete_backend_1.repositories.ShippersRepo;
 import com.example.grupparbete_backend_1.services.ShippersService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class ShippersServiceImpl implements ShippersService {
 
-    private final ShippersRepo shippersRepo;
-    public ShippersServiceImpl(ShippersRepo shippersRepo){
+    public final ShippersRepo shippersRepo;
+    public final JSonStreamProvider jsonStreamProvider;
+
+    public ShippersServiceImpl(ShippersRepo shippersRepo, JSonStreamProvider jsonStreamProvider){
         this.shippersRepo = shippersRepo;
+        this.jsonStreamProvider = jsonStreamProvider;
     }
     //    public ShippersDto shippersToShippersDto(Shippers shippers);
     //    public Shippers shippersDtoToShippers(ShippersDto shippers);
+
+
+    public void fetchShippers() throws IOException {
+
+        try {
+            InputStream stream = jsonStreamProvider.getDataStream();
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            List<Shippers> theShippers = Arrays.asList(objectMapper.readValue(stream, Shippers[].class));
+
+            for (Shippers s : theShippers) {
+                System.out.println(s.getExternal_Shippers_Id());
+                System.out.println(s.getCompanyName());
+
+                ShippersDto shippersDto = shippersToShippersDto(s);
+
+                Shippers existingShippers = getShippersByExternalId(s.getExternal_Shippers_Id());
+                if (existingShippers == null) {
+                    addShippers(shippersDto);
+                }
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @Override
     public ShippersDto shippersToShippersDto(Shippers shippers) {

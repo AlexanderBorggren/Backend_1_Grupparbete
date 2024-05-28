@@ -24,7 +24,9 @@ public class FetchShippers implements CommandLineRunner {
 
     public void run(String... args) throws Exception {
 
-        ObjectMapper objectMapper = new ObjectMapper();
+        shippersService.fetchShippers();
+
+       /* ObjectMapper objectMapper = new ObjectMapper();
 
         List<Shippers> theShippers = Arrays.asList(objectMapper.readValue(new URL("https://javaintegration.systementor.se/shippers"), Shippers[].class));
 
@@ -38,6 +40,6 @@ public class FetchShippers implements CommandLineRunner {
             if (existingShippers == null) {
                 shippersService.addShippers(shippersDto);
             }
-        }
+        }*/
     }
 }
