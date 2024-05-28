@@ -54,14 +54,13 @@ public class LoginController {
         if (userService.doesUserWithUsernameExist(email)) {
             PasswordResetToken passwordResetToken = passwordResetTokenService.createPasswordResetTokenForUser(email);
 
-            String tokenResponse = "Press this link to reset your password: http://localhost:8080/login/newpassword/" + passwordResetToken.getToken();
-            System.out.println(tokenResponse);
+            String tokenLink = "<a href='http://localhost:8080/login/newpassword/" + passwordResetToken.getToken() + "'>Reset password</a>";
+            MailRequestDto sendResetLink = new MailRequestDto();
+            sendResetLink.setToEmail(email);
+            sendResetLink.setTemplateName("PasswordRecovery");
+            sendResetLink.setHTML(true);
 
-            MailRequestDto sendResetLink = new MailRequestDto("noreply@pensionatet.se",
-                    email,
-                    "Reset Password",tokenResponse,
-                    false, "resetPassword");
-            emailingService.sendEmail(sendResetLink, email);
+            emailingService.sendPasswordRecoveryEmail(sendResetLink, tokenLink);
         }
 
         return "resetlinksent";

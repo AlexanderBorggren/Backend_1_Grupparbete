@@ -13,6 +13,19 @@ body {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+#loginAccount
+{
+    text-align: right;
+    font-weight: bold;
+}
+
+.header {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 250px;
+
+}
 
 h2 {
     text-align: center;

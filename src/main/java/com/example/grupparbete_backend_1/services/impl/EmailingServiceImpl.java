@@ -6,6 +6,7 @@ import com.example.grupparbete_backend_1.repositories.EmailTemplateRepo;
 import com.example.grupparbete_backend_1.services.EmailingService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -136,30 +137,30 @@ public class EmailingServiceImpl implements EmailingService {
 
     @Override
     @Async
-    public void sendPasswordRecoveryEmail(MailRequestDto request, String userName) throws MessagingException {
+    public void sendPasswordRecoveryEmail(MailRequestDto request, String tokenLink) throws MessagingException {
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
 
-        mimeMessageHelper.setFrom(request.getFromEmail());
         mimeMessageHelper.setTo(request.getToEmail());
-        mimeMessageHelper.setSubject(request.getSubject());
 
         if(request.isHTML()){
+            EmailingTemplates template = getTemplateWithTemplateName(request.getTemplateName());
             Context context = new Context();
+            context.setVariable("link", tokenLink);
+            context.setVariable("userName", request.getToEmail());
 
-            context.setVariable("content", request.getBody());
-            String processedString = stringTemplateEngine().process("BookingEmailConfirmationTemplate", context);
+            String processedString = stringTemplateEngine().process(template.getBody(), context);
 
+            mimeMessageHelper.setSubject(template.getSubject());
+            mimeMessageHelper.setFrom(template.getFromEmail());
             mimeMessageHelper.setText(processedString, true);
         }
         else{
             mimeMessageHelper.setText(request.getBody(), false);
 
         }
-
         mailSender.send(mimeMessage);
-
     }
 
 

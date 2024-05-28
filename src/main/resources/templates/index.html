@@ -8,11 +8,14 @@
 </head>
 <body>
 <div class="container">
-    <h2>Booking Portal</h2>
-    <div>
+    <div id="loginAccount">
         <span sec:authorize="isAuthenticated()">Welcome, <span sec:authentication="name"></span>!</span>
-        <a href="/logout" sec:authorize="isAuthenticated()">Logout</a>
+        <a  href="/logout" sec:authorize="isAuthenticated()">Logout</a>
     </div>
+<div class="header">
+    <img class="header" th:src="@{/assets/logo.png}">
+</div>
+
     <nav>
         <a class="indexButtons" href="http://localhost:8080/customer/all" sec:authorize="hasAuthority('RECEPTIONIST')">Customers</a>
         <a class="indexButtons" href="http://localhost:8080/booking/all" sec:authorize="hasAuthority('RECEPTIONIST')">Bookings</a>
