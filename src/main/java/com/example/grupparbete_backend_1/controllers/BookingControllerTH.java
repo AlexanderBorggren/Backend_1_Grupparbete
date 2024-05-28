@@ -283,9 +283,9 @@ public class BookingControllerTH {
             bookingDto.setExtraBedsQuantity(extraBedsQuantity);
             bookingDto.setRoom(roomService.findById(roomId));
 
+
+
             String feedbackMessage = bookingService.updateBooking(bookingDto);
-
-
 
 
 

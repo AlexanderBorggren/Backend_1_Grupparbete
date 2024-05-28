@@ -12,5 +12,6 @@ public class BlacklistedCustomerDto {
     private String group;
     private String created;
     private Boolean ok;
+    private String BlacklistMessage;
 
 }

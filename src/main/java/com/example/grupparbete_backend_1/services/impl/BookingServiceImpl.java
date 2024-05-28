@@ -95,7 +95,7 @@ public class BookingServiceImpl implements BookingService {
 
         // Check blacklist
         if (!blacklistService.isBlacklistOk(customer.getEmail())) {
-            return customer.getEmail() + " is blacklisted.";
+            return customer.getEmail() + " is blacklisted and is not allowed to book a room.";
         }
 
         // Create booking entity

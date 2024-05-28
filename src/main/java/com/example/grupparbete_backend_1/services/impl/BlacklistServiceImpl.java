@@ -112,23 +112,11 @@ public class BlacklistServiceImpl implements BlacklistService {
             user.setGroup("rosa");
             user.setCreated(Instant.now().toString());
             user.setOk(false);
+            user.setBlacklistMessage("Added to blacklist");
 
-
-            HttpClient client = HttpClient.newHttpClient();
-
-                // Convert user object to JSON
                 ObjectMapper objectMapper = new ObjectMapper();
                 String jsonInputString = objectMapper.writeValueAsString(user);
 
-                // Create HttpRequest
-               /* HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("https://javabl.systementor.se/api/rosa/blacklist")) // Replace with your actual API endpoint
-                        .header("Content-Type", "application/json")
-                        .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
-                        .build();
-
-                // Send HttpRequest and get HttpResponse
-                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());*/
                 HttpClientProvider httpClientProvider = new HttpClientProvider();
                 HttpResponse<String> response = httpClientProvider.sendHttpRequest("https://javabl.systementor.se/api/rosa/blacklist", "POST", jsonInputString);
 
@@ -164,9 +152,11 @@ public class BlacklistServiceImpl implements BlacklistService {
             // Kontrollera om kundens ok-status redan är satt till det önskade värdet
             if (!updateCustomer.getOk()) {
                 updateCustomer.setOk(true);
+                updateCustomer.setBlacklistMessage(updateCustomer.getName() + " is no longer blacklisted");
                 System.out.println("Hittade kund med id: " + updateCustomer.getId() + ". Sattes till true");
             } else {
                 updateCustomer.setOk(false);
+                updateCustomer.setBlacklistMessage(updateCustomer.getName() +" is now blacklisted");
                 System.out.println("Hittade kund med id: " + updateCustomer.getId() + ". Sattes till false");
             }
 
@@ -177,15 +167,21 @@ public class BlacklistServiceImpl implements BlacklistService {
                 ObjectMapper objectMapper = new ObjectMapper();
                 String jsonInputString = objectMapper.writeValueAsString(updateCustomer);
 
-                // Create HttpRequest
+            HttpClientProvider httpClientProvider = new HttpClientProvider();
+            HttpResponse<String> response = httpClientProvider.sendHttpRequest("https://javabl.systementor.se/api/rosa/blacklist/" + email, "PUT", jsonInputString);
+
+
+/*
+            // Create HttpRequest
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(new URI("https://javabl.systementor.se/api/rosa/blacklist/" + email)) // Replace with your actual API endpoint
                         .header("Content-Type", "application/json")
                         .PUT(HttpRequest.BodyPublishers.ofString(jsonInputString))
                         .build();
 
+
                 // Send HttpRequest and get HttpResponse
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());*/
 
 
             // Check the response status code
@@ -215,10 +211,11 @@ public class BlacklistServiceImpl implements BlacklistService {
 
         if(isUserOnBlacklist) {
             System.out.println("Customer already on blacklist");
+
             return updateCustomer(email);
 
         }
-        else if(!isUserOnBlacklist){
+        else{
 
             BlacklistedCustomerDto user = new BlacklistedCustomerDto();
             System.out.println("Customer added to blacklist");
@@ -228,6 +225,7 @@ public class BlacklistServiceImpl implements BlacklistService {
             user.setGroup("rosa");
             user.setCreated(Instant.now().toString());
             user.setOk(false);
+            user.setBlacklistMessage("Added to blacklist");
 
 
             HttpClient client = HttpClient.newHttpClient();
@@ -259,6 +257,5 @@ public class BlacklistServiceImpl implements BlacklistService {
 
         }
 
-        return null;
     }
 }

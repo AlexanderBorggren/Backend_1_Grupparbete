@@ -17,6 +17,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RequestMapping("/blacklist")
@@ -47,15 +48,24 @@ public class BlacklistController {
 
 
     @RequestMapping("/adminBlacklistView")
-    public String adminBlacklistView(Model model) {
+    public String adminBlacklistView(Model model) throws IOException, URISyntaxException, InterruptedException {
 
         List<DetailedCustomerDto> k = customerService.getAllCustomer();
+        List<BlacklistedCustomerDto> blacklistedCustomerDtos = blacklistService.getBlacklistedCustomers();
+
+        List<String> blacklistedEmails = blacklistedCustomerDtos.stream()
+                .map(BlacklistedCustomerDto::getEmail)
+                .toList();
+
+        //is customer on blacklist?
+
         model.addAttribute("allCustomers", k);
         model.addAttribute("customerTitle", "All customers");
         model.addAttribute("name", "Name: ");
         model.addAttribute("ssn", "SSN: ");
         model.addAttribute("email", "Email: ");
         model.addAttribute("customerId", "CustomerID: ");
+        model.addAttribute("blacklistedEmails", blacklistedEmails);
 
         return "adminBlacklistView";
     }
@@ -79,6 +89,31 @@ public class BlacklistController {
     }
 
 
+    @RequestMapping(path= "/updateExternalBlacklist/{email}/")
+    public RedirectView updateBlacklist(@PathVariable String email, RedirectAttributes redirectAttributes) {
+
+        try {
+            BlacklistedCustomerDto user = blacklistService.updateCustomer(email);
+            if (user != null) {
+                redirectAttributes.addFlashAttribute("message", user.getBlacklistMessage()) ;
+                return new RedirectView("/blacklist/externalBlacklistView");
+            }
+            else{
+                redirectAttributes.addFlashAttribute("message", "Customer with email: "+ email +"not found");
+                return new RedirectView("/blacklist/externalBlacklistView");
+            }
+
+        }
+        catch (Exception e){
+            System.out.println("Något gick fel error " + ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+            return new RedirectView("/blacklist/externalBlacklistView");
+        }
+
+    }
+
+
+
+
 
 
     @RequestMapping(path = "/addToBlacklist/{id}/")
@@ -89,7 +124,7 @@ public class BlacklistController {
         try {
             BlacklistedCustomerDto user = blacklistService.addCustomerFromList(id);
             if (user != null) {
-                redirectAttributes.addFlashAttribute("message", "Customer added to blacklist");
+                redirectAttributes.addFlashAttribute("message", user.getBlacklistMessage());
                 return new RedirectView("/blacklist/adminBlacklistView");
             } else {
                 redirectAttributes.addFlashAttribute("message", "Customer not added to blacklist");
@@ -112,12 +147,11 @@ public class BlacklistController {
         try {
             BlacklistedCustomerDto user = blacklistService.updateCustomer(email);
             if (user != null) {
-                redirectAttributes.addFlashAttribute("message", "Customer updated with blacklist status OK: " + user.getOk()
-                        + " Server responded with: "+  ResponseEntity.status(HttpStatus.OK).build()) ;
+                redirectAttributes.addFlashAttribute("message", user.getBlacklistMessage()) ;
                 return new RedirectView("/blacklist/adminBlacklistView");
             }
             else{
-                redirectAttributes.addFlashAttribute("message", "Customer not found" + user.getEmail());
+                redirectAttributes.addFlashAttribute("message", "Customer with email: "+ email +"not found");
                 return new RedirectView("/blacklist/adminBlacklistView");
             }
 
@@ -126,9 +160,6 @@ public class BlacklistController {
             System.out.println("Något gick fel error " + ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
             return new RedirectView("/blacklist/adminBlacklistView");
         }
-
-
-
 
     }
 
