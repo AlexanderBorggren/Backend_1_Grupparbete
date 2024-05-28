@@ -10,6 +10,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
@@ -19,8 +20,12 @@ import java.net.URL;
 @ComponentScan
 public class FetchContractCustomers implements CommandLineRunner {
     private static final Logger logger = LoggerFactory.getLogger(FetchContractCustomers.class);
+
     @Autowired
-    ContractCustomerService contractCustomerService;
+    private ContractCustomerService contractCustomerService;
+
+    @Value("${customers.url}")
+    private String customersUrl;
     @Override
     public void run(String... args) throws Exception {
 
@@ -28,7 +33,7 @@ public class FetchContractCustomers implements CommandLineRunner {
         module.setDefaultUseWrapper(false);
         XmlMapper xmlMapper = new XmlMapper(module);
 
-        AllContractCustomers allContractCustomers = xmlMapper.readValue(new URL("https://javaintegration.systementor.se/customers"), AllContractCustomers.class);
+        AllContractCustomers allContractCustomers = xmlMapper.readValue(new URL(customersUrl), AllContractCustomers.class);
 
         for(ContractCustomer customer : allContractCustomers.getContractCustomers()){
             logger.info("Postal Code: {}", customer.getPostalCode());

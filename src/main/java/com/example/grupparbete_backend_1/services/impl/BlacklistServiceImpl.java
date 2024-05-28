@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,14 @@ import java.util.Optional;
 
 @Service
 @Repository
-
 public class BlacklistServiceImpl implements BlacklistService {
+
+    @Value("${blacklist.check.url}")
+    private String blacklistCheckUrl;
+
+    @Value("${blacklist.url}")
+    private String blacklistUrl;
+
 
 
     CustomerService customerService;
@@ -43,7 +50,7 @@ public class BlacklistServiceImpl implements BlacklistService {
        HttpClient client = HttpClient.newHttpClient();
 
            HttpRequest request = HttpRequest.newBuilder()
-                   .uri(new URI("https://javabl.systementor.se/api/rosa/blacklistcheck/" + email))
+                   .uri(new URI(blacklistCheckUrl + "/" + email))
                    .build();
 
            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -69,7 +76,7 @@ public class BlacklistServiceImpl implements BlacklistService {
         HttpClient client = HttpClient.newHttpClient();
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("https://javabl.systementor.se/api/rosa/blacklist"))
+                    .uri(new URI(blacklistUrl))
                     .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -124,7 +131,7 @@ public class BlacklistServiceImpl implements BlacklistService {
 
                 // Create HttpRequest
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("https://javabl.systementor.se/api/rosa/blacklist")) // Replace with your actual API endpoint
+                        .uri(new URI(blacklistUrl))
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
                         .build();
@@ -178,7 +185,7 @@ public class BlacklistServiceImpl implements BlacklistService {
 
                 // Create HttpRequest
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("https://javabl.systementor.se/api/rosa/blacklist/" + email)) // Replace with your actual API endpoint
+                        .uri(new URI(blacklistUrl + "/" + email)) // Replace with your actual API endpoint
                         .header("Content-Type", "application/json")
                         .PUT(HttpRequest.BodyPublishers.ofString(jsonInputString))
                         .build();
@@ -237,7 +244,7 @@ public class BlacklistServiceImpl implements BlacklistService {
 
                 // Create HttpRequest
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI("https://javabl.systementor.se/api/rosa/blacklist")) // Replace with your actual API endpoint
+                        .uri(new URI(blacklistUrl)) // Replace with your actual API endpoint
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
                         .build();

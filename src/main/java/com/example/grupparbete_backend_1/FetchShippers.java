@@ -5,6 +5,7 @@ import com.example.grupparbete_backend_1.models.Shippers;
 import com.example.grupparbete_backend_1.services.ShippersService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,9 @@ import java.util.List;
 @ComponentScan
 public class FetchShippers implements CommandLineRunner {
 
+    @Value("${shippers.url}")
+    private String shippersUrl;
+
     @Autowired
     private ShippersService shippersService;
 
@@ -26,7 +30,7 @@ public class FetchShippers implements CommandLineRunner {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        List<Shippers> theShippers = Arrays.asList(objectMapper.readValue(new URL("https://javaintegration.systementor.se/shippers"), Shippers[].class));
+        List<Shippers> theShippers = Arrays.asList(objectMapper.readValue(new URL(shippersUrl), Shippers[].class));
 
         for (Shippers s : theShippers) {
             System.out.println(s.getExternal_Shippers_Id());
