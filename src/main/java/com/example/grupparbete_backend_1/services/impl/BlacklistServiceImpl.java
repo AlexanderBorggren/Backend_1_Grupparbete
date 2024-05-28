@@ -99,8 +99,10 @@ public class BlacklistServiceImpl implements BlacklistService {
         Optional<BlacklistedCustomerDto> matchingCustomer = blacklistedCustomers.stream()
                 .filter(blacklistedCustomer -> blacklistedCustomer.getEmail().equals(customer.getEmail()))
                 .findFirst();
+        System.out.println(matchingCustomer.isPresent());
+        System.out.println(matchingCustomer.isEmpty());
 
-        if((matchingCustomer.isPresent() && matchingCustomer.get().getOk()) || !matchingCustomer.isPresent()) {
+        if((matchingCustomer.isEmpty())) {
             System.out.println("no matching customer, adding to blacklist");
             BlacklistedCustomerDto user = new BlacklistedCustomerDto();
 
@@ -143,7 +145,8 @@ public class BlacklistServiceImpl implements BlacklistService {
 
         }
 
-       return null;
+        System.out.println("Customer found in blacklist, updating");
+       return updateCustomer(customer.getEmail());
     }
     @Override
     public BlacklistedCustomerDto updateCustomer(String email) throws IOException, InterruptedException, URISyntaxException {
