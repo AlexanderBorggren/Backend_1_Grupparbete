@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Portal</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <nav>
+   <a class="indexButtons" href="http://localhost:8080">Home</a>
+    <a class="indexButtons" href="http://localhost:8080/adminpage.html">Admin services</a>
+</nav>
+    <h2>Admin services</h2>
+        <h4 th:text="${message}"></h4>
+
+        <nav>
+        <a class="indexButtons" href="http://localhost:8080/console/fetchShippers">Update Shippers</a>
+        <a class="indexButtons" href="http://localhost:8080/console/fetchContractCustomers">Update Contract Customers</a>
+        <a class="indexButtons" href="http://localhost:8080/console/fetchEvents">Update Room Events</a>
+
+    </nav>
+</div>
+</body>
+</html>
