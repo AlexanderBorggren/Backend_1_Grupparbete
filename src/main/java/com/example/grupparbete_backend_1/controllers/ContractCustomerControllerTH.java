@@ -59,6 +59,7 @@ public class ContractCustomerControllerTH {
 
     @RequestMapping("/search")
     public String searchForCustomer(@RequestParam(value="query") String query, Model model) {
+        System.out.println("Search query: " + query);
         Pageable pageable = PageRequest.of(0, 10);
         Page<ContractCustomer> page = contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContains
                 (query,query,pageable);
