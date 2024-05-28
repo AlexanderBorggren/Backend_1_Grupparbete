@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 //@Validated
@@ -31,20 +32,6 @@ public class ContractCustomerControllerTH {
         this.contractCustomerRepo=contractCustomerRepo;
     }
 
-    @RequestMapping("/all")
-    public String getAll(Model model) {
-        List<DetailedContractCustomerDto> k = contractCustomerService.getAllContractCustomers();
-        model.addAttribute("allContractCustomers", k);
-        model.addAttribute("contractCustomerTitle", "All contract customers");
-        model.addAttribute("companyName", "Company name ");
-        model.addAttribute("country", "Country ");
-        model.addAttribute("contactName", "Contact name ");
-        model.addAttribute("contactTitle", "Title ");
-        model.addAttribute("sortOrder", "asc");
-        model.addAttribute("q", "");
-        return "contractCustomers";
-    }
-
     @RequestMapping("/contractcustomerview/{id}")
     public String viewCustomerDetails(@PathVariable Long id, Model model) {
         System.out.println("Requested customer ID: " + id);
@@ -57,34 +44,14 @@ public class ContractCustomerControllerTH {
         return "contractCustomerView";
     }
 
-    @RequestMapping("/search")
-    public String searchForCustomer(@RequestParam(value="query") String query, Model model) {
-        System.out.println("Search query: " + query);
-        Pageable pageable = PageRequest.of(0, 10);
-        Page<ContractCustomer> page = contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContains
-                (query,query,pageable);
-
-        model.addAttribute("allContractCustomers", page);
-        model.addAttribute("contractCustomerTitle", "All contract customers");
-        model.addAttribute("companyName", "Company name ");
-        model.addAttribute("country", "Country ");
-        model.addAttribute("contactName", "Contact name ");
-        model.addAttribute("contactTitle", "Title ");
-        model.addAttribute("q", query);
-        model.addAttribute("sortOrder", "asc");
-        return "contractCustomers";
-    }
-
-
-    @GetMapping(path="/")
-    String sorting(Model model, @RequestParam(defaultValue = "1") int pageNo,
+    @RequestMapping(path="/")
+    String viewAllSortSearch(Model model, @RequestParam(defaultValue = "1") int pageNo,
                    @RequestParam(defaultValue = "50") int pageSize,
                    @RequestParam(defaultValue = "companyName") String sortCol,
                    @RequestParam(defaultValue = "asc") String sortOrder,
                    @RequestParam(defaultValue = "") String q)
     {
         model.addAttribute("activeFunction", "home");
-
         q = q.trim();
 
         model.addAttribute("q",q);
@@ -99,25 +66,20 @@ public class ContractCustomerControllerTH {
 
         if(!q.isEmpty()){
             Page<ContractCustomer> page = contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContains(q,q,pageable);
-          /*  if(sortCol.equals("companyName")) {
-                model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByCompanyNameContains(q,sort));
-            } else if (sortCol.equals("contactName")){
-                model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByContactNameContains(q,sort));
-            } else {
-                model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByContactTitleContains(q,sort));
-            }*/
+
             model.addAttribute("allContractCustomers", page);
             model.addAttribute("totalPages",page.getTotalPages());
             model.addAttribute("pageNo",pageNo);
             model.addAttribute("sortOrder", sortOrder.equals("asc") ? "desc" : "asc");
 
-        }else{
+        }else if (!sortCol.isEmpty() && !sortOrder.isEmpty()){
             model.addAttribute("sortOrder", sortOrder.equals("asc") ? "desc" : "asc");
             Page<ContractCustomer> page = contractCustomerRepo.findAll(pageable);
             model.addAttribute("pageNo", pageNo);
             model.addAttribute("totalPages",page.getTotalPages());
             model.addAttribute("allContractCustomers", page);
         }
+
         return "contractCustomers";
     }
 

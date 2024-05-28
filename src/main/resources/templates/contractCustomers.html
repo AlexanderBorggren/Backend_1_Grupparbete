@@ -12,9 +12,9 @@
 
     <h4 th:text="${message}"></h4>
     <h4 th:text="${updateCustomerFeedbackMessage}"></h4>
-    <form th:action="@{/contractCustomers/search}" method="post">
+    <form th:action="@{/contractcustomers/}" method="post">
         Search:
-        <input type="text" name="query" th:name="query"/>
+        <input type="text" name="q" th:name="q"/>
         <input type="submit" value="Search"/>
     </form>
 
