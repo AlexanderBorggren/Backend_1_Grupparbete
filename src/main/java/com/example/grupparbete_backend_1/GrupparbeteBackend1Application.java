@@ -1,8 +1,12 @@
 package com.example.grupparbete_backend_1;
 import com.example.grupparbete_backend_1.controllers.ContractCustomerControllerTH;
+import com.example.grupparbete_backend_1.models.EmailingTemplates;
+import com.example.grupparbete_backend_1.repositories.EmailTemplateRepo;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.util.Objects;
@@ -36,7 +40,7 @@ public class GrupparbeteBackend1Application {
 
         }
     }
-/*
+
     //BEAN for adding default emailTemplates
     @Bean
     public CommandLineRunner addDefaultEmailTemplates(EmailTemplateRepo emailTemplateRepo) {
@@ -78,28 +82,13 @@ public class GrupparbeteBackend1Application {
             emailingTemplate2.setTemplateDescription("Template used for reseting password for login to hotelbooking site");
             emailingTemplate2.setFromEmail("autoreply@passwordrecovery.pensionatet.com");
             emailingTemplate2.setSubject("Password recovery email");
-            emailingTemplate2.setBody("<!DOCTYPE html>
-            <html>
-            <head>
-                <title>Password recovery email</title>
-            </head>
-            <body>
-
-                <p>Hi [[${userName}]],</p>
-                <p>There was a request to change your password!</p>
-                <p>If you did not make this request then please ignore this email.</p>
-
-            <a th:href="@{${link}}">Reset password</a></p>
-
-
-            </body>
-            </html>");
+            emailingTemplate2.setBody("");
 
                         emailTemplateRepo.save(emailingTemplate1);
                         emailTemplateRepo.save(emailingTemplate2);
 
         };
-    }*/
+    }
 
 
     /*@Bean
