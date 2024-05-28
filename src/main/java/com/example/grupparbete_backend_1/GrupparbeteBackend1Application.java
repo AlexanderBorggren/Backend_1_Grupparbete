@@ -42,6 +42,7 @@ public class GrupparbeteBackend1Application {
     }
 
     //BEAN for adding default emailTemplates
+    /*
     @Bean
     public CommandLineRunner addDefaultEmailTemplates(EmailTemplateRepo emailTemplateRepo) {
 
@@ -89,7 +90,7 @@ public class GrupparbeteBackend1Application {
 
         };
     }
-
+*/
 
     /*@Bean
     public CommandLineRunner addUsersRoles(UserRepo userRepo, RoleRepo roleRepo) {
@@ -111,10 +112,6 @@ public class GrupparbeteBackend1Application {
             userRepo.save(user2);
         };
     }*/
-
-
-
-
 
 
 /*
@@ -164,9 +161,9 @@ public class GrupparbeteBackend1Application {
             customerRepo.save(customer14);
             customerRepo.save(customer15);
 
-            RoomType singleRoom = new RoomType("Single", 0, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            RoomType doubleRoom1 = new RoomType("Double room 1", 1, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
-            RoomType doubleRoom2 = new RoomType("Double room 2", 2, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            RoomType singleRoom = new RoomType("Single", 0, 300.0, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            RoomType doubleRoom1 = new RoomType("Double room 1", 1, 600.0, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
+            RoomType doubleRoom2 = new RoomType("Double room 2", 2, 685.0, Timestamp.from(Instant.now()), Timestamp.from(Instant.now()));
 
 
             roomTypeRepo.save(singleRoom);

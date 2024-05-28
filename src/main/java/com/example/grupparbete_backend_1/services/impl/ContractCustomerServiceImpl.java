@@ -35,7 +35,6 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
 
     public void fetchContractCustomers() throws IOException {
 
-
         try {
             final Logger logger = LoggerFactory.getLogger(FetchContractCustomers.class);
 

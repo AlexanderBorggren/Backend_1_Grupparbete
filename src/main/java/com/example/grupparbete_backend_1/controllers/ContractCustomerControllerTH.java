@@ -57,6 +57,23 @@ public class ContractCustomerControllerTH {
         return "contractCustomerView";
     }
 
+    @RequestMapping("/search")
+    public String searchForCustomer(@RequestParam(value="query") String query, Model model) {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<ContractCustomer> page = contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContains
+                (query,query,pageable);
+
+        model.addAttribute("allContractCustomers", page);
+        model.addAttribute("contractCustomerTitle", "All contract customers");
+        model.addAttribute("companyName", "Company name ");
+        model.addAttribute("country", "Country ");
+        model.addAttribute("contactName", "Contact name ");
+        model.addAttribute("contactTitle", "Title ");
+        model.addAttribute("q", query);
+        model.addAttribute("sortOrder", "asc");
+        return "contractCustomers";
+    }
+
 
     @GetMapping(path="/")
     String sorting(Model model, @RequestParam(defaultValue = "1") int pageNo,
