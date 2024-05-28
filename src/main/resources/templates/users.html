@@ -6,7 +6,9 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-<nav><a class="indexButtons" href="http://localhost:8080">Home</a> <a class="indexButtons" th:href="@{addUserView}">Add User</a></nav>
+<nav><a class="indexButtons" href="http://localhost:8080">Home</a>
+    <a class="indexButtons" href="http://localhost:8080/adminpage.html">Admin services</a>
+    <a class="indexButtons" th:href="@{addUserView}">Add User</a></nav>
 <h2 th:text="${usersTitle}"></h2>
 <div class="allUsers" th:unless="${#lists.isEmpty(allUsers)}">
 

@@ -58,14 +58,15 @@ public class WebSecurityConfig {
 
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login/**").permitAll() //allows if not logged in
+                        .requestMatchers("/login/**").anonymous() //allows if not logged in
                         .requestMatchers("/", "/js/**", "/css/**", "/images/**", "/logout", "/queues/**").authenticated()// allows if logged in
-                        .requestMatchers("adminpage.html", "/users/**", "/blacklist/**").hasAuthority("ADMIN") //set auth for admin
+                        .requestMatchers("adminpage.html", "/users/**", "/blacklist/**","consoleapps.html", "/console/**").hasAuthority("ADMIN") //set auth for admin
                         .anyRequest().authenticated()
                 )
               .formLogin((form) -> form
                         .loginPage("/login")
-                        .permitAll())
+                        .permitAll()
+                )
 
                 .logout((logout) -> {
                     logout.permitAll();

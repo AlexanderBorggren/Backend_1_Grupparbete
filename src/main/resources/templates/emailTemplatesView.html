@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>Email template services</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-<nav><a class="indexButtons" href="http://localhost:8080">Home</a> <a class="indexButtons" th:href="@{addTemplateView}">Add new template</a></nav>
+<nav><a class="indexButtons" href="http://localhost:8080">Home</a>
+    <a class="indexButtons" href="http://localhost:8080/adminpage.html">Admin services</a>
+    <a class="indexButtons" th:href="@{addTemplateView}">Add new template</a></nav>
 <h2 th:text="${emailTemplateTitle}"></h2>
 <div class="allCustomers" >
 
