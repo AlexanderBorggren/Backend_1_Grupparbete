@@ -67,24 +67,19 @@ public class UserServiceImpl implements UserService {
         return "Added new user : " + mail;
     }
 
-
     public void addRole(String name) {
         Role role = new Role();
         roleRepo.save(Role.builder().name(name).build());
     }
-
     public void addUser(UserDto user) {
         userRepo.save(userDtoToUser(user));
     }
-
     public List<UserDto> getAllUsers() {
         return userRepo.findAll().stream().map(k -> userToUserDTO(k)).toList();
     }
-
     public List<Role> getAllRoles() {
         return roleRepo.findAll().stream().toList();
     }
-
     @Transactional
     public String deleteUser(Long id) {
         User user = userRepo.findById(id).orElse(null);

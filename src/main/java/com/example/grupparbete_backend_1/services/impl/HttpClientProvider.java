@@ -16,7 +16,7 @@ public class HttpClientProvider {
     public HttpResponse<String> sendHttpRequest(String uri, String method, String jsonInputString) {
         try {
             HttpResponse<String> response;
-            try (HttpClient client = HttpClient.newHttpClient()) {
+             HttpClient client = HttpClient.newHttpClient();
                 HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                         .uri(new URI(uri))
                         .header("Content-Type", "application/json");
@@ -29,7 +29,7 @@ public class HttpClientProvider {
 
                 HttpRequest request = requestBuilder.build();
                 response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            }
+
             return response;
         } catch (Exception e) {
             e.printStackTrace();

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
         @Autowired
         private UserRepo userRepo;
-
         @Override
         public UserDetails loadUserByUsername(String username)
                 throws UsernameNotFoundException {

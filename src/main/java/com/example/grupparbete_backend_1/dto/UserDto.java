@@ -27,7 +27,6 @@ public class UserDto {
             myString += role.getName();
             myString += ", ";
         }
-        ;
 
         return myString.substring(0, myString.length()-2);
     }

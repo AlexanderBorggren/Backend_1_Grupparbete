@@ -76,7 +76,6 @@ public class BookingControllerTH {
     public String createByForm(@PathVariable Long id, Model model) {
         DetailedBookingDto booking = bookingService.findById(id);
 
-        //TODO - HANDLE NULL CUSTOMER
         model.addAttribute("booking", booking);
         return "updateBookingForm";
     }
@@ -118,7 +117,6 @@ public class BookingControllerTH {
     //CREATE NEW BOOKING - STAGE 1 - EMPTY FIELDS
     @RequestMapping("/bookingByView/{customerId}/")
     public String sendCustomerToSearch(@Valid @PathVariable Long customerId, Model model) {
-        //TODO - HANDLE NULL CUSTOMER
 
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
         model.addAttribute("roomTypes", roomTypeList);
@@ -140,7 +138,6 @@ public class BookingControllerTH {
             @RequestParam("extraBedsQuantity") int extraBedsQuantity,
             @RequestParam("roomTypeId") Long roomTypeId,
             Model model) {
-        //TODO - HANDLE NULL CUSTOMER
 
         List<DetailedRoomTypeDto> roomTypeList = roomTypeService.getAllRoomType();
         model.addAttribute("roomTypes", roomTypeList);
@@ -175,7 +172,6 @@ public class BookingControllerTH {
                              RedirectAttributes redirectAttributes) throws URISyntaxException, IOException, InterruptedException, MessagingException {
 
             DetailedBookingDto bookingDto = new DetailedBookingDto(LocalDate.parse(startDate), LocalDate.parse(endDate), guestQuantity, extraBedsQuantity, customerService.detailedCustomerDtoToCustomerDto(customerService.findById(customerId)), roomService.findById(roomId));
-            //blacklistService.getBlacklistedCustomers();
 
             DetailedCustomerDto customer = customerService.findById(customerId);
             String roomType = bookingDto.getRoom().getRoomType().getRoomSize();
