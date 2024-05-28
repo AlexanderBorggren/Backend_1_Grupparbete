@@ -35,7 +35,7 @@
 
             <td><a class="addButton" th:if="${#lists.contains(blacklistedEmails, cust.email) == false}" th:href="@{addToBlacklist/{id}/(id=${cust.id})}">Add to blacklist</a></td>
 
-            <td> <a class="updateButton" th:href="@{updateBlacklist/{email}/(email=${cust.email})}">Update</a></td>
+            <td> <a class="updateButton" th:if="${#lists.contains(blacklistedEmails, cust.email) == true}" th:href="@{updateBlacklist/{email}/(email=${cust.email})}">Update</a></td>
 
         </tr>
 
