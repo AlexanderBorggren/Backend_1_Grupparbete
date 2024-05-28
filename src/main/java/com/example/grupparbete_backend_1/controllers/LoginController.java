@@ -54,7 +54,7 @@ public class LoginController {
         if (userService.doesUserWithUsernameExist(email)) {
             PasswordResetToken passwordResetToken = passwordResetTokenService.createPasswordResetTokenForUser(email);
 
-            String tokenLink = "<a href='http://localhost:8080/login/newpassword/" + passwordResetToken.getToken() + "'>Reset password</a>";
+            String tokenLink = "http://localhost:8080/login/newpassword/" + passwordResetToken.getToken();
             MailRequestDto sendResetLink = new MailRequestDto();
             sendResetLink.setToEmail(email);
             sendResetLink.setTemplateName("PasswordRecovery");

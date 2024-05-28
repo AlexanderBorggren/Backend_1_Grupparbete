@@ -83,24 +83,25 @@ public class GrupparbeteBackend1Application {
             emailingTemplate2.setTemplateDescription("Template used for reseting password for login to hotelbooking site");
             emailingTemplate2.setFromEmail("autoreply@passwordrecovery.pensionatet.com");
             emailingTemplate2.setSubject("Password recovery email");
-            emailingTemplate2.setBody("<!DOCTYPE html>\n" +
-                    "<html>\n" +
-                    "<head>\n" +
-                    "    <title>Password recovery email</title>\n" +
-                    "</head>\n" +
-                    "<body>\n" +
-                    "\n" +
-                    "    <p>Hi [[${userName}]],</p>\n" +
-                    "    <p>There was a request to change your password!</p>\n" +
-                    "\t<p>If you did not make this request then please ignore this email.</p>\n" +
-                    "\t<p>Otherwise, please click this link to change your password: <a href=\"[[${link}]]\">password reset</a></p>\n" +
-                    "  \n" +
-                    "\n" +
-                    "</body>\n" +
-                    "</html>");
+            emailingTemplate2.setBody("<!DOCTYPE html>
+            <html>
+            <head>
+                <title>Password recovery email</title>
+            </head>
+            <body>
 
-            emailTemplateRepo.save(emailingTemplate1);
-            emailTemplateRepo.save(emailingTemplate2);
+                <p>Hi [[${userName}]],</p>
+                <p>There was a request to change your password!</p>
+                <p>If you did not make this request then please ignore this email.</p>
+
+            <a th:href="@{${link}}">Reset password</a></p>
+
+
+            </body>
+            </html>");
+
+                        emailTemplateRepo.save(emailingTemplate1);
+                        emailTemplateRepo.save(emailingTemplate2);
 
         };
     }*/
