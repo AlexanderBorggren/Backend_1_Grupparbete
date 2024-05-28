@@ -33,8 +33,9 @@ public class RoomTypeServiceImplTest {
     private long roomTypeId = 1L;
     private String roomSize = "Single";
     private int maxExtraBeds = 0;
+    private Double price = 300.0;
 
-    RoomType roomType = new RoomType(roomTypeId, roomSize, maxExtraBeds, Timestamp.from(Instant.now()),Timestamp.from(Instant.now()));
+    RoomType roomType = new RoomType(roomTypeId, roomSize, maxExtraBeds, price,Timestamp.from(Instant.now()),Timestamp.from(Instant.now()));
 
     DetailedRoomTypeDto detailedRoomTypeDto = DetailedRoomTypeDto.builder().id(roomTypeId).roomSize(roomSize).maxExtraBeds(maxExtraBeds).build();
 

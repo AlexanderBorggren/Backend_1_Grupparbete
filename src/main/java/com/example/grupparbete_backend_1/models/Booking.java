@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @Data
@@ -28,12 +29,12 @@ public class Booking {
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @FutureOrPresent (message = "Startdatumet måste vara efter gårdagens datum")
+ //   @FutureOrPresent (message = "Startdatumet måste vara efter gårdagens datum")
     private LocalDate startDate;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Future (message = "Slutdatumet måste minst en dag i framtiden")
+  //  @Future (message = "Slutdatumet måste minst en dag i framtiden")
     private LocalDate endDate;
 
     @NotNull
@@ -52,6 +53,11 @@ public class Booking {
     @ManyToOne
     @JoinColumn
     private Room room;
+    private Double totalPrice;
+
+    @OneToMany
+    private List<Discount> discount;
+
 
     @CreationTimestamp
     private Timestamp regdate;
@@ -59,7 +65,28 @@ public class Booking {
     @UpdateTimestamp
     private Timestamp updatedate;
 
-    public Booking (LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, Customer customer, Room room, Timestamp regdate, Timestamp updatedate) {
+    public Booking (LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, Customer customer, Room room, Double totalPrice) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.guestQuantity = guestQuantity;
+        this.extraBedsQuantity = extraBedsQuantity;
+        this.customer = customer;
+        this.room = room;
+        this.totalPrice = totalPrice;
+    }
+
+    public Booking (Long id,LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, Customer customer, Room room, Double totalPrice) {
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.guestQuantity = guestQuantity;
+        this.extraBedsQuantity = extraBedsQuantity;
+        this.customer = customer;
+        this.room = room;
+        this.totalPrice = totalPrice;
+    }
+    public Booking (Long id,LocalDate startDate, LocalDate endDate, int guestQuantity, int extraBedsQuantity, Customer customer, Room room) {
+        this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.guestQuantity = guestQuantity;

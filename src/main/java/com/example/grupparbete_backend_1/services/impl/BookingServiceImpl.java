@@ -1,14 +1,8 @@
 package com.example.grupparbete_backend_1.services.impl;
 
 import com.example.grupparbete_backend_1.dto.*;
-import com.example.grupparbete_backend_1.models.Booking;
-import com.example.grupparbete_backend_1.models.Customer;
-import com.example.grupparbete_backend_1.models.Room;
-import com.example.grupparbete_backend_1.models.RoomType;
-import com.example.grupparbete_backend_1.repositories.BookingRepo;
-import com.example.grupparbete_backend_1.repositories.CustomerRepo;
-import com.example.grupparbete_backend_1.repositories.RoomRepo;
-import com.example.grupparbete_backend_1.repositories.RoomTypeRepo;
+import com.example.grupparbete_backend_1.models.*;
+import com.example.grupparbete_backend_1.repositories.*;
 import com.example.grupparbete_backend_1.services.BlacklistService;
 import com.example.grupparbete_backend_1.services.BookingService;
 import org.springframework.stereotype.Repository;
@@ -19,8 +13,10 @@ import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+@Repository
 @Service
 public class BookingServiceImpl implements BookingService {
 
@@ -28,6 +24,9 @@ public class BookingServiceImpl implements BookingService {
     private final CustomerRepo customerRepo;
     private final RoomRepo roomRepo;
     private final RoomTypeRepo roomTypeRepo;
+    private final DiscountServiceImpl discountService;
+    private final DiscountRepo discountRepo;
+    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, RoomTypeRepo roomTypeRepo, DiscountServiceImpl discountService, DiscountRepo discountRepo) {
     //private final BlacklistService blacklistService;
 
     public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, RoomTypeRepo roomTypeRepo) {
@@ -35,6 +34,8 @@ public class BookingServiceImpl implements BookingService {
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
         this.roomTypeRepo = roomTypeRepo;
+        this.discountService=discountService;
+        this.discountRepo=discountRepo;
         //this.blacklistService = blacklistService;
     }
 
@@ -85,19 +86,96 @@ public class BookingServiceImpl implements BookingService {
                 .build();
     }
 
+ /*   @Override
+    public String addBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException {
+
+        Customer customer = customerRepo.findById(booking.getCustomer().getId()).get();
+        BlacklistService blacklistService = new BlacklistServiceImpl();
+        Room room = roomRepo.findById(booking.getRoom().getId()).get();
+
+        // Check blacklist
+        if (!blacklistService.isBlacklistOk(customer.getEmail())) {
+            return customer.getEmail() + " is blacklisted.";
+        }
+
+        // Calculate total price with discounts
+        Double totalPriceWithDiscounts = calculateTotalPriceWithDiscounts(room.getId(), booking.getStartDate(),booking.getEndDate());
+
+        // Create booking entity
+        Booking newBooking = detailedBookingDtoToBooking(booking, customer, room);
+        newBooking.setTotalPrice(totalPriceWithDiscounts);
+
+        bookingRepo.save(newBooking);
+
+        return "You have created a new booking for customer " + customer.getName() + ". Booked a " +
+                room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " +
+                booking.getExtraBedsQuantity() + " extra beds. Date booked is " + booking.getStartDate() +
+                " to " + booking.getEndDate() + ". Total price with discounts: " + totalPriceWithDiscounts;
+    }*/
+
     @Override
     public String addBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException {
-        Customer customer = customerRepo.findById(booking.getCustomer().getId()).get();
 
-        Room room = roomRepo.findById(booking.getRoom().getId()).get();
-        BlacklistServiceImpl blacklistService = new BlacklistServiceImpl();
+        Customer customer = customerRepo.findById(booking.getCustomer().getId()).orElseThrow(() -> new RuntimeException("Customer not found"));
+        BlacklistService blacklistService = new BlacklistServiceImpl();
+        Room room = roomRepo.findById(booking.getRoom().getId()).orElseThrow(() -> new RuntimeException("Room not found"));
 
-        if (blacklistService.isBlacklistOk(customer.getEmail())) {
-            bookingRepo.save(detailedBookingDtoToBooking(booking, customer, room));
-            return "You have created a new booking for customer " + customer.getName() + ". Booked a " + room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " + booking.getGuestQuantity() + " extra beds. Date booked is " + booking.getStartDate() + " to " + booking.getEndDate();
+        // Check blacklist
+        if (!blacklistService.isBlacklistOk(customer.getEmail())) {
+            return customer.getEmail() + " is blacklisted.";
         }
-        else return customer.getEmail() + " is blacklisted.";
+
+        // Create booking entity
+        Booking newBooking = detailedBookingDtoToBooking(booking, customer, room);
+        Booking savedBooking = bookingRepo.save(newBooking);
+
+        // Calculate total price without discounts
+        Double totalPriceNoDiscount = bookingRepo.getTotalPriceForBooking(savedBooking.getId());
+        if (totalPriceNoDiscount == null) {
+            totalPriceNoDiscount = 0.0;
+        }
+
+        // Calculate discounts
+        Discount discountSunToMon = discountService.calculateDiscountSunToMon(savedBooking.getId());
+        Discount discount2NightsPlus = discountService.calculateDiscount2NightsOrMore(savedBooking.getId());
+
+
+        // Save discounts to the database
+        discountRepo.save(discountSunToMon);
+        discountRepo.save(discount2NightsPlus);
+
+        // Recalculate total discount value after saving discounts
+        Double discountValue = discountService.getTotalDiscountValueForBooking(savedBooking.getId());
+        if (discountValue == null) {
+            discountValue = 0.0;
+        }
+
+        int totalBookedNights = getTotalBookedNightsLastYear(customer.getId());
+        if (totalBookedNights >= 10) {
+            Double additionalDiscount = totalPriceNoDiscount * 0.02;
+            discountValue += additionalDiscount;
+
+            Discount discount10Nights = Discount.builder()
+                    .discountValue(additionalDiscount)
+                    .booking(savedBooking)
+                    .build();
+            discountRepo.save(discount10Nights);
+        }
+
+        // Calculate total price with discounts
+        Double totalPriceWithDiscounts = totalPriceNoDiscount - discountValue;
+        savedBooking.setTotalPrice(totalPriceWithDiscounts);
+
+        // Save the updated booking with total price
+        bookingRepo.save(savedBooking);
+
+        return "You have created a new booking for customer " + customer.getName() + ". Booked a " +
+                room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " +
+                booking.getExtraBedsQuantity() + " extra beds. Date booked is " + booking.getStartDate() +
+                " to " + booking.getEndDate() + ". Total price without discounts: " + totalPriceNoDiscount
+                + ". Total price with discounts: " + totalPriceWithDiscounts;
     }
+
     public String updateBooking(DetailedBookingDto booking) throws IOException, URISyntaxException, InterruptedException {
         Customer customer = customerRepo.findById(booking.getCustomer().getId()).get();
 
@@ -106,7 +184,7 @@ public class BookingServiceImpl implements BookingService {
 
         if (blacklistService.isBlacklistOk(customer.getEmail())) {
             bookingRepo.save(detailedBookingDtoToBooking(booking, customer, room));
-            return "You have updaed an existing booking for customer " + customer.getName() + ". Booked a " + room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " + booking.getGuestQuantity() + " extra beds. Date booked is " + booking.getStartDate() + " to " + booking.getEndDate();
+            return "You have updated an existing booking for customer " + customer.getName() + ". Booked a " + room.getRoomType().getRoomSize() + " for " + booking.getGuestQuantity() + " guests and " + booking.getGuestQuantity() + " extra beds. Date booked is " + booking.getStartDate() + " to " + booking.getEndDate();
         }
         else return customer.getEmail() + " is blacklisted, cannot be updated";
     }
@@ -118,6 +196,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public String deleteBooking(Long bookingId) {
         Booking booking = bookingRepo.findById(bookingId).get();
+        List<Discount> discounts = discountRepo.findByBookingId(bookingId);
+        discountRepo.deleteAll(discounts);
 
         bookingRepo.delete(booking);
         return "Booking with id " + booking.getId() + " has been removed.";
@@ -169,5 +249,33 @@ public class BookingServiceImpl implements BookingService {
         return roomIsAvailable;
     }
 
+   /* @Override
+    public Double calculateTotalPriceForBooking(Long id) {
+        return bookingRepo.calculateTotalPriceForBooking(id);
+    }*/
+
+  /*  @Override
+    public Double calculateTotalPriceWithDiscounts(Long roomId, LocalDate startDate, LocalDate endDate) {
+        return bookingRepo.calculateTotalPriceWithDiscounts(roomId, startDate,endDate);
+    }*/
+
+    @Override
+    public Double getTotalPriceForBooking(Long bookingId){
+        return bookingRepo.getTotalPriceForBooking(bookingId);
+    }
+
+    //Method to check condition for additional 2% dicount on booking price
+    public int getTotalBookedNightsLastYear(Long customerId) {
+        LocalDate oneYearAgo = LocalDate.now().minusDays(365);
+        List<Booking> bookings = bookingRepo.findBookingsByCustomerIdAndStartDateAfter(customerId, oneYearAgo);
+
+        int totalNights = 0;
+        for (Booking booking : bookings) {
+            long nights = ChronoUnit.DAYS.between(booking.getStartDate(), booking.getEndDate());
+            totalNights += nights;
+        }
+
+        return totalNights;
+    }
 
 }

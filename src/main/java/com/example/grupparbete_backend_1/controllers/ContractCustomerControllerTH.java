@@ -5,6 +5,7 @@ import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.models.ContractCustomer;
 import com.example.grupparbete_backend_1.repositories.ContractCustomerRepo;
 import com.example.grupparbete_backend_1.services.ContractCustomerService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -40,6 +41,7 @@ public class ContractCustomerControllerTH {
         model.addAttribute("contactName", "Contact name ");
         model.addAttribute("contactTitle", "Title ");
         model.addAttribute("sortOrder", "asc");
+        model.addAttribute("q", "");
         return "contractCustomers";
     }
 
@@ -58,16 +60,16 @@ public class ContractCustomerControllerTH {
 
     @GetMapping(path="/")
     String sorting(Model model, @RequestParam(defaultValue = "1") int pageNo,
-                   @RequestParam(defaultValue = "10") int pageSize,
+                   @RequestParam(defaultValue = "50") int pageSize,
                    @RequestParam(defaultValue = "companyName") String sortCol,
                    @RequestParam(defaultValue = "asc") String sortOrder,
-                   @RequestParam(defaultValue = "") String g)
+                   @RequestParam(defaultValue = "") String q)
     {
         model.addAttribute("activeFunction", "home");
 
-        g = g.trim();
+        q = q.trim();
 
-        model.addAttribute("g",g);
+        model.addAttribute("q",q);
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortCol);
         Pageable pageable = PageRequest.of(pageNo-1,pageSize,sort);
 
@@ -77,20 +79,25 @@ public class ContractCustomerControllerTH {
         model.addAttribute("contactName", "Contact name ");
         model.addAttribute("contactTitle", "Title ");
 
-        if(!g.isEmpty()){
-            if(sortCol.equals("companyName")) {
-                model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByCompanyNameContains(g,sort));
+        if(!q.isEmpty()){
+            Page<ContractCustomer> page = contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContains(q,q,pageable);
+          /*  if(sortCol.equals("companyName")) {
+                model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByCompanyNameContains(q,sort));
             } else if (sortCol.equals("contactName")){
-                model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByContactNameContains(g,sort));
+                model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByContactNameContains(q,sort));
             } else {
-                model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByContactTitleContains(g,sort));
-            }
-            model.addAttribute("totalPages",1);
-            model.addAttribute("pageNo",1);
+                model.addAttribute("allContractCustomers", contractCustomerRepo.findAllByContactTitleContains(q,sort));
+            }*/
+            model.addAttribute("allContractCustomers", page);
+            model.addAttribute("totalPages",page.getTotalPages());
+            model.addAttribute("pageNo",pageNo);
+            model.addAttribute("sortOrder", sortOrder.equals("asc") ? "desc" : "asc");
+
         }else{
             model.addAttribute("sortOrder", sortOrder.equals("asc") ? "desc" : "asc");
-            List<ContractCustomer> page = contractCustomerRepo.findAll(sort);
+            Page<ContractCustomer> page = contractCustomerRepo.findAll(pageable);
             model.addAttribute("pageNo", pageNo);
+            model.addAttribute("totalPages",page.getTotalPages());
             model.addAttribute("allContractCustomers", page);
         }
         return "contractCustomers";

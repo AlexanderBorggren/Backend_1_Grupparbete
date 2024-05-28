@@ -1,20 +1,15 @@
 package com.example.grupparbete_backend_1;
-import com.example.grupparbete_backend_1.Events.EventBase;
-import com.example.grupparbete_backend_1.Events.RoomClosed;
-import com.example.grupparbete_backend_1.models.*;
-import com.example.grupparbete_backend_1.repositories.*;
-import com.example.grupparbete_backend_1.models.Role;
-import org.springframework.boot.CommandLineRunner;
+import com.example.grupparbete_backend_1.controllers.ContractCustomerControllerTH;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.context.annotation.ComponentScan;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Objects;
 
 
 @SpringBootApplication
