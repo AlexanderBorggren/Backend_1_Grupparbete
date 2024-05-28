@@ -15,8 +15,6 @@ import java.util.UUID;
 @Service
 public class PasswordResetTokenServiceImpl implements PasswordResetTokenService {
 
-
-
     private final UserRepo userRepo;
     private final PasswordResetTokenRepo passwordResetTokenRepo;
 
@@ -24,7 +22,6 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
         this.passwordResetTokenRepo = passwordResetTokenRepo;
         this.userRepo = userRepo;
     }
-
     public PasswordResetToken createPasswordResetTokenForUser(String username) {
 
         String token = generateToken();
@@ -33,12 +30,10 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
         passwordResetTokenRepo.save(myToken);
         return myToken;
     }
-
     public PasswordResetToken getToken(String token) {
 
         return passwordResetTokenRepo.findByToken(token);
     }
-
 
     public boolean isTokenValid(String validToken) {
         PasswordResetToken token = getToken(validToken);
@@ -50,8 +45,6 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
 
         return token != null && !currentTime.after(token.getExpiryDate());
     }
-
-
 
     public String generateToken() {
         return UUID.randomUUID().toString();

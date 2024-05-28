@@ -26,20 +26,5 @@ public class FetchShippers implements CommandLineRunner {
 
         shippersService.fetchShippers();
 
-       /* ObjectMapper objectMapper = new ObjectMapper();
-
-        List<Shippers> theShippers = Arrays.asList(objectMapper.readValue(new URL("https://javaintegration.systementor.se/shippers"), Shippers[].class));
-
-        for (Shippers s : theShippers) {
-            System.out.println(s.getExternal_Shippers_Id());
-            System.out.println(s.getCompanyName());
-
-            ShippersDto shippersDto = shippersService.shippersToShippersDto(s);
-
-            Shippers existingShippers = shippersService.getShippersByExternalId(s.getExternal_Shippers_Id());
-            if (existingShippers == null) {
-                shippersService.addShippers(shippersDto);
-            }
-        }*/
     }
 }

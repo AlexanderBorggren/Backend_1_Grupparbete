@@ -115,9 +115,6 @@ public class BookingControllerTHTest {
                 .andExpect(MockMvcResultMatchers.view().name("bookings"));
     }
 
-
-
-
 /**Performs a GET request to the URL /booking/deleteById/1/.
  * It expects that the HTTP response status is a 3xx Redirection (indicating a successful redirect).
  * It expects that the URL to which the request is redirected is /booking/all.

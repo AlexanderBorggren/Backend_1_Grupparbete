@@ -9,7 +9,6 @@ import java.net.URL;
 
 @Service
 public class JSonStreamProvider {
-
     public InputStream getDataStream() throws IOException {
 
         URL url = new URL("https://javaintegration.systementor.se/shippers");
@@ -20,7 +19,6 @@ public class JSonStreamProvider {
         if (responseCode != HttpURLConnection.HTTP_OK) {
             throw new IOException("Http Error: " + con.getResponseMessage());
         }
-
         return con.getInputStream();
 
     }

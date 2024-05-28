@@ -23,8 +23,6 @@ public class BlacklistServiceUnitTests {
     @DisplayName("should return a list")
     void testGetBlacklistedCustomers() throws URISyntaxException, IOException {
 
-
-
     }
 
 

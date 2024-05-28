@@ -82,6 +82,7 @@ public class EventServiceImpl implements EventService {
     public void fetchEventsFromQueueStreaming() throws IOException, TimeoutException {
 
         String queueName = "06edcc3d-7c5c-4de3-a004-ede368b3a030";
+        //TODO: MOVE INTO .ENV
 
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("128.140.81.47");

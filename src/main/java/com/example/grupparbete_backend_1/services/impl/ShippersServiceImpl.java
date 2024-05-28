@@ -25,10 +25,6 @@ public class ShippersServiceImpl implements ShippersService {
         this.shippersRepo = shippersRepo;
         this.jsonStreamProvider = jsonStreamProvider;
     }
-    //    public ShippersDto shippersToShippersDto(Shippers shippers);
-    //    public Shippers shippersDtoToShippers(ShippersDto shippers);
-
-
     public void fetchShippers() throws IOException {
 
         try {
@@ -53,8 +49,6 @@ public class ShippersServiceImpl implements ShippersService {
             e.printStackTrace();
         }
     }
-
-
 
     @Override
     public ShippersDto shippersToShippersDto(Shippers shippers) {

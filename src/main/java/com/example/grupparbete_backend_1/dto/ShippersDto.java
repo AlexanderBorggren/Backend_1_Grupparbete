@@ -21,7 +21,6 @@ import java.sql.Timestamp;
 @Builder
 public class ShippersDto {
 
-
     private Long id;
     @Column(unique = true)
     @JsonProperty("id")
