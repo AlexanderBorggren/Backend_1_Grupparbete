@@ -1,56 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Login</title>
+  <title>Pensionatet Bokingsportal - Login</title>
   <!-- Lägg till Bootstrap CSS för snyggare design -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <style>
-    .container {
-      max-width: 400px;
-      padding-top: 100px;
-    }
-    .login-container {
-      padding: 20px;
-      background: #f7f7f7;
-      border: 1px solid #dedede;
-      border-radius: 5px;
-      box-shadow: 0px 0px 10px 0px #0000001a;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="/css/styleLogin.css">
 </head>
 <body>
-<h4 th:text="${feedbackMessage}"></h4>
-<div class="container">
-  <div class="login-container">
-    <h2 class="text-center">Logga in</h2>
+<div class="body">
+  <div class="header">
+    <img class="header" th:src="@{/assets/logo.png}">
+  </div>
     <form th:action="@{/login}" method="post" class="form-signin">
+      <h2>Logga in</h2>
       <div th:if="${param.error}" class="alert alert-danger" role="alert">
         <div th:if="${param.logout}">
           Du har loggats ut.</div>
         Fel användarnamn eller lösenord.
       </div>
       <div class="form-group">
-
-        <label for="username">Användarnamn</label>
+        <label for="username">Användarnamn:</label>
         <input type="text" class="form-control" id="username" name="username" required autofocus>
       </div>
       <div class="form-group">
-        <label for="password">Lösenord</label>
+        <label for="password">Lösenord:</label>
         <input type="password" class="form-control" id="password" name="password" required>
       </div>
       <button type="submit" class="btn btn-primary btn-block">Logga in</button>
+      <div class="text-center" id="forgot-password">
+        <a href="/login/resetpassword">Glömt lösenord?</a>
+      </div>
     </form>
-    <div class="text-center">
-      <a href="/login/resetpassword">Glömt lösenord?</a>
     </div>
-  </div>
-</div>
 <!-- Lägg till Bootstrap JS och Popper.js för interaktivitet -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</div>
 </body>
 </html>

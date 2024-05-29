@@ -6,17 +6,21 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-<nav><a class="indexButtons" href="http://localhost:8080">Home</a>
-    <a class="indexButtons" href="http://localhost:8080/adminpage.html">Admin services</a>
-    <a class="indexButtons" th:href="@{addUserView}">Add User</a></nav>
+<nav id="indexMeny">
+<a class="indexButtons" href="http://localhost:8080">Home</a>
+<a class="indexButtons" href="http://localhost:8080/adminpage.html">Admin services</a>
+</nav>
+
 <h2 th:text="${usersTitle}"></h2>
+<nav>
+    <a class="indexButtons" th:href="@{addUserView}">Add User</a></nav>
 <div class="allUsers" th:unless="${#lists.isEmpty(allUsers)}">
 
     <h4 th:text="${message}"></h4>
     <h4 th:text="${updateCustomerFeedbackMessage}"></h4>
 
     <table>
-        <th th:text="${username}"></th>
+        <th th:text="${email}"></th>
         <th th:text="${roles}"></th>
         <th th:text="${enabled}"></th>
         <th></th>
