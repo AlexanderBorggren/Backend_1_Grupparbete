@@ -1,6 +1,7 @@
 package com.example.grupparbete_backend_1.services.impl;
 
 import com.example.grupparbete_backend_1.Events.EventBase;
+import com.example.grupparbete_backend_1.configuration.IntegrationProperties;
 import com.example.grupparbete_backend_1.dto.EventDto;
 import com.example.grupparbete_backend_1.dto.RoomDto;
 import com.example.grupparbete_backend_1.repositories.EventRepo;
@@ -28,13 +29,15 @@ public class EventServiceImpl implements EventService {
     private final EventRepo eventRepo;
     private final RoomTypeService roomTypeService;
     private final RoomService roomService;
+    private final IntegrationProperties properties;
 
 
 
-    public EventServiceImpl(EventRepo eventRepo, RoomTypeService roomTypeService, RoomService roomService) {
+    public EventServiceImpl(EventRepo eventRepo, RoomTypeService roomTypeService, RoomService roomService, IntegrationProperties properties) {
         this.roomTypeService = roomTypeService;
         this.eventRepo = eventRepo;
         this.roomService = roomService;
+        this.properties = properties;
     }
 
     @Override
@@ -81,13 +84,13 @@ public class EventServiceImpl implements EventService {
     @Override
     public void fetchEventsFromQueueStreaming() throws IOException, TimeoutException {
 
-        String queueName = "06edcc3d-7c5c-4de3-a004-ede368b3a030";
+        String queueName = properties.getEventProperties().getToken();
         //TODO: MOVE INTO .ENV
 
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("128.140.81.47");
-        factory.setUsername("djk47589hjkew789489hjf894");
-        factory.setPassword("sfdjkl54278frhj7");
+        factory.setHost(properties.getEventProperties().getHost());
+        factory.setUsername(properties.getEventProperties().getUsername());
+        factory.setPassword(properties.getEventProperties().getPassword());
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 

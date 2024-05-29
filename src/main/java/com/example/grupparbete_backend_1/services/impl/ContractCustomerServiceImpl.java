@@ -120,18 +120,6 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
         contractCustomerRepo.save(detailedContractCustomerDtoToContractCustomer(detailedContractCustomerDto));
     }
 
-
-    @Override
-    public String deleteContractCustomer(Long id) {
-        return null;
-    }
-/*    public DetailedCustomerDto findById(Long id) {
-        Customer c = customerRepo.findById(id).stream().findFirst().orElse(null);
-        if(c == null){
-            return null;
-        }
-        return customerToDetailedCustomerDto(c);
-    };*/
     @Override
     public DetailedContractCustomerDto getById(Long id) {
 

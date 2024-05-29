@@ -33,19 +33,6 @@ public class BlacklistController {
 
 
 
-    /*@RequestMapping("/all")
-    public String getAll(Model model) {
-        List<DetailedCustomerDto> k = customerService.getAllCustomer();
-        model.addAttribute("allCustomers", k);
-        model.addAttribute("customerTitle", "All customers");
-        model.addAttribute("name", "Name: ");
-        model.addAttribute("ssn", "SSN: ");
-        model.addAttribute("email", "Email: ");
-        model.addAttribute("customerId", "CustomerID: ");
-        return "customers";
-    }
-    */
-
 
     @RequestMapping("/adminBlacklistView")
     public String adminBlacklistView(Model model) throws IOException, URISyntaxException, InterruptedException {
@@ -191,20 +178,5 @@ public class BlacklistController {
 
     }
 
-
-
-     /*   HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://javabl.systementor.se/api/rosa/blacklist"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString("email=" + email + "&name=" + name + "&ok=" + ok))
-                .build();
-
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .thenAccept(System.out::println)
-                .join();
-
-*/
 
 }

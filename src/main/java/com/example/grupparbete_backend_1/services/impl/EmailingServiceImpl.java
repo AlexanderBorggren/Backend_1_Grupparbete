@@ -29,10 +29,6 @@ public class EmailingServiceImpl implements EmailingService {
 
     private final EmailTemplateRepo emailTemplateRepo;
 
-    /*@Value("${spring.mail.username}")
-    private String fromMail;*/
-
-
     public ITemplateResolver stringTemplateResolver() {
         final StringTemplateResolver templateResolver = new StringTemplateResolver();
         templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -163,35 +159,6 @@ public class EmailingServiceImpl implements EmailingService {
         mailSender.send(mimeMessage);
     }
 
-
-/*
-    @Override
-    @Async
-    public void sendConfirmationEmail(MailRequestDto request) throws MessagingException {
-
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
-
-        mimeMessageHelper.setFrom(request.getFromEmail());
-        mimeMessageHelper.setTo(request.getToEmail());
-        mimeMessageHelper.setSubject(request.getSubject());
-
-        if(request.isHTML()){
-            Context context = new Context();
-
-            context.setVariable("content", request.getBody());
-            String processedString = stringTemplateEngine().process("BookingEmailConfirmationTemplate", context);
-
-            mimeMessageHelper.setText(processedString, true);
-        }
-        else{
-            mimeMessageHelper.setText(request.getBody(), false);
-
-        }
-
-        mailSender.send(mimeMessage);
-
-    }*/
 
     @Override
     public String deleteTemplate(Long templateId){

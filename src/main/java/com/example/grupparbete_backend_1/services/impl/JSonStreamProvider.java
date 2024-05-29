@@ -1,5 +1,7 @@
 package com.example.grupparbete_backend_1.services.impl;
 
+import com.example.grupparbete_backend_1.configuration.IntegrationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -9,9 +11,11 @@ import java.net.URL;
 
 @Service
 public class JSonStreamProvider {
+    @Autowired
+    private IntegrationProperties properties;
     public InputStream getDataStream() throws IOException {
 
-        URL url = new URL("https://javaintegration.systementor.se/shippers");
+        URL url = new URL(properties.getJsonStream().getUrl());
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
