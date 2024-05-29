@@ -39,6 +39,7 @@ public class GrupparbeteBackend1Application {
             application.run(args);
 
         }
+
     }
 /*
 

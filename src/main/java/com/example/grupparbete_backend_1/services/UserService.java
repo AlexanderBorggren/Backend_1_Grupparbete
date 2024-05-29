@@ -16,17 +16,15 @@ public interface UserService {
 
     public UserDto userToUserDTO(User user) throws IOException, InterruptedException, URISyntaxException;
     public User userDtoToUser(UserDto user) throws IOException, InterruptedException, URISyntaxException;
-    public String addUser(String mail, String group) throws IOException, InterruptedException, URISyntaxException;
 
     public void addUser(UserDto user);
 
-    public void addRole(String name) throws IOException, InterruptedException, URISyntaxException;
+
     public List<UserDto> getAllUsers() throws IOException, InterruptedException, URISyntaxException;
     public List<Role> getAllRoles();
     public String deleteUser(Long id);
     public boolean doesUserWithUsernameExist(String username);
-    UserDto findUserByUsername(String username);
-    public void updateUser(UserDto user);
+
     public UserDto getUserByID(Long id);
     public boolean doesUsernameExistExceptSelf(String username, Long userId);
 }

@@ -1,5 +1,6 @@
 package com.example.grupparbete_backend_1.services.impl;
 
+import com.example.grupparbete_backend_1.configuration.IntegrationProperties;
 import com.example.grupparbete_backend_1.dto.BlacklistedCustomerDto;
 import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.models.BlacklistCheckResponse;
@@ -28,16 +29,18 @@ import java.util.Optional;
 public class BlacklistServiceImpl implements BlacklistService {
 
 
-    CustomerService customerService;
+    private IntegrationProperties properties;
+
+    private CustomerService customerService;
 
 
     @Autowired
-    public BlacklistServiceImpl(CustomerService customerService){
+    public BlacklistServiceImpl(CustomerService customerService, IntegrationProperties properties){
         this.customerService = customerService;
+        this.properties = properties;
     }
 
     public BlacklistServiceImpl(){}
-
 
 
    @Override
@@ -45,7 +48,7 @@ public class BlacklistServiceImpl implements BlacklistService {
 
        HttpClientProvider httpClientProvider = new HttpClientProvider();
 
-       HttpResponse<String> response = httpClientProvider.sendHttpRequest("https://javabl.systementor.se/api/rosa/blacklistcheck/" + email,"GET", null);
+       HttpResponse<String> response = httpClientProvider.sendHttpRequest(properties.getBlacklist().getUrlCheck() + email,"GET", null);
 
 
        if (response != null && response.statusCode() == 200) {
@@ -67,7 +70,7 @@ public class BlacklistServiceImpl implements BlacklistService {
 
         HttpClientProvider httpClientProvider = new HttpClientProvider();
 
-        HttpResponse<String> response = httpClientProvider.sendHttpRequest("https://javabl.systementor.se/api/rosa/blacklist", "GET", null);
+        HttpResponse<String> response = httpClientProvider.sendHttpRequest(properties.getBlacklist().getUrl(), "GET", null);
 
 
         if (response != null && response.statusCode() == 200) {
@@ -118,7 +121,7 @@ public class BlacklistServiceImpl implements BlacklistService {
                 String jsonInputString = objectMapper.writeValueAsString(user);
 
                 HttpClientProvider httpClientProvider = new HttpClientProvider();
-                HttpResponse<String> response = httpClientProvider.sendHttpRequest("https://javabl.systementor.se/api/rosa/blacklist", "POST", jsonInputString);
+                HttpResponse<String> response = httpClientProvider.sendHttpRequest(properties.getBlacklist().getUrl(), "POST", jsonInputString);
 
 
             // Check the response status code
@@ -168,7 +171,7 @@ public class BlacklistServiceImpl implements BlacklistService {
                 String jsonInputString = objectMapper.writeValueAsString(updateCustomer);
 
             HttpClientProvider httpClientProvider = new HttpClientProvider();
-            HttpResponse<String> response = httpClientProvider.sendHttpRequest("https://javabl.systementor.se/api/rosa/blacklist/" + email, "PUT", jsonInputString);
+            HttpResponse<String> response = httpClientProvider.sendHttpRequest(properties.getBlacklist().getUrl() + email, "PUT", jsonInputString);
 
 
 /*

@@ -26,8 +26,6 @@ public interface ContractCustomerService {
 
     public void addContractCustomer(DetailedContractCustomerDto detailedContractCustomerDto);
 
-    public String deleteContractCustomer(Long id);
-
     public DetailedContractCustomerDto getById(Long id);
     public List<DetailedContractCustomerDto> getAllContractCustomers();
 
