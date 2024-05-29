@@ -40,10 +40,9 @@ public class GrupparbeteBackend1Application {
 
         }
     }
-/*
 
+/*
     //BEAN for adding default emailTemplates
-    /*
     @Bean
     public CommandLineRunner addDefaultEmailTemplates(EmailTemplateRepo emailTemplateRepo) {
 
@@ -94,8 +93,8 @@ public class GrupparbeteBackend1Application {
                     "    <p>Hi [[${userName}]],</p>\n" +
                     "    <p>There was a request to change your password!</p>\n" +
                     "\t<p>If you did not make this request then please ignore this email.</p>\n" +
-                    "\t<p>Otherwise, please click this link to change your password: <a href=\"[[${link}]]\">password reset</a></p>\n" +
-                    "  \n" +
+                    "\t<p>Otherwise, please click this link to change your password: <a th:href=\"${link}\">password reset</a></p>\n" +
+                    "\n" +
                     "\n" +
                     "</body>\n" +
                     "</html>");
@@ -104,8 +103,7 @@ public class GrupparbeteBackend1Application {
                         emailTemplateRepo.save(emailingTemplate2);
 
         };
-    }
-*/
+    }*/
 
 
 
