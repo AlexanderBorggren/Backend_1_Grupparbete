@@ -171,7 +171,7 @@ public class BlacklistServiceImpl implements BlacklistService {
                 String jsonInputString = objectMapper.writeValueAsString(updateCustomer);
 
             HttpClientProvider httpClientProvider = new HttpClientProvider();
-            HttpResponse<String> response = httpClientProvider.sendHttpRequest(properties.getBlacklist().getUrl() + email, "PUT", jsonInputString);
+            HttpResponse<String> response = httpClientProvider.sendHttpRequest(properties.getBlacklist().getUrl() +"/" + email, "PUT", jsonInputString);
 
 
 /*
