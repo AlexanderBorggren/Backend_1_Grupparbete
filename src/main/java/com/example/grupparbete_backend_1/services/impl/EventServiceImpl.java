@@ -42,10 +42,6 @@ public class EventServiceImpl implements EventService {
         this.queueConnectionProvider = queueConnectionProvider;
     }
 
-    @Override
-    public void addEventDto(EventDto event) {
-        eventRepo.save(eventDtoToEvent(event));
-    }
 
     @Override
     public void addEvent(EventBase event) {
@@ -65,20 +61,6 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventBase eventDtoToEvent(EventDto eventDto) {
-        return EventBase.builder()
-                .id(eventDto.getId())
-                .message(eventDto.getMessage())
-                .RoomNo(eventDto.getRoomNo())
-                .TimeStamp(eventDto.getTimeStamp())
-                .build();
-    }
-    @Override
-    public List<EventDto> getAllEvent() {
-        return eventRepo.findAll().stream().map(this::eventToEventDto).toList();
-    }
-
-    @Override
     public List<EventDto> getEventsByRoomNo(long roomId) {
         return eventRepo.findAllByRoomNo(roomId).stream().map(this::eventToEventDto).toList();
     }
@@ -89,16 +71,16 @@ public class EventServiceImpl implements EventService {
         String queueName = properties.getEventProperties().getToken();
         //TODO: MOVE INTO .ENV
 
-        ConnectionFactory factory = new ConnectionFactory();
+       /* ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(properties.getEventProperties().getHost());
         factory.setUsername(properties.getEventProperties().getUsername());
         factory.setPassword(properties.getEventProperties().getPassword());
         Connection connection = factory.newConnection();
 
 
-        Channel channel = connection.createChannel();
+        Channel channel = connection.createChannel();*/
 
-        /*Channel channel = queueConnectionProvider.getConnection();*/
+        Channel channel = queueConnectionProvider.getConnection();
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -114,6 +96,8 @@ public class EventServiceImpl implements EventService {
             // Deserialisera meddelandet till rätt EventBase subklass
             EventBase event = mapper.readValue(message, EventBase.class);
             System.out.println(" [x] Received '" + event + "'");
+            System.out.println(message);
+            System.out.println(event);
 
             JsonNode json = mapper.readTree(message);
 
