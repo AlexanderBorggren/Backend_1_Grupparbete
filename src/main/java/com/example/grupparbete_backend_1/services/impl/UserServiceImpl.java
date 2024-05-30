@@ -56,21 +56,7 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    public String addUser(String mail, String group) {
-        ArrayList<Role> roles = new ArrayList<>();
-        roles.add(roleRepo.findByName(group));
 
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String hash = encoder.encode("Hejsan123#");
-        User user = User.builder().enabled(true).password(hash).username(mail).roles(roles).build();
-        userRepo.save(user);
-        return "Added new user : " + mail;
-    }
-
-    public void addRole(String name) {
-        Role role = new Role();
-        roleRepo.save(Role.builder().name(name).build());
-    }
     public void addUser(UserDto user) {
         userRepo.save(userDtoToUser(user));
     }
@@ -105,19 +91,6 @@ public class UserServiceImpl implements UserService {
         return userToUserDTO(userRepo.findByUsername(username));
    }
 
-    @Override
-    public void updateUser(UserDto user) {
-        // Convert UserDto to User entity
-        UserDto userDB = findUserByUsername(user.getUsername());
-        if (userDB != null) {
-            userDB.setPassword(user.getPassword());
-            userDB.setRoles(user.getRoles().stream()
-                    .map(roleName -> roleRepo.findByName(roleName.getName()))
-                    .collect(Collectors.toList()));
-
-            userRepo.save(userDtoToUser(userDB));  // Update existing user
-        }
-    }
 
     public UserDto getUserByID(Long id) {
         return userToUserDTO(Objects.requireNonNull(userRepo.findById(id).orElse(null)));

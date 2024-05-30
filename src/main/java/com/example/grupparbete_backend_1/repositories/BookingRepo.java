@@ -24,17 +24,3 @@ public interface BookingRepo extends JpaRepository<Booking, Long> {
     List<Booking> findBookingsByCustomerIdAndStartDateAfter(Long customerId, LocalDate startDate);
 }
 
-
-  /*  @Query("SELECT " +
-            "CASE " +
-            "WHEN datediff(:endDate, :startDate) >= 2 THEN rt.pricePerNight * datediff(:endDate, :startDate) * 0.995 " +
-            "ELSE rt.pricePerNight * datediff(:endDate, :startDate) " +
-            "END " +
-            "FROM Room r " +
-            "JOIN r.roomType rt " +
-            "WHERE r.id = :roomId")
-    Double calculateTotalPriceWithDiscounts(@Param("roomId") Long roomId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
-
-}
-*/

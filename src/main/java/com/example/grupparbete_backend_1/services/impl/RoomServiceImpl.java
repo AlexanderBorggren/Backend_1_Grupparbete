@@ -34,7 +34,7 @@ public class RoomServiceImpl implements RoomService {
     public String addRoom(RoomDto room) {
         RoomType roomType = roomTypeRepo.findById(room.getRoomType().getId()).get();
         roomRepo.save(roomDtoToRoom(room, roomType));
-        return "Room har sparats";
+        return "Room has been saved";
     }
     @Override
     public List<RoomDto> getAllRoom() {
