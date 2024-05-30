@@ -28,13 +28,15 @@ public class EventServiceImpl implements EventService {
     private final EventRepo eventRepo;
     private final RoomTypeService roomTypeService;
     private final RoomService roomService;
+    private final QueueConnectionProvider queueConnectionProvider;
 
 
 
-    public EventServiceImpl(EventRepo eventRepo, RoomTypeService roomTypeService, RoomService roomService) {
+    public EventServiceImpl(EventRepo eventRepo, RoomTypeService roomTypeService, RoomService roomService, QueueConnectionProvider queueConnectionProvider) {
         this.roomTypeService = roomTypeService;
         this.eventRepo = eventRepo;
         this.roomService = roomService;
+        this.queueConnectionProvider = queueConnectionProvider;
     }
 
     @Override
@@ -84,13 +86,16 @@ public class EventServiceImpl implements EventService {
         String queueName = "06edcc3d-7c5c-4de3-a004-ede368b3a030";
         //TODO: MOVE INTO .ENV
 
-        ConnectionFactory factory = new ConnectionFactory();
+      /*  ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("128.140.81.47");
         factory.setUsername("djk47589hjkew789489hjf894");
         factory.setPassword("sfdjkl54278frhj7");
         Connection connection = factory.newConnection();
-        Channel channel = connection.createChannel();
 
+
+        *//*Channel channel = connection.createChannel();*/
+
+        Channel channel = queueConnectionProvider.getConnection();
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
