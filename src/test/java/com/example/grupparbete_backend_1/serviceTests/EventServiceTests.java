@@ -1,6 +1,6 @@
 package com.example.grupparbete_backend_1.serviceTests;
 
-import com.example.grupparbete_backend_1.Events.EventBase;
+import com.example.grupparbete_backend_1.Events.*;
 import com.example.grupparbete_backend_1.configuration.EventProperties;
 import com.example.grupparbete_backend_1.configuration.IntegrationProperties;
 import com.example.grupparbete_backend_1.dto.EventDto;
@@ -11,16 +11,22 @@ import com.example.grupparbete_backend_1.services.RoomTypeService;
 import com.example.grupparbete_backend_1.services.impl.ContractCustomerServiceImpl;
 import com.example.grupparbete_backend_1.services.impl.EventServiceImpl;
 import com.example.grupparbete_backend_1.services.impl.QueueConnectionProvider;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.rabbitmq.client.*;
 import jdk.jfr.Event;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.desktop.SystemSleepEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class EventServiceTests {
@@ -59,11 +65,8 @@ public class EventServiceTests {
     @Test
     public void testFetchEventsFromQueueStreaming() throws IOException, TimeoutException, IOException, TimeoutException {
 
-
-        System.out.println(eventProperties);
-        System.out.println(properties.getEventProperties());
-
         // Skapa mock objekt
+
         ConnectionFactory factory = mock(ConnectionFactory.class);
         Connection connection = mock(Connection.class);
         Channel channel = mock(Channel.class);
@@ -80,5 +83,37 @@ public class EventServiceTests {
 
         // Verifiera att metoder har kallats på mock objekten
         verify(channel).basicConsume(anyString(), anyBoolean(), any(DeliverCallback.class), any(ConsumerShutdownSignalCallback.class));
+    }
+
+    @Test
+    public void testEventMapping() throws IOException {
+        // Skapa ett ObjectMapper-objekt
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        // Skapa ett JSON-meddelande som representerar en specifik subklass av EventBase
+        String queueMessage = "{ \"type\": \"RoomClosed\", \"RoomNo\": 123, \"TimeStamp\": \"2024-05-30T11:46:49\" }";
+        String queueMessage2 = "{\"type\":\"RoomOpened\",\"RoomNo\":123,\"TimeStamp\":\"2024-05-30T11:46:49\"}";
+        String queueMessage3 = "{\"type\":\"RoomCleaningStarted\",\"RoomNo\":123,\"TimeStamp\":\"2024-05-30T11:46:49\"}";
+        String queueMessage4 = "{\"type\":\"RoomCleaningFinished\",\"RoomNo\":123,\"TimeStamp\":\"2024-05-30T11:46:49\"}";
+
+        // Anropa metoden som gör mappningen
+        EventBase event = mapper.readValue(queueMessage, EventBase.class);
+        EventBase event2 = mapper.readValue(queueMessage2, EventBase.class);
+        EventBase event3 = mapper.readValue(queueMessage3, EventBase.class);
+        EventBase event4 = mapper.readValue(queueMessage4, EventBase.class);
+
+        assertTrue(event instanceof RoomClosed);
+        assertEquals("RoomClosed", event.getClass().getSimpleName());
+        assertTrue(event2 instanceof RoomOpened);
+        assertEquals("RoomOpened", event2.getClass().getSimpleName());
+        assertTrue(event3 instanceof RoomCleaningStarted);
+        assertEquals("RoomCleaningStarted", event3.getClass().getSimpleName());
+        assertTrue(event4 instanceof RoomCleaningFinished);
+        assertEquals("RoomCleaningFinished", event4.getClass().getSimpleName());
+
+        //assertEquals(event.getRoomNo().getId(), 123);
+
     }
 }

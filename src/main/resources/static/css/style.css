@@ -238,9 +238,9 @@ td .linkedText {
     font-weight: bold;
     color: #007bff;
 }
-#indexMeny {
-
-  a:hover {
-    background-color: #333131;
-  }
+.indexMeny a {
+    margin: 0 10px;
+    padding: 10px 20px;
+    text-decoration: #101010;
+    text-align: left;
 }

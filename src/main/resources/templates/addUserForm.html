@@ -16,6 +16,9 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
+<nav id="indexMeny">
+    <a href="http://localhost:8080">Home</a>
+</nav>
 <h2>Add User</h2>
 
 <form id="customerForm" th:action="@{/users/addUser}" th:object="${userDto}" method="post">
