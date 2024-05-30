@@ -7,10 +7,10 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-<nav id="Home">
-    <a class="indexButtons" href="http://localhost:8080">Home</a>
-    <a class="indexButtons" href="http://localhost:8080/adminpage.html">Admin services</a>
-    <a class="indexButtons" href="http://localhost:8080/blacklist/adminBlacklistView">Return to blacklist home</a>
+<nav id="indexMeny">
+    <a href="http://localhost:8080">Home</a>
+    <a href="http://localhost:8080/adminpage.html">Admin services</a>
+    <a href="http://localhost:8080/blacklist/adminBlacklistView">Return to blacklist home</a>
 </nav>
 <h2 th:text="${blacklistTitle}"></h2>
 <div class="allOnList" th:unless="${#lists.isEmpty(allOnList)}">

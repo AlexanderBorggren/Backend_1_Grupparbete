@@ -6,7 +6,9 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-
+<nav id="indexMeny">
+    <a href="http://localhost:8080">Home</a>
+</nav>
 <form action="#" th:action="@{/booking/addBooking}" th:object="${booking}"  method="post" >
     <label for="customerId">Customer Id: </label><br>
     <input type="text" id="customerId" name="customerId"><br>
