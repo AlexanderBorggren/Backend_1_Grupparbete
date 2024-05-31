@@ -48,7 +48,7 @@ public class BlacklistServiceImpl implements BlacklistService {
 
        HttpClientProvider httpClientProvider = new HttpClientProvider();
 
-       HttpResponse<String> response = httpClientProvider.sendHttpRequest(properties.getBlacklist().getUrlCheck() + email,"GET", null);
+       HttpResponse<String> response = httpClientProvider.sendHttpRequest("https://javabl.systementor.se/api/rosa/blacklistcheck/" + email,"GET", null);
 
 
        if (response != null && response.statusCode() == 200) {
