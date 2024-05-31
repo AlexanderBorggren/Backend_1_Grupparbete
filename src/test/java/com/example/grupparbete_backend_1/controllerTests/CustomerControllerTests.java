@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CustomerControllerTest {
+public class CustomerControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -50,6 +52,7 @@ public class CustomerControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void addCustomer() throws Exception {
         this.mockMvc.perform(post("/customer/addCustomer")
                     .param("name", "Daim")
@@ -60,6 +63,7 @@ public class CustomerControllerTest {
 }
 
     @Test
+    @WithMockUser
     public void deleteCustomers() throws Exception{
         this.mockMvc.perform(get("/customer/deleteById/1/")).
                 andExpect(status().is3xxRedirection()).

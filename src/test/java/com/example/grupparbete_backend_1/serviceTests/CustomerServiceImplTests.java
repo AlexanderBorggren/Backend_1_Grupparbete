@@ -3,7 +3,6 @@ package com.example.grupparbete_backend_1.serviceTests;
 import com.example.grupparbete_backend_1.dto.CustomerDto;
 import com.example.grupparbete_backend_1.dto.DetailedCustomerDto;
 import com.example.grupparbete_backend_1.models.Customer;
-import com.example.grupparbete_backend_1.repositories.BookingRepo;
 import com.example.grupparbete_backend_1.repositories.CustomerRepo;
 import com.example.grupparbete_backend_1.services.impl.BookingServiceImpl;
 import com.example.grupparbete_backend_1.services.impl.CustomerServiceImpl;
@@ -32,7 +31,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class CustomerServiceImplTest {
+public class CustomerServiceImplTests {
 
     @Mock
     private CustomerRepo customerRepo;

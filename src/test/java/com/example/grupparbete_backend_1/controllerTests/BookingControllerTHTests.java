@@ -1,19 +1,16 @@
 package com.example.grupparbete_backend_1.controllerTests;
 
 import ch.qos.logback.core.model.Model;
-import com.example.grupparbete_backend_1.controllers.BookingControllerTH;
 import com.example.grupparbete_backend_1.dto.*;
-import com.example.grupparbete_backend_1.services.BookingService;
-import com.example.grupparbete_backend_1.services.CustomerService;
-import com.example.grupparbete_backend_1.services.RoomService;
+import com.example.grupparbete_backend_1.repositories.BookingRepo;
+import com.example.grupparbete_backend_1.repositories.DiscountRepo;
 import com.example.grupparbete_backend_1.services.impl.BookingServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -27,13 +24,21 @@ import static org.mockito.Mockito.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-public class BookingControllerTHTest {
+public class BookingControllerTHTests {
 
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    BookingRepo bookingRepo;
+
+    @Autowired
+    DiscountRepo discountRepo;
+
     @MockBean // used to simulate HTTP requests
     private BookingServiceImpl bookingService;
+
+
 
     DetailedRoomTypeDto rt1 = new DetailedRoomTypeDto(1L,"Single", 0);
     DetailedRoomTypeDto rt2 = new DetailedRoomTypeDto(2L,"Double room 1", 1);
@@ -53,6 +58,7 @@ public class BookingControllerTHTest {
 
 
     @Test
+    @WithMockUser
     void getAllBookings() throws Exception {
 
         DetailedRoomTypeDto rt1 = new DetailedRoomTypeDto(1L,"Single", 0);
@@ -113,22 +119,28 @@ public class BookingControllerTHTest {
  * It expects that the URL to which the request is redirected is /booking/all.
  */
 @Test
+@WithMockUser
 void deleteBooking() throws Exception {
     Long id = 1L;
     String message = "Booking deleted successfully";
 
+
+
     when(bookingService.deleteBooking(id)).thenReturn(message);
+
 
     mockMvc.perform(MockMvcRequestBuilders.get("/booking/deleteById/" + id + "/"))
             .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
             .andExpect(MockMvcResultMatchers.redirectedUrl("/booking/all"))
             .andExpect(MockMvcResultMatchers.flash().attribute("message", message));
 
+
     verify(bookingService).deleteBooking(id);
 }
 
 
     @Test
+    @WithMockUser
     void updateBooking() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/booking/update")
@@ -136,7 +148,7 @@ void deleteBooking() throws Exception {
                         .flashAttr("b", b1)
                         .flashAttr("customerDto", d1))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/booking/all"));
+               .andExpect(MockMvcResultMatchers.redirectedUrl("/booking/all"));
 
     }
 

@@ -6,18 +6,12 @@ import com.example.grupparbete_backend_1.models.Customer;
 import com.example.grupparbete_backend_1.models.Room;
 import com.example.grupparbete_backend_1.models.RoomType;
 import com.example.grupparbete_backend_1.repositories.*;
-import com.example.grupparbete_backend_1.services.DiscountService;
 import com.example.grupparbete_backend_1.repositories.BookingRepo;
 import com.example.grupparbete_backend_1.repositories.CustomerRepo;
 import com.example.grupparbete_backend_1.repositories.RoomRepo;
 import com.example.grupparbete_backend_1.repositories.RoomTypeRepo;
-import com.example.grupparbete_backend_1.services.impl.BlacklistServiceImpl;
 import com.example.grupparbete_backend_1.services.impl.BookingServiceImpl;
 import com.example.grupparbete_backend_1.services.impl.DiscountServiceImpl;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -34,7 +29,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -42,7 +36,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class BookingServiceImplTest {
+public class BookingServiceImplTests {
 
     @Mock
     private BookingRepo bookingRepo;
@@ -78,8 +72,8 @@ public class BookingServiceImplTest {
 
     DetailedBookingDto detailedBookingDto = DetailedBookingDto.builder()
             .id(1L)
-                .startDate(LocalDate.parse("2024-05-06"))
-            .endDate(LocalDate.parse("2024-05-10"))
+                .startDate(LocalDate.parse("2024-06-06"))
+            .endDate(LocalDate.parse("2024-06-08"))
             .guestQuantity(2)
                 .extraBedsQuantity(1)
                 .build();
@@ -93,6 +87,7 @@ public class BookingServiceImplTest {
     }
 
     @Test
+    @WithMockUser
     void bookingToDetailedBookingDto() {
         DetailedBookingDto actual = bookingService.bookingToDetailedBookingDto(booking);
 
@@ -103,6 +98,7 @@ public class BookingServiceImplTest {
 
     }
     @Test
+    @WithMockUser
     void detailedBookingDtoToBooking() {
         Booking actual = bookingService.detailedBookingDtoToBooking(detailedBookingDto, customer, room);
 

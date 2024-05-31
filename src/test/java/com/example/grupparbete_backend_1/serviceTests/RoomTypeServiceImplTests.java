@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 @SpringBootTest
-public class RoomTypeServiceImplTest {
+public class RoomTypeServiceImplTests {
 
     @Mock
     private RoomTypeRepo roomTypeRepo;

@@ -6,7 +6,6 @@ import com.example.grupparbete_backend_1.models.Room;
 import com.example.grupparbete_backend_1.models.RoomType;
 import com.example.grupparbete_backend_1.repositories.RoomRepo;
 import com.example.grupparbete_backend_1.repositories.RoomTypeRepo;
-import com.example.grupparbete_backend_1.services.impl.BookingServiceImpl;
 import com.example.grupparbete_backend_1.services.impl.RoomServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class RoomServiceImplTest {
+public class RoomServiceImplTests {
 
     @Mock
     private RoomTypeRepo roomTypeRepo;
@@ -62,12 +62,13 @@ public class RoomServiceImplTest {
 
 
     @Test
+    @WithMockUser
     void addRoom() {
         when(roomTypeRepo.findById(anyLong())).thenReturn(Optional.of(new RoomType()));
         String result = roomService.addRoom(roomDto);
         verify(roomRepo, times(1)).save(any(Room.class));
 
-        assertEquals("Room har sparats", result);
+        assertEquals("Room has been saved", result);
     }
 
     @Test
